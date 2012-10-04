@@ -135,6 +135,7 @@ short int ephem_open (char *ephem_name,
    if (EPHFILE)
    {
       fclose (EPHFILE);
+      EPHFILE = NULL;
       free (BUFFER);
    }
 
