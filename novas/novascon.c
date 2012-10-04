@@ -1,14 +1,13 @@
 /*
-   NOVAS-C Version 3.0
-   Constants
-
-   Naval Observatory Vector Astrometry Software
-   C Version
-
-   U. S. Naval Observatory
-   Astronomical Applications Dept.
-   3450 Massachusetts Ave., NW
-   Washington, DC  20392-5420
+  Naval Observatory Vector Astrometry Software (NOVAS)
+  C Edition, Version 3.1
+ 
+  novascon.c: Constants for use with NOVAS 
+ 
+  U. S. Naval Observatory
+  Astronomical Applications Dept.
+  Washington, DC 
+  http://www.usno.navy.mil/USNO/astronomical-applications
 */
 
 #ifndef _CONSTS_

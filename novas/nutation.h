@@ -1,13 +1,13 @@
 /*
-   Naval Observatory Vector Astrometry Software
-
-   NOVAS-C Version 3.0
-   Header file for nutation.c
+   Naval Observatory Vector Astrometry Software (NOVAS)
+   C Edition, Version 3.1
+   
+   nutation.h: Header file for nutation models
 
    U. S. Naval Observatory
    Astronomical Applications Dept.
-   3450 Massachusetts Ave., NW
-   Washington, DC  20392-5420
+   Washington, DC 
+   http://www.usno.navy.mil/USNO/astronomical-applications
 */
 
 #ifndef _NUTATION_

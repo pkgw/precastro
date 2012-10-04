@@ -1,16 +1,13 @@
 /*
-   readeph0.c: Dummy version of 'readeph.c' for use with NOVAS-C
-               Version 3.0
-
-   U. S. Naval Observatory
-   Astronomical Applications Dept.
-   3450 Massachusetts Ave., NW
-   Washington, DC  20392-5420
-
-   The real version of 'readeph' provides a heliocentric state vector
-   (position and velocity) of a minor planet at a specified date.
-   This dummy version is for use with NOVAS-C when positions of the
-   minor planets are not of interest.
+  Naval Observatory Vector Astrometry Software (NOVAS)
+  C Edition, Version 3.1
+ 
+  readeph0.c: Dummy readeph for use when minor planet ephermeris is unavailable  
+ 
+  U. S. Naval Observatory
+  Astronomical Applications Dept.
+  Washington, DC 
+  http://www.usno.navy.mil/USNO/astronomical-applications
 */
 
 #include <stdlib.h>
@@ -76,6 +73,8 @@ double *readeph (int mp, char *name, double jd,
       V1.2/10-99/JAB (USNO/AA): Return a pointer to a double, rather
                                 than an array of doubles.  Add error
                                 9 on return.  Basic code courtesy JLH.
+      V1.3/09-10/WKP (USNO/AA): Added references to parameters to
+                                silence compiler warnings.
 
    NOTES:
       1.  This dummy function is not intended to be called.  It merely
@@ -89,6 +88,15 @@ double *readeph (int mp, char *name, double jd,
    int i;
 
    double *pv;
+
+/*
+   The following three lines do nothing and are just here to prevent "unreferenced
+   formal parameter" compiler warnings.
+*/
+
+   mp;
+   name;
+   jd;
 
    pv = (double *) malloc (6L * sizeof (double));
 

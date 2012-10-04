@@ -1,13 +1,26 @@
 C-----------------------------------------------------------------------
+C  Naval Observatory Vector Astrometry Software (NOVAS)
+C  C Edition, Version 3.1
+C 
+C  jplint.f: Interface to JPL ephemeris-access software use w/ solsys2.c 
+C 
+C  U. S. Naval Observatory
+C  Astronomical Applications Dept.
+C  Washington, DC 
+C  http://www.usno.navy.mil/USNO/astronomical-applications
+C-----------------------------------------------------------------------
+
+
+C-----------------------------------------------------------------------
       SUBROUTINE jplint (tjdtdb,target,center, posvel,error)
 C
 C---PURPOSE:    To serve as the interface between the JPL Fortran
 C               code that accesses the solar system ephemerides; returns
 C               the position and velocity of the body at the input time.
 C
-C---REFERENCES: Standish, E.M., Newhall, XX, Williams, J.G., and
-C                  Folkner, W.M. (1997). "JPL Lunar and Planetary
-C                  Ephemerides".  Willmann-Bell, Inc. (CD-ROM).
+C---REFERENCES: JPL. 2007, "JPL Planetary and Lunar Ephemerides: Export
+C                   Information," (Pasadena, CA: JPL) 
+C                   http://ssd.jpl.nasa.gov/?planet_eph_export.
 C
 C---INPUT
 C   ARGUMENTS:  tjdtdb = TDB Julian date at which the body's position
@@ -40,6 +53,7 @@ C               SUBROUTINE pleph (JPL supplied)
 C
 C---VER./DATE/
 C   PROGRAMMER: V1.0/10-97/JAB (USNO/AA)
+C               V1.1/10-10/JLB (USNO/AA) update references
 C
 C---NOTES:      1. The arguments of JPL subroutine 'pleph' have changed
 C                  several times over the course of years.  This 
@@ -95,9 +109,9 @@ C---PURPOSE:    To serve as the interface between the JPL Fortran
 C               code that accesses the solar system ephemerides; returns
 C               the position and velocity of the body at the input time.
 C
-C---REFERENCES: Standish, E.M., Newhall, XX, Williams, J.G., and
-C                  Folkner, W.M. (1997). "JPL Lunar and Planetary
-C                  Ephemerides".  Willmann-Bell, Inc. (CD-ROM).
+C---REFERENCES: JPL. 2007, "JPL Planetary and Lunar Ephemerides: Export
+C                   Information," (Pasadena, CA: JPL) 
+C                   http://ssd.jpl.nasa.gov/?planet_eph_export.
 C
 C---INPUT
 C   ARGUMENTS:  tjdtdb = Array containing the TDB Julian date at which 
@@ -133,6 +147,7 @@ C               SUBROUTINE dpleph (JPL supplied)
 C
 C---VER./DATE/
 C   PROGRAMMER: V1.0/12-06/JAB (USNO/AA)
+C               V1.1/10-10/JLB (USNO/AA) update references
 C
 C---NOTES:      1. The arguments of JPL subroutine 'pleph' have changed
 C                  several times over the course of years.  This 

@@ -1,4 +1,4 @@
-JPL Ephemeris open. jd_beg = 2378480.50  jd_end = 2470192.50
+JPL Ephemeris DE405 open. jd_beg = 2305424.50  jd_end = 2525008.50
 
 JD = 2450203.500000  Star = POLARIS
 RA =  2.446988922  Dec =  89.24635149

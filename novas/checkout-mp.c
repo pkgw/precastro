@@ -1,3 +1,15 @@
+/*
+  Naval Observatory Vector Astrometry Software (NOVAS)
+  C Edition, Version 3.1
+ 
+  checkout-mp.c: Checkout program for use with minor planet ephemerides
+ 
+  U. S. Naval Observatory
+  Astronomical Applications Dept.
+  Washington, DC 
+  http://www.usno.navy.mil/USNO/astronomical-applications
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "eph_manager.h"
@@ -13,12 +25,12 @@ int main (void)
    ephemerides and DE405 are used along with version 1 of function
    'solarsystem'.
 
-   For use with NOVAS-C Version 3.
+   For use with NOVAS-C Version 3.1.
 */
 
    short int error = 0;
    short int accuracy = 0;
-   short int i;
+   short int i, de_num;
 
 /*
    'deltat' is the difference in time scales, TT - UT1.
@@ -62,15 +74,15 @@ int main (void)
    Open the JPL ephemeris file.
 */
 
-   if ((error = Ephem_Open ("JPLEPH", &jd_beg,&jd_end)) != 0)
+   if ((error = ephem_open ("JPLEPH", &jd_beg,&jd_end,&de_num)) != 0)
    {
-      printf ("Error %d from Ephem_Open\n", error);
+      printf ("Error %d from ephem_open\n", error);
       return (error);
    }
     else
    {
-      printf ("JPL Ephemeris open. jd_beg = %10.2f  jd_end = %10.2f\n",
-         jd_beg, jd_end);
+      printf ("JPL Ephemeris DE%d open. jd_beg = %10.2f  jd_end = %10.2f\n",
+         de_num, jd_beg, jd_end);
       printf ("\n");
    }
 
@@ -151,6 +163,6 @@ int main (void)
       }
    }
 
-   Ephem_Close ();
+   ephem_close ();
    return (0);
 }

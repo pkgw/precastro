@@ -1,13 +1,13 @@
 /*
-   Naval Observatory Vector Astrometry Software
+  Naval Observatory Vector Astrometry Software (NOVAS)
+  C Edition, Version 3.1
 
-   NOVAS-C Version 3.0
-   Based on NOVAS Fortran Version 3.0g (11 Jun 2008)
+  novas.c: Main library
 
-   U. S. Naval Observatory
-   Astronomical Applications Dept.
-   3450 Massachusetts Ave., NW
-   Washington, DC  20392-5420
+  U. S. Naval Observatory
+  Astronomical Applications Dept.
+  Washington, DC
+  http://www.usno.navy.mil/USNO/astronomical-applications
 */
 
 #ifndef _NOVAS_
@@ -75,30 +75,33 @@ short int app_star (double jd_tt, cat_entry *star, short int accuracy,
 
    GLOBALS
    USED:
-      None.
+      SIZE_OF_OBJ_NAME   novas.h
 
    FUNCTIONS
    CALLED:
-      make_object     novas.c
-      place           novas.c
+      make_object        novas.c
+      place              novas.c
+      strcpy             string.h
 
    VER./DATE/
    PROGRAMMER:
       V1.0/12-05/JAB (USNO/AA)
       V1.1/10-06/JAB (USNO/AA): Incorporate 'output' structure.
       V1.2/10-08/JAB (USNO/AA): Add 'accuracy' option to input.
+      V1.3/05-10/JAB (USNO/AA): Fix bug in set-up of 'obj_name'.
 
    NOTES:
       1. This function is the "C" version of Fortran NOVAS routine
       'apstar'.
+      2. SIZE_OF_OBJ_NAME is defined in novas.h
 
 ------------------------------------------------------------------------
 */
 {
-   char obj_name[51];
+   char obj_name[SIZE_OF_OBJ_NAME];
 
    short int error = 0;
-   short int type, number, coord_sys, i;
+   short int type, number, coord_sys;
 
    double delta_t = 0.0;
 
@@ -109,16 +112,11 @@ short int app_star (double jd_tt, cat_entry *star, short int accuracy,
    sky_pos output;
 
 /*
-   Set 'obj_name' equal to 'starname' in the 'star' structure.
+   Set 'obj_name' equal to 'starname' in the 'star' structure.  Length
+   will be checked in 'make_object'.
 */
 
-   for (i = 0; i < 51; i++)
-   {
-      obj_name[i] = star->starname[i];
-      if (star->starname[i] == '\0')
-         break;
-   }
-   obj_name[i] = '\0';
+   strcpy (obj_name, star->starname);
 
 /*
    Set up a structure of type 'object' containing the star data.
@@ -202,30 +200,34 @@ short int virtual_star (double jd_tt, cat_entry *star,
 
    GLOBALS
    USED:
-      None.
+      SIZE_OF_OBJ_NAME   novas.h
+
 
    FUNCTIONS
    CALLED:
-      make_object     novas.c
-      place           novas.c
+      make_object        novas.c
+      place              novas.c
+      strcpy             string.h
 
    VER./DATE/
    PROGRAMMER:
       V1.0/12-05/JAB (USNO/AA)
       V1.1/10-06/JAB (USNO/AA): Incorporate 'output' structure.
       V1.2/10-08/JAB (USNO/AA): Add 'accuracy' option to input.
+      V1.3/05-10/JAB (USNO/AA): Fix bug in set-up of 'obj_name'.
 
    NOTES:
       1. This function is the "C" version of Fortran NOVAS routine
       'vpstar'.
+      2. SIZE_OF_OBJ_NAME is defined in novas.h
 
 ------------------------------------------------------------------------
 */
 {
-   char obj_name[51];
+   char obj_name[SIZE_OF_OBJ_NAME];
 
    short int error = 0;
-   short int type, number, coord_sys, i;
+   short int type, number, coord_sys;
 
    double delta_t = 0.0;
 
@@ -236,16 +238,11 @@ short int virtual_star (double jd_tt, cat_entry *star,
    sky_pos output;
 
 /*
-   Set 'obj_name' equal to 'starname' in the 'star' structure.
+   Set 'obj_name' equal to 'starname' in the 'star' structure.  Length
+   will be checked in 'make_object'.
 */
 
-   for (i = 0; i < 51; i++)
-   {
-      obj_name[i] = star->starname[i];
-      if (star->starname[i] == '\0')
-         break;
-   }
-   obj_name[i] = '\0';
+   strcpy (obj_name, star->starname);
 
 /*
    Set up a structure of type 'object' containing the star data.
@@ -331,30 +328,33 @@ short int astro_star (double jd_tt, cat_entry *star, short int accuracy,
 
    GLOBALS
    USED:
-      None.
+      SIZE_OF_OBJ_NAME   novas.h
 
    FUNCTIONS
    CALLED:
-      make_object     novas.c
-      place           novas.c
+      make_object        novas.c
+      place              novas.c
+      strcpy             string.h
 
    VER./DATE/
    PROGRAMMER:
       V1.0/12-05/JAB (USNO/AA)
       V1.1/10-06/JAB (USNO/AA): Incorporate 'output' structure.
       V1.2/10-08/JAB (USNO/AA): Add 'accuracy' option to input.
+      V1.3/05-10/JAB (USNO/AA): Fix bug in set-up of 'obj_name'.
 
    NOTES:
       1. This function is the "C" version of Fortran NOVAS routine
       'asstar'.
+      2. SIZE_OF_OBJ_NAME is defined in novas.h
 
 ------------------------------------------------------------------------
 */
 {
-   char obj_name[51];
+   char obj_name[SIZE_OF_OBJ_NAME];
 
    short int error = 0;
-   short int type, number, coord_sys, i;
+   short int type, number, coord_sys;
 
    double delta_t = 0.0;
 
@@ -365,16 +365,11 @@ short int astro_star (double jd_tt, cat_entry *star, short int accuracy,
    sky_pos output;
 
 /*
-   Set 'obj_name' equal to 'starname' in the 'star' structure.
+   Set 'obj_name' equal to 'starname' in the 'star' structure.  Length
+   will be checked in 'make_object'.
 */
 
-   for (i = 0; i < 51; i++)
-   {
-      obj_name[i] = star->starname[i];
-      if (star->starname[i] == '\0')
-         break;
-   }
-   obj_name[i] = '\0';
+   strcpy (obj_name, star->starname);
 
 /*
    Set up a structure of type 'object' containing the star data.
@@ -390,7 +385,7 @@ short int astro_star (double jd_tt, cat_entry *star, short int accuracy,
    }
 
 /*
-   Compute the virtual place with a call to function 'place'.
+   Compute the astrometric place with a call to function 'place'.
 */
 
    location.where = 0;   /* Geocenter */
@@ -421,7 +416,7 @@ short int app_planet (double jd_tt, object *ss_body, short int accuracy,
 ------------------------------------------------------------------------
 
    PURPOSE:
-      Compute the apparent place of a planet or other solar system body.
+      Compute the apparent place of a solar system body.
 
    REFERENCES:
       Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.
@@ -449,7 +444,7 @@ short int app_planet (double jd_tt, object *ss_body, short int accuracy,
          Apparent declination in degrees, referred to true equator
          and equinox of date.
       *dis (double)
-         True distance from Earth to planet at 'jd_tt' in AU.
+         True distance from Earth to the body at 'jd_tt' in AU.
 
    RETURNED
    VALUE:
@@ -464,7 +459,7 @@ short int app_planet (double jd_tt, object *ss_body, short int accuracy,
 
    FUNCTIONS
    CALLED:
-      place      novas.c
+      place              novas.c
 
    VER./DATE/
    PROGRAMMER:
@@ -533,7 +528,7 @@ short int virtual_planet (double jd_tt, object *ss_body,
 ------------------------------------------------------------------------
 
    PURPOSE:
-      Compute the virtual place of a planet or other solar system body.
+      Compute the virtual place of a solar system body.
 
    REFERENCES:
       Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.
@@ -559,7 +554,7 @@ short int virtual_planet (double jd_tt, object *ss_body,
       *dec (double)
          Virtual declination in degrees, referred to the GCRS.
       *dis (double)
-         True distance from Earth to planet in AU.
+         True distance from Earth to the body in AU.
 
    RETURNED
    VALUE:
@@ -574,7 +569,7 @@ short int virtual_planet (double jd_tt, object *ss_body,
 
    FUNCTIONS
    CALLED:
-      place      novas.c
+      place              novas.c
 
    VER./DATE/
    PROGRAMMER:
@@ -643,8 +638,7 @@ short int astro_planet (double jd_tt, object *ss_body,
 ------------------------------------------------------------------------
 
    PURPOSE:
-      Compute the astrometric place of a planet or other solar system
-      body.
+      Compute the astrometric place of a solar system body.
 
    REFERENCES:
       Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.
@@ -672,7 +666,7 @@ short int astro_planet (double jd_tt, object *ss_body,
          Astrometric declination in degrees (referred to the ICRS,
          without light deflection or aberration).
       *dis (double)
-         True distance from Earth to planet in AU.
+         True distance from Earth to the body in AU.
 
    RETURNED
    VALUE:
@@ -687,7 +681,7 @@ short int astro_planet (double jd_tt, object *ss_body,
 
    FUNCTIONS
    CALLED:
-      place      novas.c
+      place              novas.c
 
    VER./DATE/
    PROGRAMMER:
@@ -800,13 +794,14 @@ short int topo_star (double jd_tt, double delta_t, cat_entry *star,
 
    GLOBALS
    USED:
-      None.
+      SIZE_OF_OBJ_NAME   novas.h
 
    FUNCTIONS
    CALLED:
-      make_observer   novas.c
-      make_object     novas.c
-      place           novas.c
+      make_observer      novas.c
+      make_object        novas.c
+      place              novas.c
+      strcpy             string.h
 
    VER./DATE/
    PROGRAMMER:
@@ -814,18 +809,20 @@ short int topo_star (double jd_tt, double delta_t, cat_entry *star,
       V1.1/01-06/WKP (USNO/AA): Fixed minor syntax problem.
       V1.2/10-06/JAB (USNO/AA): Incorporate 'output' structure.
       V1.3/10-08/JAB (USNO/AA): Add 'accuracy' option to input.
+      V1.4/05-10/JAB (USNO/AA): Fix bug in set-up of 'obj_name'.
 
    NOTES:
       1. This function is the "C" version of Fortran NOVAS routine
       'tpstar'.
+      2. SIZE_OF_OBJ_NAME is defined in novas.h
 
 ------------------------------------------------------------------------
 */
 {
-   char obj_name[51];
+   char obj_name[SIZE_OF_OBJ_NAME];
 
    short int error = 0;
-   short int type, number, coord_sys, i;
+   short int type, number, coord_sys;
 
    in_space dummy;
 
@@ -854,16 +851,11 @@ short int topo_star (double jd_tt, double delta_t, cat_entry *star,
    }
 
 /*
-   Set 'obj_name' equal to 'starname' in the 'star' structure.
+   Set 'obj_name' equal to 'starname' in the 'star' structure.  Length
+   will be checked in 'make_object'.
 */
 
-   for (i = 0; i < 51; i++)
-   {
-      obj_name[i] = star->starname[i];
-      if (star->starname[i] == '\0')
-         break;
-   }
-   obj_name[i] = '\0';
+   strcpy (obj_name, star->starname);
 
 /*
    Set up a structure of type 'object' containing the star data.
@@ -952,31 +944,34 @@ short int local_star (double jd_tt, double delta_t, cat_entry *star,
 
    GLOBALS
    USED:
-      None.
+      SIZE_OF_OBJ_NAME   novas.h
 
    FUNCTIONS
    CALLED:
-      make_observer   novas.c
-      make_object     novas.c
-      place           novas.c
+      make_observer      novas.c
+      make_object        novas.c
+      place              novas.c
+      strcpy             string.h
 
    VER./DATE/
    PROGRAMMER:
       V1.0/01-06/JAB (USNO/AA)
       V1.1/10-06/JAB (USNO/AA): Incorporate 'output' structure.
       V1.2/10-08/JAB (USNO/AA): Add 'accuracy' option to input.
+      V1.3/05-10/JAB (USNO/AA): Fix bug in set-up of 'obj_name'.
 
    NOTES:
       1. This function is the "C" version of Fortran NOVAS routine
       'lpstar'.
+      2. SIZE_OF_OBJ_NAME is defined in novas.h
 
 ------------------------------------------------------------------------
 */
 {
-   char obj_name[51];
+   char obj_name[SIZE_OF_OBJ_NAME];
 
    short int error = 0;
-   short int type, number, coord_sys, i;
+   short int type, number, coord_sys;
 
    in_space dummy;
 
@@ -1005,16 +1000,11 @@ short int local_star (double jd_tt, double delta_t, cat_entry *star,
    }
 
 /*
-   Set 'obj_name' equal to 'starname' in the 'star' structure.
+   Set 'obj_name' equal to 'starname' in the 'star' structure.  Length
+   will be checked in 'make_object'.
 */
 
-   for (i = 0; i < 51; i++)
-   {
-      obj_name[i] = star->starname[i];
-      if (star->starname[i] == '\0')
-         break;
-   }
-   obj_name[i] = '\0';
+   strcpy (obj_name, star->starname);
 
 /*
    Set up a structure of type 'object' containing the star data.
@@ -1088,13 +1078,13 @@ short int topo_planet (double jd_tt, object *ss_body, double delta_t,
    OUTPUT
    ARGUMENTS:
       *ra (double)
-         Apparent right ascension in hours, referred to true equator
+         Topocentric right ascension in hours, referred to true equator
          and equinox of date.
       *dec (double)
-         Apparent declination in degrees, referred to true equator
+         Topocentric declination in degrees, referred to true equator
          and equinox of date.
       *dis (double)
-         True distance from Earth to planet at 'jd_tt' in AU.
+         True distance from Earth to the body at 'jd_tt' in AU.
 
    RETURNED
    VALUE:
@@ -1109,8 +1099,8 @@ short int topo_planet (double jd_tt, object *ss_body, double delta_t,
 
    FUNCTIONS
    CALLED:
-      make_observer   novas.c
-      place           novas.c
+      make_observer      novas.c
+      place              novas.c
 
    VER./DATE/
    PROGRAMMER:
@@ -1118,6 +1108,7 @@ short int topo_planet (double jd_tt, object *ss_body, double delta_t,
       V1.1/01-06/WKP (USNO/AA): Fixed minor syntax problem.
       V1.2/10-06/JAB (USNO/AA): Incorporate 'output' structure.
       V1.3/10-08/JAB (USNO/AA): Add 'accuracy' option to input.
+      V1.4/07-10/JLB (USNO/AA): Fixed minor documentation error in prolog
 
    NOTES:
       1. This function is the "C" version of Fortran NOVAS routine
@@ -1219,7 +1210,7 @@ short int local_planet (double jd_tt, object *ss_body,
       *dec (double)
          Local declination in degrees, referred to the 'local GCRS'.
       *dis (double)
-         True distance from Earth to planet in AU.
+         True distance from Earth to the body in AU.
 
    RETURNED
    VALUE:
@@ -1234,8 +1225,8 @@ short int local_planet (double jd_tt, object *ss_body,
 
    FUNCTIONS
    CALLED:
-      make_observer   novas.c
-      place           novas.c
+      make_observer      novas.c
+      place              novas.c
 
    VER./DATE/
    PROGRAMMER:
@@ -1348,20 +1339,23 @@ short int mean_star (double jd_tt, double ra, double dec,
       (short int)
           =  0 ... Everything OK.
           =  1 ... Iterative process did not converge after 30 iterations.
+          =  2 ... length of dummy star name out of bounds.
+          =  3 ... length of dummy catalog name out of bounds.
           > 10 ... Error from function 'vector2radec'.
           > 20 ... Error from function 'app_star'.
 
    GLOBALS
    USED:
-      T0
+      T0                 novascon.c
 
    FUNCTIONS
    CALLED:
-      starvectors     novas.c
-      precession      novas.c
-      app_star        novas.c
-      fmod            math.h
-      fabs            math.h
+      make_cat_entry     novas.c
+      starvectors        novas.c
+      precession         novas.c
+      app_star           novas.c
+      vector2radec       novas.c
+      fabs               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -1369,6 +1363,8 @@ short int mean_star (double jd_tt, double ra, double dec,
       V1.1/03-08/WKP (USNO/AA): Fixed subtle bug in exit condition of
                                 iteration and updated variable names.
       V1.2/10-08/JAB (USNO/AA): Add 'accuracy' option to input.
+      V1.3/05-10/JAB (USNO/AA): Use 'make_cat_entry' to set up
+                                local structure 'tempstar'.
 
    NOTES:
       1. This function is the "C" version of Fortran NOVAS routine
@@ -1383,20 +1379,30 @@ short int mean_star (double jd_tt, double ra, double dec,
    double pos[3], dum[3], pos2[3], newira, newidec, oldira, oldidec, ra2,
       dec2, deltara, deltadec;
 
-   cat_entry tempstar = {"dummy","CAT",0,0.0,0.0,0.0,0.0,0.0,0.0};
+   cat_entry tempstar;
+
+/*
+   Set up the 'tempstar' structure, then use it to create a position
+   vector based on the apparent RA and declination of the star.
+*/
+
+   if ((error = make_cat_entry ("dummy","CAT",0,ra,dec,0.0,0.0,0.0,0.0,
+      &tempstar)) != 0)
+   {
+      return (error + 1);
+   }
+
+   starvectors (&tempstar, pos,dum);
 
 /*
    Get initial approximation by precessing star position at 'jd_tt'
    to its position at J2000.0.
 */
 
-   tempstar.ra = ra;
-   tempstar.dec = dec;
-   starvectors (&tempstar, pos,dum);
    precession (jd_tt,pos,T0, pos2);
    if ((error = vector2radec (pos2, &newira,&newidec)) != 0)
    {
-      return (error += 10);
+      return (error + 10);
    }
 
 /*
@@ -1414,7 +1420,7 @@ short int mean_star (double jd_tt, double ra, double dec,
       {
          *ira = 0.0;
          *idec = 0.0;
-         return (error += 20);
+         return (error + 20);
       }
 
       deltara = ra2 - oldira;
@@ -1466,7 +1472,7 @@ short int place (double jd_tt, object *cel_object,
       system.
 
    REFERENCES:
-      Kaplan, G. et al. (1997), Astronomical Journal 97, 1197-1210.
+      Kaplan, G. et al. (1989), Astronomical Journal 97, 1197-1210.
       Klioner, S. (2003), Astronomical Journal 125, 1580-1597.
 
    INPUT
@@ -1517,7 +1523,7 @@ short int place (double jd_tt, object *cel_object,
 
    GLOBALS
    USED:
-      T0, C_AUDAY
+      T0, C_AUDAY        novascon.c
 
    FUNCTIONS
    CALLED:
@@ -1556,10 +1562,11 @@ short int place (double jd_tt, object *cel_object,
       V1.4/07-06/JAB (USNO/AA) Implement 'cio_location' construct.
       V1.5/10-06/JAB (USNO/AA) Add radial velocity calculation and
                                implement 'sky_pos' structure.
-      V1.6/01-07/JAB (USNO/AA) Update to accomodate new radial velocity
+      V1.6/01-07/JAB (USNO/AA) Update to accommodate new radial velocity
                                algorithm.
       V1.7/10-08/JAB (USNO/AA) Modify calls to 'ephemeris' to support
                                two-part input Julian date.
+      V1.8/07-10/JLB (USNO/AA) Corrected citation to Kaplan et al.
 
    NOTES:
       1. Values of 'location->where' and 'coord_sys' dictate the various
@@ -1945,20 +1952,21 @@ void equ2gal (double rai, double deci,
 
    GLOBALS
    USED:
-      DEG2RAD, RAD2DEG
+      DEG2RAD, RAD2DEG   novascon.c
 
    FUNCTIONS
    CALLED:
-      sin           math.h
-      cos           math.h
-      sqrt          math.h
-      atan2         math.h
+      sin                math.h
+      cos                math.h
+      sqrt               math.h
+      atan2              math.h
 
    VER./DATE/
    PROGRAMMER:
       V1.0/11-03/JAB (USNO/AA)
       V1.1/03-06/JAB (USNO/AA): Fixed initialization of 'ag'.
-
+      V1.2/03-11/WKP (USNO/AA): Added braces to 2-D array initialization
+                                to quiet gcc warnings.
 
    NOTES:
       1. This function uses the coordinate transformation specified
@@ -1975,10 +1983,10 @@ void equ2gal (double rai, double deci,
    Rotation matrix A_g from Hipparcos documentation eq. 1.5.11.
 */
 
-   double ag[3][3] =
-      {-0.0548755604, +0.4941094279, -0.8676661490,
-       -0.8734370902, -0.4448296300, -0.1980763734,
-       -0.4838350155, +0.7469822445, +0.4559837762};
+   double ag[3][3] = {
+      {-0.0548755604, +0.4941094279, -0.8676661490},
+      {-0.8734370902, -0.4448296300, -0.1980763734},
+      {-0.4838350155, +0.7469822445, +0.4559837762}};
 
 /*
    Form position vector in equatorial system from input coordinates.
@@ -2083,15 +2091,15 @@ short int equ2ecl (double jd_tt, short int coord_sys,
 
    GLOBALS
    USED:
-      DEG2RAD, RAD2DEG
+      DEG2RAD, RAD2DEG   novascon.c
 
    FUNCTIONS
    CALLED:
-      equ2ecl_vec   novas.c
-      sin           math.h
-      cos           math.h
-      sqrt          math.h
-      atan2         math.h
+      equ2ecl_vec        novas.c
+      sin                math.h
+      cos                math.h
+      sqrt               math.h
+      atan2              math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -2204,16 +2212,16 @@ short int equ2ecl_vec (double jd_tt, short int coord_sys,
 
    GLOBALS
    USED:
-      T0, DEG2RAD
+      T0, DEG2RAD        novascon.c
 
    FUNCTIONS
    CALLED:
-      tdb2tt        novas.c
-      frame_tie     novas.c
-      e_tilt        novas.c
-      fabs          math.h
-      sin           math.h
-      cos           math.h
+      tdb2tt             novas.c
+      e_tilt             novas.c
+      frame_tie          novas.c
+      fabs               math.h
+      sin                math.h
+      cos                math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -2351,22 +2359,24 @@ short int ecl2equ_vec (double jd_tt, short int coord_sys,
 
    GLOBALS
    USED:
-      T0, DEG2RAD
+      T0, DEG2RAD        novascon.c
 
    FUNCTIONS
    CALLED:
-      tdb2tt        novas.c
-      frame_tie     novas.c
-      e_tilt        novas.c
-      fabs          math.h
-      sin           math.h
-      cos           math.h
+      tdb2tt             novas.c
+      e_tilt             novas.c
+      frame_tie          novas.c
+      fabs               math.h
+      sin                math.h
+      cos                math.h
 
    VER./DATE/
    PROGRAMMER:
       V1.0/05-06/JAB (USNO/AA)
       V1.1/05-08/WKP (USNO/AA) Changed values of coord_sys to be
                                more consistent with gcrs2equ.
+      V1.2/09-10/WKP (USNO/AA) Initialized 'obl' variable to silence
+                               compiler warning.
 
    NOTES:
       1. To convert an ecliptic vector (mean ecliptic and equinox of
@@ -2385,7 +2395,7 @@ short int ecl2equ_vec (double jd_tt, short int coord_sys,
    static double t_last = 0.0;
    static double ob2000 = 0.0;
    static double oblm, oblt;
-   double t, secdiff, jd_tdb, pos0[3], w, x, y, z, obl;
+   double t, secdiff, jd_tdb, pos0[3], w, x, y, z, obl = 0.0;
 
 /*
    'jd_tdb' is the TDB Julian date.
@@ -2459,7 +2469,7 @@ short int ecl2equ_vec (double jd_tt, short int coord_sys,
 /********equ2hor */
 
 void equ2hor (double jd_ut1, double delta_t, short int accuracy,
-              double x, double y, on_surface *location, double ra,
+              double xp, double yp, on_surface *location, double ra,
               double dec, short int ref_option,
 
               double *zd, double *az, double *rar, double *decr)
@@ -2487,10 +2497,10 @@ void equ2hor (double jd_ut1, double delta_t, short int accuracy,
          Selection for method and accuracy
             = 0 ... full accuracy
             = 1 ... reduced accuracy
-      x (double)
+      xp (double)
          Conventionally-defined x coordinate of celestial intermediate
          pole with respect to ITRS reference pole, in arcseconds.
-      y (double)
+      yp (double)
          Conventionally-defined y coordinate of celestial intermediate
          pole with respect to ITRS reference pole, in arcseconds.
       *location (struct on_surface)
@@ -2531,17 +2541,17 @@ void equ2hor (double jd_ut1, double delta_t, short int accuracy,
 
    GLOBALS
    USED:
-      DEG2RAD, RAD2DEG
+      DEG2RAD, RAD2DEG   novascon.c
 
    FUNCTIONS
    CALLED:
-      ter2cel           novas.c
-      refract           novas.c
-      sin               math.h
-      cos               math.h
-      sqrt              math.h
-      atan2             math.h
-      fabs              math.h
+      ter2cel            novas.c
+      refract            novas.c
+      sin                math.h
+      cos                math.h
+      sqrt               math.h
+      atan2              math.h
+      fabs               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -2551,14 +2561,16 @@ void equ2hor (double jd_ut1, double delta_t, short int accuracy,
       V2.2/11-07/JAB (USNO/AA): Cosmetic changes.
       V2.2/05-08/WKP (USNO/AA): Updated the refraction algorithm.
       V2.3/06-08/WKP (USNO/AA): Tweaked convergence criteria.
+      V2.4/03-09/JAB (USNO/AA): Conformed input variables to IERS
+                                conventions.
 
    NOTES:
-      1. 'x' and 'y' can be set to zero if sub-arcsecond accuracy is
+      1. 'xp' and 'yp' can be set to zero if sub-arcsecond accuracy is
       not needed.  'ra' and 'dec' can be obtained from functions
       'tpstar' or 'tpplan'.
-      2. The directions 'zd'= 0 (zenith) and 'az'= 0 (North) are here
+      2. The directions 'zd'= 0 (zenith) and 'az'= 0 (north) are here
       considered fixed in the terrestrial system.  Specifically, the
-      zenith is along the geodetic normal, and North is toward
+      zenith is along the geodetic normal, and north is toward
       the ITRS pole.
       3. If 'ref_option'= 0, then 'rar'='ra' and 'decr'='dec'.
       4. This function is the C version of NOVAS Fortran routine
@@ -2621,9 +2633,9 @@ void equ2hor (double jd_ut1, double delta_t, short int accuracy,
    (wrt equator and equinox of date).
 */
 
-   ter2cel (jd_ut1,0.0,delta_t,1,accuracy,1,x,y,uze, uz);
-   ter2cel (jd_ut1,0.0,delta_t,1,accuracy,1,x,y,une, un);
-   ter2cel (jd_ut1,0.0,delta_t,1,accuracy,1,x,y,uwe, uw);
+   ter2cel (jd_ut1,0.0,delta_t,1,accuracy,1,xp,yp,uze, uz);
+   ter2cel (jd_ut1,0.0,delta_t,1,accuracy,1,xp,yp,une, un);
+   ter2cel (jd_ut1,0.0,delta_t,1,accuracy,1,xp,yp,uwe, uw);
 
 /*
    Define unit vector 'p' toward object in celestial system
@@ -2788,19 +2800,19 @@ short int gcrs2equ (double jd_tt, short int coord_sys,
 
    GLOBALS
    USED:
-      DEG2RAD, T0
+      DEG2RAD, T0        novascon.c
 
    FUNCTIONS
    CALLED:
-      tdb2tt                 novas.c
-      frame_tie              novas.c
-      precession             novas.c
-      nutation               novas.c
-      cio_location           novas.c
-      cio_basis              novas.c
-      vector2radec           novas.c
-      sin                    math.h
-      cos                    math.h
+      tdb2tt             novas.c
+      frame_tie          novas.c
+      precession         novas.c
+      nutation           novas.c
+      cio_location       novas.c
+      cio_basis          novas.c
+      vector2radec       novas.c
+      sin                math.h
+      cos                math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -2923,8 +2935,8 @@ short int sidereal_time (double jd_high, double jd_low,
 ------------------------------------------------------------------------
 
    PURPOSE:
-      Computes the Greenwich apparent sidereal time, at Julian date
-      'jd_high' + 'jd_low'.
+      Computes the Greenwich sidereal time, either mean or apparent, at
+      Julian date 'jd_high' + 'jd_low'.
 
    REFERENCES:
       Kaplan, G. (2005), US Naval Observatory Circular 179.
@@ -2953,7 +2965,7 @@ short int sidereal_time (double jd_high, double jd_low,
    OUTPUT
    ARGUMENTS:
       *gst (double)
-         Greenwich apparent sidereal time, in hours.
+         Greenwich (mean or apparent) sidereal time, in hours.
 
    RETURNED
    VALUE:
@@ -2965,12 +2977,12 @@ short int sidereal_time (double jd_high, double jd_low,
 
    GLOBALS
    USED:
-      T0, RAD2DEG
+      T0, RAD2DEG        novascon.c
 
    FUNCTIONS
    CALLED:
-      era                novas.c
       tdb2tt             novas.c
+      era                novas.c
       e_tilt             novas.c
       cio_location       novas.c
       cio_basis          novas.c
@@ -2978,8 +2990,8 @@ short int sidereal_time (double jd_high, double jd_low,
       precession         novas.c
       frame_tie          novas.c
       fabs               math.h
-      fmod               math.h
       atan2              math.h
+      fmod               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -2997,6 +3009,10 @@ short int sidereal_time (double jd_high, double jd_low,
       V2.6/06-08/WKP (USNO/AA) Changed value of direction argument in
                                call to 'nutation' from 1 to -1 for
                                consistency.
+      V2.7/03-11/WKP (USNO/AA) Updated prolog description to clarify
+                               this function computes either mean or
+                               apparent sidereal time, and removed
+                               Note 1 for consistency with Fortran.
 
    NOTES:
       1. The Julian date may be split at any point, but for highest
@@ -3195,11 +3211,11 @@ double era (double jd_high, double jd_low)
 
    GLOBALS
    USED:
-      T0
+      T0                 novascon.c
 
    FUNCTIONS
    CALLED:
-      fmod      math.h
+      fmod               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -3236,16 +3252,16 @@ double era (double jd_high, double jd_low)
 
 short int ter2cel (double jd_ut_high, double jd_ut_low, double delta_t,
                    short int method, short int accuracy, short int option,
-                   double x, double y, double *vect,
+                   double xp, double yp, double *vec1,
 
-                   double *vecc)
+                   double *vec2)
 /*
 ------------------------------------------------------------------------
 
    PURPOSE:
       This function rotates a vector from the terrestrial to the
       celestial system.  Specifically, it transforms a vector in the
-      ITRF (rotating earth-fixed system) to the GCRS (a local space-
+      ITRS (rotating earth-fixed system) to the GCRS (a local space-
       fixed system) by applying rotations for polar motion, Earth
       rotation, nutation, precession, and the dynamical-to-GCRS
       frame tie.
@@ -3276,20 +3292,20 @@ short int ter2cel (double jd_ut_high, double jd_ut_low, double delta_t,
             = 1 ... The output vector is produced with respect to the
                     equator and equinox of date.
                     See Note 2 below.
-      x (double)
+      xp (double)
          Conventionally-defined X coordinate of celestial intermediate
-         pole with respect to ITRF pole, in arcseconds.
-      y (double)
+         pole with respect to ITRS pole, in arcseconds.
+      yp (double)
          Conventionally-defined Y coordinate of celestial intermediate
-         pole with respect to ITRF pole, in arcseconds.
-      vect[3] (double)
+         pole with respect to ITRS pole, in arcseconds.
+      vec1[3] (double)
          Position vector, geocentric equatorial rectangular coordinates,
-         referred to ITRF axes (terrestrial system) in the normal case
+         referred to ITRS axes (terrestrial system) in the normal case
          where 'option' = 0.
 
    OUTPUT
    ARGUMENTS:
-      vecc[3] (double)
+      vec2[3] (double)
          Position vector, geocentric equatorial rectangular coordinates,
          referred to GCRS axes (celestial system) or with respect to
          the equator and equinox of date, depending on 'option'.
@@ -3304,20 +3320,20 @@ short int ter2cel (double jd_ut_high, double jd_ut_low, double delta_t,
 
    GLOBALS
    USED:
-      T0
+      T0                 novascon.c
 
    FUNCTIONS
    CALLED:
-      tdb2tt            novas.c
-      wobble            novas.c
-      cio_location      novas.c
-      cio_basis         novas.c
-      era               novas.c
-      spin              novas.c
-      sidereal_time     novas.c
-      nutation          novas.c
-      precession        novas.c
-      frame_tie         novas.c
+      tdb2tt             novas.c
+      wobble             novas.c
+      cio_location       novas.c
+      cio_basis          novas.c
+      era                novas.c
+      spin               novas.c
+      sidereal_time      novas.c
+      nutation           novas.c
+      precession         novas.c
+      frame_tie          novas.c
 
    VER./DATE/
    PROGRAMMER:
@@ -3332,10 +3348,15 @@ short int ter2cel (double jd_ut_high, double jd_ut_low, double delta_t,
                                'frame_tie' call and changed value of
                                direction argument in call to 'nutation'
                                for consistency.
-      V2.6/10-08/WKP (USNO/AA) Renamed input JD variables to include time system.
+      V2.6/10-08/WKP (USNO/AA) Renamed input JD variables to include
+                               time system.
+      V2.7/03-09/JAB (USNO/AA) Conformed input variables to IERS
+                               conventions.
+      V2.8/12-10/JAB (USNO/AA) Cosmetic changes for consistency with
+                               Fortran.
 
    NOTES:
-      1. 'x' = 'y' = 0 means no polar motion transformation.
+      1. 'xp' = 'yp' = 0 means no polar motion transformation.
       2. The 'option' flag only works for the equinox-based method.
       3. This function is the C version of NOVAS Fortran routine
       'tercel'.
@@ -3347,7 +3368,7 @@ short int ter2cel (double jd_ut_high, double jd_ut_low, double delta_t,
    short int rs, j;
 
    double jd_ut1, jd_tt, dummy, secdiff, jd_tdb, gast, r_cio, theta,
-   v1[3], v2[3], v3[3], v4[3], xx[3], yy[3], zz[3];
+   v1[3], v2[3], v3[3], v4[3], x[3], y[3], z[3];
 
 /*
    Invalid value of 'accuracy'.
@@ -3386,14 +3407,14 @@ short int ter2cel (double jd_ut_high, double jd_ut_low, double delta_t,
    intermediate system.
 */
 
-         if ((x == 0.0) && (y == 0.0))
+         if ((xp == 0.0) && (yp == 0.0))
          {
-            v1[0] = vect[0];
-            v1[1] = vect[1];
-            v1[2] = vect[2];
+            v1[0] = vec1[0];
+            v1[1] = vec1[1];
+            v1[2] = vec1[2];
          }
           else
-            wobble (jd_tdb,x,y,vect, v1);
+            wobble (jd_tdb,0,xp,yp,vec1, v1);
 
 /*
    Obtain the basis vectors, in the GCRS, of the celestial intermediate
@@ -3403,7 +3424,7 @@ short int ter2cel (double jd_ut_high, double jd_ut_low, double delta_t,
       if ((error = cio_location (jd_tdb,accuracy, &r_cio,&rs)) != 0)
          return (error += 10);
 
-      if ((error = cio_basis (jd_tdb,r_cio,rs,accuracy, xx,yy,zz)) != 0)
+      if ((error = cio_basis (jd_tdb,r_cio,rs,accuracy, x,y,z)) != 0)
          return (error += 20);
 
 /*
@@ -3419,9 +3440,9 @@ short int ter2cel (double jd_ut_high, double jd_ut_low, double delta_t,
    GCRS.
 */
 
-         vecc[0] = xx[0] * v2[0] + yy[0] * v2[1] + zz[0] * v2[2];
-         vecc[1] = xx[1] * v2[0] + yy[1] * v2[1] + zz[1] * v2[2];
-         vecc[2] = xx[2] * v2[0] + yy[2] * v2[1] + zz[2] * v2[2];
+         vec2[0] = x[0] * v2[0] + y[0] * v2[1] + z[0] * v2[2];
+         vec2[1] = x[1] * v2[0] + y[1] * v2[1] + z[1] * v2[2];
+         vec2[2] = x[2] * v2[0] + y[2] * v2[1] + z[2] * v2[2];
          break;
 
       case (1):
@@ -3432,15 +3453,15 @@ short int ter2cel (double jd_ut_high, double jd_ut_low, double delta_t,
    Apply polar motion.
 */
 
-         if ((x == 0.0) && (y == 0.0))
+         if ((xp == 0.0) && (yp == 0.0))
          {
             for (j = 0; j < 3; j++)
             {
-               v1[j] = vect[j];
+               v1[j] = vec1[j];
             }
          }
           else
-            wobble (jd_tdb,x,y,vect, v1);
+            wobble (jd_tdb,0,xp,yp,vec1, v1);
 
 /*
    Apply Earth rotation.
@@ -3455,9 +3476,9 @@ short int ter2cel (double jd_ut_high, double jd_ut_low, double delta_t,
 
          if (option == 1)
          {
-            vecc[0] = v2[0];
-            vecc[1] = v2[1];
-            vecc[2] = v2[2];
+            vec2[0] = v2[0];
+            vec2[1] = v2[1];
+            vec2[2] = v2[2];
          }
           else
          {
@@ -3468,8 +3489,251 @@ short int ter2cel (double jd_ut_high, double jd_ut_low, double delta_t,
 
             nutation (jd_tdb,-1,accuracy,v2, v3);
             precession (jd_tdb,v3,T0, v4);
-            frame_tie (v4,-1, vecc);
+            frame_tie (v4,-1, vec2);
          }
+         break;
+
+/*
+   Invalid value of 'method'.
+*/
+
+      default:
+         error = 2;
+         break;
+   }
+
+   return (error);
+}
+
+/********cel2ter */
+
+short int cel2ter (double jd_ut_high, double jd_ut_low, double delta_t,
+                   short int method, short int accuracy, short int option,
+                   double xp, double yp, double *vec1,
+
+                   double *vec2)
+/*
+------------------------------------------------------------------------
+
+   PURPOSE:
+      This function rotates a vector from the celestial to the
+      terrestrial system.  Specifically, it transforms a vector in the
+      GCRS (a local space-fixed system) to the ITRS (a rotating earth-
+      fixed system) by applying rotations for the GCRS-to-dynamical
+      frame tie, precession, nutation, Earth rotation, and polar motion.
+
+   REFERENCES:
+      Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.
+      Kaplan, G. H. (2003), 'Another Look at Non-Rotating Origins',
+         Proceedings of IAU XXV Joint Discussion 16.
+
+   INPUT
+   ARGUMENTS:
+      jd_ut_high (double)
+         High-order part of UT1 Julian date.
+      jd_ut_low (double)
+         Low-order part of UT1 Julian date.
+      delta_t (double)
+         Value of Delta T (= TT - UT1) at the input UT1 Julian date.
+      method (short int)
+         Selection for method
+            = 0 ... CIO-based method
+            = 1 ... equinox-based method
+      accuracy (short int)
+         Selection for accuracy
+            = 0 ... full accuracy
+            = 1 ... reduced accuracy
+      option (short int)
+            = 0 ... The input vector is referred to GCRS axes.
+            = 1 ... The input vector is produced with respect to the
+                    equator and equinox of date.
+                    See Note 2 below.
+      xp (double)
+         Conventionally-defined X coordinate of celestial intermediate
+         pole with respect to ITRS pole, in arcseconds.
+      yp (double)
+         Conventionally-defined Y coordinate of celestial intermediate
+         pole with respect to ITRS pole, in arcseconds.
+      vec1[3] (double)
+         Position vector, geocentric equatorial rectangular coordinates,
+         referred to GCRS axes (celestial system) or with respect to
+         the equator and equinox of date, depending on 'option'.
+
+   OUTPUT
+   ARGUMENTS:
+      vec2[3] (double)
+         Position vector, geocentric equatorial rectangular coordinates,
+         referred to ITRS axes (terrestrial system).
+
+   RETURNED
+   VALUE:
+      =  0  ... everything is ok.
+      =  1  ... invalid value of 'accuracy'
+      =  2  ... invalid value of 'method'
+      > 10 ... 10 + error from function 'cio_location'
+      > 20 ... 20 + error from function 'cio_basis'
+
+   GLOBALS
+   USED:
+      T0                 novascon.c
+
+   FUNCTIONS
+   CALLED:
+      tdb2tt             novas.c
+      wobble             novas.c
+      cio_location       novas.c
+      cio_basis          novas.c
+      era                novas.c
+      spin               novas.c
+      sidereal_time      novas.c
+      nutation           novas.c
+      precession         novas.c
+      frame_tie          novas.c
+
+   VER./DATE/
+   PROGRAMMER:
+      V1.0/03-09/JAB (USNO/AA)
+      V1.1/12-10/JAB (USNO/AA) Fix confusion with input/output vectors;
+                               cosmetic changes to better match Fortran.
+
+   NOTES:
+      1. 'xp' = 'yp' = 0 means no polar motion transformation.
+      2. 'option' = 1 only works for the equinox-based method
+      ('method' = 1).
+      3. This function is the C version of NOVAS Fortran routine
+      'celter'.
+
+------------------------------------------------------------------------
+*/
+{
+   short int error = 0;
+   short int rs, j;
+
+   double jd_ut1, jd_tt, dummy, secdiff, jd_tdb, gast, r_cio, theta,
+   v1[3], v2[3], v3[3], v4[3], x[3], y[3], z[3];
+
+/*
+   Invalid value of 'accuracy'.
+*/
+
+   if ((accuracy < 0) || (accuracy > 1))
+      return (error = 1);
+
+/*
+   Compute the TT Julian date corresponding to the input UT1 Julian
+   date.
+*/
+
+   jd_ut1 = jd_ut_high + jd_ut_low;
+   jd_tt = jd_ut1 + (delta_t / 86400.0);
+
+/*
+   Compute the TDB Julian date corresponding to the input UT1 Julian
+   date.
+*/
+
+   jd_tdb = jd_tt;
+   tdb2tt (jd_tdb, &dummy,&secdiff);
+   jd_tdb = jd_tt + secdiff / 86400.0;
+
+   switch (method)
+   {
+      case (0):
+
+/*
+   'CIO-TIO-THETA' method.
+
+   See second reference, eq. (3) and (4).
+
+   Obtain the basis vectors, in the GCRS, of the celestial intermediate
+   system.
+*/
+
+         if ((error = cio_location (jd_tdb,accuracy, &r_cio,&rs)) != 0)
+            return (error += 10);
+
+         if ((error = cio_basis (jd_tdb,r_cio,rs,accuracy, x,y,z)) != 0)
+            return (error += 20);
+
+/*
+   Transform the vector from the GCRS to the celestial intermediate
+   system.
+*/
+
+         v1[0] = x[0] * vec1[0] + x[1] * vec1[1] + x[2] * vec1[2];
+         v1[1] = y[0] * vec1[0] + y[1] * vec1[1] + y[2] * vec1[2];
+         v1[2] = z[0] * vec1[0] + z[1] * vec1[1] + z[2] * vec1[2];
+
+/*
+   Compute and apply the Earth rotation angle, 'theta', transforming the
+   vector to the terrestrial intermediate system.
+*/
+
+         theta = era (jd_ut_high,jd_ut_low);
+         spin (theta,v1, v2);
+
+/*
+   Apply polar motion, transforming the vector to the ITRS.
+*/
+
+         if ((xp == 0.0) && (yp == 0.0))
+         {
+            vec2[0] = v2[0];
+            vec2[1] = v2[1];
+            vec2[2] = v2[2];
+         }
+          else
+            wobble (jd_tdb,1,xp,yp,v2, vec2);
+
+         break;
+
+      case (1):
+
+/*
+   Equinox mode.
+
+   'option' = 1 skips initial transformations.
+*/
+
+         if (option == 1)
+         {
+            v3[0] = vec1[0];
+            v3[1] = vec1[1];
+            v3[2] = vec1[2];
+         }
+          else
+         {
+
+/*
+   Apply frame tie, nutation, and precession.
+*/
+
+            frame_tie (vec1,1, v1);
+            precession (T0,v1,jd_tdb, v2);
+            nutation (jd_tdb,0,accuracy,v2, v3);
+         }
+
+/*
+   Apply Earth rotation.
+*/
+
+         sidereal_time (jd_ut_high,jd_ut_low,delta_t,1,1,accuracy, &gast);
+         spin (gast * 15.0,v3, v4);
+
+/*
+   Apply polar motion.
+*/
+
+         if ((xp == 0.0) && (yp == 0.0))
+         {
+            for (j = 0; j < 3; j++)
+            {
+               vec2[j] = v4[j];
+            }
+         }
+          else
+            wobble (jd_tdb,1,xp,yp,v4, vec2);
+
          break;
 
 /*
@@ -3519,12 +3783,12 @@ void spin (double angle, double *pos1,
 
    GLOBALS
    USED:
-      DEG2RAD
+      DEG2RAD            novascon.c
 
    FUNCTIONS
    CALLED:
-      sin     math.h
-      cos     math.h
+      sin                math.h
+      cos                math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -3533,8 +3797,7 @@ void spin (double angle, double *pos1,
       V2.1/01-05/JAB (USNO/AA) Generalize the function.
 
    NOTES:
-      1. This function is the C version of NOVAS Fortran routine
-      'spin'.
+      1. This function is the C version of NOVAS Fortran routine 'spin'.
 
 ------------------------------------------------------------------------
 */
@@ -3579,21 +3842,23 @@ void spin (double angle, double *pos1,
 
 /********wobble */
 
-void wobble (double tjd, double x, double y, double *pos1,
+void wobble (double tjd, short int direction, double xp, double yp,
+             double *pos1,
 
              double *pos2)
 /*
 ------------------------------------------------------------------------
 
    PURPOSE:
-      Corrects a vector in the ITRF (rotating Earth-fixed system)
+      Corrects a vector in the ITRS (rotating Earth-fixed system)
       for polar motion, and also corrects the longitude origin
       (by a tiny amount) to the Terrestrial Intermediate Origin
-      (TIO).  The ITRF vector is thereby transformed to the system based
-      on the true (rotational) equator and TIO.  Since the true equator
-      is the plane orthogonal to the direction of the Celestial
-      Intermediate Pole (CIP), the components of the output vector are
-      referred to Z and X axes toward the CIP and TIO, respectively.
+      (TIO).  The ITRS vector is thereby transformed to the terrestrial
+      intermediate system, based on the true (rotational) equator and
+      TIO.  Because the true equator is the plane orthogonal to the
+      direction of the Celestial Intermediate Pole (CIP), the components
+      of the output vector are referred to z and x axes toward the CIP
+      and TIO, respectively.
 
    REFERENCES:
       Kaplan, G. H. et. al. (1989). Astron. Journ. 97, 1197-1210.
@@ -3603,15 +3868,21 @@ void wobble (double tjd, double x, double y, double *pos1,
    ARGUMENTS:
       tjd (double)
          TT or UT1 Julian date.
-      x (double)
+      direction (short int)
+         Flag determining 'direction' of transformation;
+            direction  = 0 transformation applied, ITRS to terrestrial
+                           intermediate system
+            direction != 0 inverse transformation applied, terrestrial
+                           intermediate system to ITRS
+      xp (double)
          Conventionally-defined X coordinate of Celestial Intermediate
-         Pole with respect to ITRF pole, in arcseconds.
-      y (double)
+         Pole with respect to ITRS pole, in arcseconds.
+      yp (double)
          Conventionally-defined Y coordinate of Celestial Intermediate
-         Pole with respect to ITRF pole, in arcseconds.
+         Pole with respect to ITRS pole, in arcseconds.
       pos1[3] (double)
          Position vector, geocentric equatorial rectangular coordinates,
-         referred to ITRF axes.
+         referred to ITRS axes.
 
    OUTPUT
    ARGUMENTS:
@@ -3625,12 +3896,12 @@ void wobble (double tjd, double x, double y, double *pos1,
 
    GLOBALS
    USED:
-      T0, ASEC2RAD
+      T0, ASEC2RAD       novascon.c
 
    FUNCTIONS
    CALLED:
-      sin       math.h
-      cos       math.h
+      sin                math.h
+      cos                math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -3640,6 +3911,9 @@ void wobble (double tjd, double x, double y, double *pos1,
                                rotation.
       V2.2/06-05/JAB (USNO/AA) Corrected sign of first term in
                                expression for 'yy' (should be -).
+      V2.3/03-09/JAB (USNO/AA) Add 'direction' flag and inverse
+                               transformation; conformed input
+                               variables to IERS conventions.
 
    NOTES:
       1. This function is the C version of NOVAS Fortran routine
@@ -3651,8 +3925,8 @@ void wobble (double tjd, double x, double y, double *pos1,
    double xpole, ypole, t, sprime, tiolon, sinx, cosx, siny, cosy, sinl,
       cosl, xx, yx, zx, xy, yy, zy, xz, yz, zz;
 
-   xpole = x * ASEC2RAD;
-   ypole = y * ASEC2RAD;
+   xpole = xp * ASEC2RAD;
+   ypole = yp * ASEC2RAD;
 
 /*
    Compute approximate longitude of TIO, using eq. (10) of the second
@@ -3690,12 +3964,26 @@ void wobble (double tjd, double x, double y, double *pos1,
    zz =  cosx * cosy;
 
 /*
-   Perform rotation.
+   Perform rotation from ITRS to terrestrial intermediate system.
 */
 
-   pos2[0] = xx * pos1[0] + yx * pos1[1] + zx * pos1[2];
-   pos2[1] = xy * pos1[0] + yy * pos1[1] + zy * pos1[2];
-   pos2[2] = xz * pos1[0] + yz * pos1[1] + zz * pos1[2];
+   if (direction == 0)
+   {
+      pos2[0] = xx * pos1[0] + yx * pos1[1] + zx * pos1[2];
+      pos2[1] = xy * pos1[0] + yy * pos1[1] + zy * pos1[2];
+      pos2[2] = xz * pos1[0] + yz * pos1[1] + zz * pos1[2];
+   }
+    else
+
+/*
+   Perform rotation from terrestrial intermediate system to ITRS.
+*/
+
+   {
+      pos2[0] = xx * pos1[0] + xy * pos1[1] + xz * pos1[2];
+      pos2[1] = yx * pos1[0] + yy * pos1[1] + yz * pos1[2];
+      pos2[2] = zx * pos1[0] + zy * pos1[1] + zz * pos1[2];
+   }
 
    return;
 }
@@ -3740,13 +4028,14 @@ void terra (on_surface *location, double st,
 
    GLOBALS
    USED:
-      AU_KM, ERAD, F, ANGVEL, DEG2RAD
+      AU_KM, ERAD, F     novascon.c
+      ANGVEL, DEG2RAD    novascon.c
 
    FUNCTIONS
    CALLED:
-      sin    math.h
-      cos    math.h
-      sqrt   math.h
+      sin                math.h
+      cos                math.h
+      sqrt               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -3886,15 +4175,17 @@ void e_tilt (double jd_tdb, short int accuracy,
 
    GLOBALS
    USED:
-      T0, PSI_COR, EPS_COR, DEG2RAD
+      PSI_COR, EPS_COR   novas.c
+      T0, ASEC2RAD       novascon.c
+      DEG2RAD            novascon.c
 
    FUNCTIONS
    CALLED:
-      nutation_angles  novas.c
-      ee_ct            novas.c
-      mean_obliq       novas.c
-      fabs             math.h
-      cos              math.h
+      nutation_angles    novas.c
+      ee_ct              novas.c
+      mean_obliq         novas.c
+      fabs               math.h
+      cos                math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -4058,14 +4349,15 @@ short int cel_pole (double tjd, short int type, double dpole1,
 
    GLOBALS
    USED:
-      PSI_COR, EPS_COR, T0, ASEC2RAD
+      PSI_COR, EPS_COR   novas.c
+      T0, ASEC2RAD       novascon.c
 
    FUNCTIONS
    CALLED:
-      frame_tie    novas.c
-      precession   novas.c
-      mean_obliq   novas.c
-      sin          math.h
+      frame_tie          novas.c
+      precession         novas.c
+      mean_obliq         novas.c
+      sin                math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -4181,10 +4473,16 @@ double ee_ct (double jd_high, double jd_low, short int accuracy)
 
    PURPOSE:
       To compute the "complementary terms" of the equation of the
-      equinoxes consistent with IAU 2000 resolutions.
+      equinoxes.
 
    REFERENCES:
-      IERS Conventions (2003), Chapter 5.
+      Capitaine, N., Wallace, P.T., and McCarthy, D.D. (2003). Astron. &
+         Astrophys. 406, p. 1135-1149. Table 3.
+      IERS Conventions (2010), Chapter 5, p. 60, Table 5.2e.
+         (Table 5.2e presented in the printed publication is a truncated
+         series. The full series, which is used in NOVAS, is available
+         on the IERS Conventions Center website in file tab5.2e.txt.)
+         ftp://tai.bipm.org/iers/conv2010/chapter5/
 
    INPUT
    ARGUMENTS:
@@ -4208,28 +4506,37 @@ double ee_ct (double jd_high, double jd_low, short int accuracy)
 
    GLOBALS
    USED:
-      T0, ASEC2RAD
+      T0, ASEC2RAD       novascon.c
+      TWOPI              novascon.c
 
    FUNCTIONS
    CALLED:
-      norm_ang        novas.c
-      fund_ang        novas.c
-      fmod            math.h
-      sin             math.h
-      cos             math.h
+      norm_ang           novas.c
+      fund_args          novas.c
+      fmod               math.h
+      sin                math.h
+      cos                math.h
 
    VER./DATE/
    PROGRAMMER:
       V1.0/09-03/JAB (USNO/AA)
       V1.1/12-04/JAB (USNO/AA) Added low-accuracy formula.
       V1.2/01-06/WKP (USNO/AA) Changed 'mode' to 'accuracy'.
+      V1.3/11-10/JAB (USNO/AA) Updated reference and notes.
+      V1.4/03-11/WKP (USNO/AA) Added braces to 2-D array initialization
+                               to quiet gcc warnings.
 
    NOTES:
-      1. Series from IERS Conventions (2003), Chapter 5, Table 5.2C,
-      with some adjustments to coefficient values copied from IERS
-      function 'eect2000', which has a more complete series.
-      2. This function is based on Fortran routine 'eect2000', with the
-      low-accuracy formula taken from NOVAS Fortran routine 'etilt'.
+      1. The series used in this function was derived from the first
+      reference.  This same series was also adopted for use in the IAU's
+      Standards of Fundamental Astronomy (SOFA) software (i.e.,
+      subroutine eect00.for and function eect00.c).
+      2. The low-accuracy series used in this function is a simple
+      implementation derived from the first reference, in which terms
+      smaller than 2 microarcseconds have been omitted.
+      3. This function is based on NOVAS Fortran routine 'eect2000',
+      with the low-accuracy formula taken from NOVAS Fortran routine
+      'etilt'.
 
 ------------------------------------------------------------------------
 */
@@ -4242,40 +4549,40 @@ double ee_ct (double jd_high, double jd_low, short int accuracy)
    Argument coefficients for t^0.
 */
 
-   const short int ke0_t[33][14] =
-      {0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  2, -2,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  2, -2,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  2, -2,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  2,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  2,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  1,  0,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       1,  0,  0,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  1,  2, -2,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  1,  2, -2,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  4, -4,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  1, -1,  1,  0, -8, 12,  0,  0,  0,  0,  0,  0,
-       0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  2,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       1,  0,  2,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       1,  0,  2,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  2, -2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  1, -2,  2, -3,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  1, -2,  2, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  8,-13,  0,  0,  0,  0,  0, -1,
-       0,  0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       2,  0, -2,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       1,  0,  0, -2,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  1,  2, -2,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       1,  0,  0, -2, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  4, -2,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  2, -2,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       1,  0, -2,  0, -3,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       1,  0, -2,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0};
+   const short int ke0_t[33][14] = {
+      {0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  0,  0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  0,  2, -2,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  0,  2, -2,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  0,  2, -2,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  0,  2,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  0,  2,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  0,  0,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  1,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  1,  0,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {1,  0,  0,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {1,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  1,  2, -2,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  1,  2, -2,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  0,  4, -4,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  0,  1, -1,  1,  0, -8, 12,  0,  0,  0,  0,  0,  0},
+      {0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  0,  2,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {1,  0,  2,  0,  3,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {1,  0,  2,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  0,  2, -2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  1, -2,  2, -3,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  1, -2,  2, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  0,  0,  0,  0,  0,  8,-13,  0,  0,  0,  0,  0, -1},
+      {0,  0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {2,  0, -2,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {1,  0,  0, -2,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  1,  2, -2,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {1,  0,  0, -2, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  0,  4, -2,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {0,  0,  2, -2,  4,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {1,  0, -2,  0, -3,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+      {1,  0, -2,  0, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0}};
 
 /*
    Argument coefficients for t^1.
@@ -4288,40 +4595,40 @@ double ee_ct (double jd_high, double jd_low, short int accuracy)
    Sine and cosine coefficients for t^0.
 */
 
-   const double se0_t[33][2] =
-      {+2640.96e-6,          -0.39e-6,
-         +63.52e-6,          -0.02e-6,
-         +11.75e-6,          +0.01e-6,
-         +11.21e-6,          +0.01e-6,
-          -4.55e-6,          +0.00e-6,
-          +2.02e-6,          +0.00e-6,
-          +1.98e-6,          +0.00e-6,
-          -1.72e-6,          +0.00e-6,
-          -1.41e-6,          -0.01e-6,
-          -1.26e-6,          -0.01e-6,
-          -0.63e-6,          +0.00e-6,
-          -0.63e-6,          +0.00e-6,
-          +0.46e-6,          +0.00e-6,
-          +0.45e-6,          +0.00e-6,
-          +0.36e-6,          +0.00e-6,
-          -0.24e-6,          -0.12e-6,
-          +0.32e-6,          +0.00e-6,
-          +0.28e-6,          +0.00e-6,
-          +0.27e-6,          +0.00e-6,
-          +0.26e-6,          +0.00e-6,
-          -0.21e-6,          +0.00e-6,
-          +0.19e-6,          +0.00e-6,
-          +0.18e-6,          +0.00e-6,
-          -0.10e-6,          +0.05e-6,
-          +0.15e-6,          +0.00e-6,
-          -0.14e-6,          +0.00e-6,
-          +0.14e-6,          +0.00e-6,
-          -0.14e-6,          +0.00e-6,
-          +0.14e-6,          +0.00e-6,
-          +0.13e-6,          +0.00e-6,
-          -0.11e-6,          +0.00e-6,
-          +0.11e-6,          +0.00e-6,
-          +0.11e-6,          +0.00e-6};
+   const double se0_t[33][2] = {
+      {+2640.96e-6,          -0.39e-6},
+      {  +63.52e-6,          -0.02e-6},
+      {  +11.75e-6,          +0.01e-6},
+      {  +11.21e-6,          +0.01e-6},
+      {   -4.55e-6,          +0.00e-6},
+      {   +2.02e-6,          +0.00e-6},
+      {   +1.98e-6,          +0.00e-6},
+      {   -1.72e-6,          +0.00e-6},
+      {   -1.41e-6,          -0.01e-6},
+      {   -1.26e-6,          -0.01e-6},
+      {   -0.63e-6,          +0.00e-6},
+      {   -0.63e-6,          +0.00e-6},
+      {   +0.46e-6,          +0.00e-6},
+      {   +0.45e-6,          +0.00e-6},
+      {   +0.36e-6,          +0.00e-6},
+      {   -0.24e-6,          -0.12e-6},
+      {   +0.32e-6,          +0.00e-6},
+      {   +0.28e-6,          +0.00e-6},
+      {   +0.27e-6,          +0.00e-6},
+      {   +0.26e-6,          +0.00e-6},
+      {   -0.21e-6,          +0.00e-6},
+      {   +0.19e-6,          +0.00e-6},
+      {   +0.18e-6,          +0.00e-6},
+      {   -0.10e-6,          +0.05e-6},
+      {   +0.15e-6,          +0.00e-6},
+      {   -0.14e-6,          +0.00e-6},
+      {   +0.14e-6,          +0.00e-6},
+      {   -0.14e-6,          +0.00e-6},
+      {   +0.14e-6,          +0.00e-6},
+      {   +0.13e-6,          +0.00e-6},
+      {   -0.11e-6,          +0.00e-6},
+      {   +0.11e-6,          +0.00e-6},
+      {   +0.11e-6,          +0.00e-6}};
 /*
    Sine and cosine coefficients for t^1.
 */
@@ -4343,7 +4650,7 @@ double ee_ct (double jd_high, double jd_low, short int accuracy)
    {
 
 /*
-   Fundamental Arguments from IERS Conventions 2000.
+   Fundamental Arguments.
 
    Mean Anomaly of the Moon.
 */
@@ -4360,26 +4667,26 @@ double ee_ct (double jd_high, double jd_low, short int accuracy)
    Mean Anomaly of the Sun.
 */
 
-	  fa[1] = norm_ang ((1287104.793048 +
-					  (1292581.0481 +
-					  (     -0.5532 +
-					  (     +0.000136 +
-					  (     -0.00001149)
-					  * t) * t) * t) * t) * ASEC2RAD
-					  + fmod (99.0*t, 1.0) * TWOPI);
+      fa[1] = norm_ang ((1287104.793048 +
+                         (1292581.0481 +
+                         (     -0.5532 +
+                         (     +0.000136 +
+                         (     -0.00001149)
+                         * t) * t) * t) * t) * ASEC2RAD
+                         + fmod (99.0*t, 1.0) * TWOPI);
 
 /*
    Mean Longitude of the Moon minus Mean Longitude of the Ascending
    Node of the Moon.
 */
 
-	  fa[2] = norm_ang (( 335779.526232 +
-					  ( 295262.8478 +
-					  (    -12.7512 +
-					  (     -0.001037 +
-					  (      0.00000417)
-					  * t) * t) * t) * t) * ASEC2RAD
-					  + fmod (1342.0*t, 1.0) * TWOPI);
+      fa[2] = norm_ang (( 335779.526232 +
+                         ( 295262.8478 +
+                         (    -12.7512 +
+                         (     -0.001037 +
+                         (      0.00000417)
+                         * t) * t) * t) * t) * ASEC2RAD
+                         + fmod (1342.0*t, 1.0) * TWOPI);
 
 /*
    Mean Elongation of the Moon from the Sun.
@@ -4509,7 +4816,7 @@ void frame_tie (double *pos1, short int direction,
 
    GLOBALS
    USED:
-      ASEC2RAD
+      ASEC2RAD           novascon.c
 
    FUNCTIONS
    CALLED:
@@ -4706,11 +5013,11 @@ void bary2obs (double *pos, double *pos_obs,
 
    GLOBALS
    USED:
-      C_AUDAY
+      C_AUDAY            novascon.c
 
    FUNCTIONS
    CALLED:
-      sqrt    math.h
+      sqrt               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -4796,17 +5103,18 @@ short int geo_posvel (double jd_tt, double delta_t, short int accuracy,
 
    GLOBALS
    USED:
-      AU_KM
+      AU_KM, T0          novascon.c
 
    FUNCTIONS
    CALLED:
-      tdb2tt              novas.c
-      sidereal_time       novas.c
-      e_tilt              novas.c
-      terra               novas.c
-      nutation            novas.c
-      precession          novas.c
-      frame_tie           novas.c
+      tdb2tt             novas.c
+      sidereal_time      novas.c
+      e_tilt             novas.c
+      terra              novas.c
+      nutation           novas.c
+      precession         novas.c
+      frame_tie          novas.c
+      fabs               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -5021,6 +5329,8 @@ short int light_time (double jd_tdb, object *ss_object, double pos_obs[3],
       V2.2/10-08/JAB (USNO/AA): Use function 'ephemeris' instead of
                                 direct calls to the solar system
                                 functions.
+      V2.3/09-10/WKP (USNO/AA): Initialized 't3' variable to silence
+                                compiler warning.
 
    NOTES:
       1. This function is the C version of NOVAS Fortran routine
@@ -5032,7 +5342,7 @@ short int light_time (double jd_tdb, object *ss_object, double pos_obs[3],
    short int error = 0;
    short int iter = 0;
 
-   double tol, jd[2], t1, t2, t3, pos1[3], vel1[3];
+   double tol, jd[2], t1, t2, t3 = 0.0, pos1[3], vel1[3];
 
 /*
    Set light-time convergence tolerance.  If full-accuracy option has
@@ -5130,11 +5440,11 @@ double d_light (double *pos1, double *pos_obs)
 
    GLOBALS
    USED:
-      C_AUDAY
+      C_AUDAY            novascon.c
 
    FUNCTIONS
    CALLED:
-      sqrt      math.h
+      sqrt               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -5242,17 +5552,18 @@ short int grav_def (double jd_tdb, short int loc_code,
 
    GLOBALS
    USED:
-      C_AUDAY, RMASS[12]
+      C_AUDAY            novascon.c
+      RMASS[12]          novascon.c
 
    FUNCTIONS
    CALLED:
-      make_cat_entry   novas.c
-      make_object      novas.c
-      ephemeris        novas.c
-      bary2obs         novas.c
-      d_light          novas.c
-      grav_vec         novas.c
-      sqrt             math.h
+      make_cat_entry     novas.c
+      make_object        novas.c
+      ephemeris          novas.c
+      bary2obs           novas.c
+      d_light            novas.c
+      grav_vec           novas.c
+      sqrt               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -5502,12 +5813,12 @@ void grav_vec (double *pos1, double *pos_obs, double *pos_body,
 
    GLOBALS
    USED:
-      C, AU, GS
+      C, AU, GS          novascon.c
 
    FUNCTIONS
    CALLED:
-      sqrt       math.h
-      fabs       math.h
+      sqrt               math.h
+      fabs               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -5638,11 +5949,11 @@ void aberration (double *pos, double *ve, double lighttime,
 
    GLOBALS
    USED:
-      C_AUDAY
+      C_AUDAY            novascon.c
 
    FUNCTIONS
    CALLED:
-      sqrt      math.h
+      sqrt               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -5751,13 +6062,14 @@ void rad_vel (object *cel_object, double *pos, double *vel,
 
    GLOBALS
    USED:
-      AU, C, GS, GE, DEG2RAD
+      AU, C, GS, GE      novascon.c
+      DEG2RAD            novascon.c
 
    FUNCTIONS
    CALLED:
-      sqrt       math.h
-      sin        math.h
-      cos        math.h
+      sqrt               math.h
+      sin                math.h
+      cos                math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -6038,12 +6350,13 @@ short int precession (double jd_tdb1, double *pos1, double jd_tdb2,
 
    GLOBALS
    USED:
-      T0, ASEC2RAD
+      T0, ASEC2RAD       novascon.c
 
    FUNCTIONS
    CALLED:
-      sin    math.h
-      cos    math.h
+      fabs               math.h
+      sin                math.h
+      cos                math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -6059,6 +6372,9 @@ short int precession (double jd_tdb1, double *pos1, double jd_tdb2,
                                angles (extra significant digits).
       V2.2/04-06/JAB (USNO/AA) Update model to 2006 IAU convention.
                                This is model "P03" of second reference.
+      V2.3/03-10/JAB (USNO/AA) Implement 'first-time' to fix bug when
+                                'jd_tdb2' is 'T0' on first call to
+                                function.
 
    NOTES:
       1. Either 'jd_tdb1' or 'jd_tdb2' must be 2451545.0 (J2000.0) TDB.
@@ -6068,6 +6384,7 @@ short int precession (double jd_tdb1, double *pos1, double jd_tdb2,
 ------------------------------------------------------------------------
 */
 {
+   static short int first_time = 1;
    short int error = 0;
 
    static double t_last = 0.0;
@@ -6091,7 +6408,7 @@ short int precession (double jd_tdb1, double *pos1, double jd_tdb2,
    if (jd_tdb2 == T0)
       t = -t;
 
-   if (fabs (t - t_last) >= 1.0e-15)
+   if ((fabs (t - t_last) >= 1.0e-15) || (first_time == 1))
    {
 
 /*
@@ -6147,6 +6464,7 @@ short int precession (double jd_tdb1, double *pos1, double jd_tdb2,
       zz = -sc * cb * sa + cc * ca;
 
       t_last = t;
+      first_time = 0;
    }
 
    if (jd_tdb2 == T0)
@@ -6219,13 +6537,13 @@ void nutation (double jd_tdb, short int direction, short int accuracy,
 
    GLOBALS
    USED:
-      DEG2RAD, ASEC2RAD
+      DEG2RAD, ASEC2RAD  novascon.c
 
    FUNCTIONS
    CALLED:
-      e_tilt        novas.c
-      cos           math.h
-      sin           math.h
+      e_tilt             novas.c
+      cos                math.h
+      sin                math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -6336,13 +6654,13 @@ void nutation_angles (double t, short int accuracy,
 
    GLOBALS
    USED:
-      T0
+      T0, ASEC2RAD       novascon.c
 
    FUNCTIONS
    CALLED:
-      iau2000a      nutation.c
-      iau2000b      nutation.c
-      nu2000k       nutation.c
+      iau2000a           nutation.c
+      iau2000b           nutation.c
+      nu2000k            nutation.c
 
    VER./DATE/
    PROGRAMMER:
@@ -6447,7 +6765,7 @@ void fund_args (double t,
           a[1] = l' (mean anomaly of the Sun)
           a[2] = F (mean argument of the latitude of the Moon)
           a[3] = D (mean elongation of the Moon from the Sun)
-          a[4] = a[4] (mean longitude of the Moon's ascending node);
+          a[4] = Omega (mean longitude of the Moon's ascending node);
                  from Simon section 3.4(b.3),
                  precession = 5028.8200 arcsec/cy)
 
@@ -6457,11 +6775,11 @@ void fund_args (double t,
 
    GLOBALS
    USED:
-      ASEC2RAD, ASEC360
+      ASEC2RAD, ASEC360  novascon.c
 
    FUNCTIONS
    CALLED:
-      fmod       math.h
+      fmod               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -6472,6 +6790,7 @@ void fund_args (double t,
       V1.3/11-03/JAB (USNO/AA): Update with Simon et al. expressions.
       V1.4/01-06/JAB (USNO/AA): Remove function 'norm_ang'; rewrite for
                                 consistency with Fortran.
+      V1.5/02-11/WKP (USNO/AA): Clarified a[4] description in prolog.
 
    NOTES:
       1. This function is the C version of NOVAS Fortran routine
@@ -6542,7 +6861,7 @@ double mean_obliq (double jd_tdb)
 
    GLOBALS
    USED:
-      T0
+      T0                 novascon.c
 
    FUNCTIONS
    CALLED:
@@ -6620,12 +6939,12 @@ short int vector2radec (double *pos,
                  'ra' is indeterminate.
    GLOBALS
    USED:
-      ASEC2RAD
+      ASEC2RAD           novascon.c
 
    FUNCTIONS
    CALLED:
-      sqrt     math.h
-      atan2    math.h
+      sqrt               math.h
+      atan2              math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -6690,6 +7009,8 @@ void radec2vector (double ra, double dec, double dist,
          Right ascension (hours).
       dec (double)
          Declination (degrees).
+      dist (double)
+         Distance (AU)
 
    OUTPUT
    ARGUMENTS:
@@ -6703,17 +7024,18 @@ void radec2vector (double ra, double dec, double dist,
 
    GLOBALS
    USED:
-      DEG2RAD
+      DEG2RAD            novascon.c
 
    FUNCTIONS
    CALLED:
-      cos     math.h
-      sin     math.h
+      cos                math.h
+      sin                math.h
 
    VER./DATE/
    PROGRAMMER:
       V1.0/05-92/TKB (USNO/NRL Optical Interfer.) Translate Fortran.
       V1.1/08-93/WTH (USNO/AA) Update to C Standards.
+      V1.2/08-09/JLB (USNO/AA) Documented "dist" in prolog
 
    NOTES:
       None.
@@ -6764,12 +7086,13 @@ void starvectors (cat_entry *star,
 
    GLOBALS
    USED:
-      ASEC2RAD, DEG2RAD, AU_KM, C
+      ASEC2RAD, DEG2RAD  novascon.c
+      AU_KM, C           novascon.c
 
    FUNCTIONS
    CALLED:
-      sin     math.h
-      cos     math.h
+      sin                math.h
+      cos                math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -6880,11 +7203,11 @@ void tdb2tt (double tdb_jd,
 
    GLOBALS
    USED:
-      T0
+      T0                 novascon.c
 
    FUNCTIONS
    CALLED:
-      sin         math.h
+      sin                math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -6968,17 +7291,17 @@ short int cio_ra (double jd_tt, short int accuracy,
 
    GLOBALS
    USED:
-      RAD2DEG, T0
+      RAD2DEG, T0        novascon.c
 
    FUNCTIONS
    CALLED:
-      tdb2tt            novas.c
-      cio_location      novas.c
-      cio_basis         novas.c
-      nutation          novas.c
-      precession        novas.c
-      frame_tie         novas.c
-      atan2             math.h
+      tdb2tt             novas.c
+      cio_location       novas.c
+      cio_basis          novas.c
+      nutation           novas.c
+      precession         novas.c
+      frame_tie          novas.c
+      atan2              math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -7107,12 +7430,12 @@ short int cio_location (double jd_tdb, short int accuracy,
 
    FUNCTIONS
    CALLED:
-      cio_array        novas.c
-      ira_equinox      novas.c
-      fopen            stdio.h
-      fclose           stdio.h
-      fabs             math.h
-      calloc           stdlib.h
+      cio_array          novas.c
+      ira_equinox        novas.c
+      fopen              stdio.h
+      fclose             stdio.h
+      fabs               math.h
+      calloc             stdlib.h
 
    VER./DATE/
    PROGRAMMER:
@@ -7329,17 +7652,17 @@ short int cio_basis (double jd_tdb, double ra_cio, short int ref_sys,
 
    GLOBALS
    USED:
-      T0, DEG2RAD
+      T0, DEG2RAD        novascon.c
 
    FUNCTIONS
    CALLED:
-      nutation     novas.c
-      precession   novas.c
-      frame_tie    novas.c
-      fabs         math.h
-      sin          math.h
-      cos          math.h
-      sqrt         math.h
+      nutation           novas.c
+      precession         novas.c
+      frame_tie          novas.c
+      fabs               math.h
+      sin                math.h
+      cos                math.h
+      sqrt               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -7558,13 +7881,13 @@ short int cio_array (double jd_tdb, long int n_pts,
 
    FUNCTIONS
    CALLED:
-      fopen       stdio.h
-      fread       stdio.h
-      fclose      stdio.h
-      abs         math.h
-      free        stdlib.h
-      calloc      stdlib.h
-      fseek       stdio.h
+      fopen              stdio.h
+      fread              stdio.h
+      fclose             stdio.h
+      abs                math.h
+      free               stdlib.h
+      calloc             stdlib.h
+      fseek              stdio.h
 
    VER./DATE/
    PROGRAMMER:
@@ -7875,12 +8198,12 @@ double ira_equinox (double jd_tdb, short int equinox,
 
    GLOBALS
    USED:
-      T0
+      T0                 novascon.c
 
    FUNCTIONS
    CALLED:
-      e_tilt        novas.c
-      fabs          math.h
+      e_tilt             novas.c
+      fabs               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -7964,9 +8287,10 @@ short int ephemeris (double jd[2], object *cel_obj, short int origin,
       *cel_obj (struct object)
          Pointer to structure containing the designation of the body
          of interest (defined in novas.h).
-      origin (int)
-         Origin code; solar system barycenter   = 0,
-                      center of mass of the Sun = 1.
+      origin (short int)
+         Origin code
+            = 0 ... solar system barycenter
+            = 1 ... center of mass of the Sun
       accuracy (short int)
          Selection for accuracy
             = 0 ... full accuracy
@@ -7979,8 +8303,7 @@ short int ephemeris (double jd[2], object *cel_obj, short int origin,
          coordinates in AU referred to the ICRS.
       vel[3] (double)
          Velocity vector of the body at 'jd_tdb'; equatorial rectangular
-         system referred to the mean equator and equinox of the ICRS,
-         in AU/Day.
+         coordinates in AU/day referred to the ICRS.
 
    RETURNED
    VALUE:
@@ -8019,6 +8342,8 @@ short int ephemeris (double jd[2], object *cel_obj, short int origin,
       V1.5/10-08/JAB (USNO/AA): Incorporate higher-precision call to
                                 the solar system ephemeris, primarily
                                 to support light-time calculations.
+      V1.6/02-11/JLB (USNO/AA): Reformatted description of origin for
+                                consistency with other documentation.
 
    NOTES:
       1. It is recommended that the input structure 'cel_obj' be
@@ -8055,7 +8380,7 @@ short int ephemeris (double jd[2], object *cel_obj, short int origin,
    {
 
 /*
-   Get the position and velocity of a major planet, Sun, or Moon.
+   Get the position and velocity of a major planet, Pluto, Sun, or Moon.
    When high accuracy is specified, use function 'solarsystem_hp' rather
    than 'solarsystem'.
 */
@@ -8101,7 +8426,7 @@ short int ephemeris (double jd[2], object *cel_obj, short int origin,
          if (posvel == NULL)
          {
             free (mp_name);
-           	return (error = 3);
+            return (error = 3);
          }
 
          if (err != 0)
@@ -8218,11 +8543,11 @@ void transform_hip (cat_entry *hipparcos,
 
    GLOBALS
    USED:
-      T0
+      T0                 novascon.c
 
    FUNCTIONS
    CALLED:
-      transform_cat  novas.c
+      transform_cat      novas.c
 
    VER./DATE/
    PROGRAMMER:
@@ -8290,7 +8615,7 @@ void transform_hip (cat_entry *hipparcos,
 
 short int transform_cat (short int option, double date_incat,
                          cat_entry *incat, double date_newcat,
-                         char newcat_id[4],
+                         char newcat_id[SIZE_OF_CAT_NAME],
 
                          cat_entry *newcat)
 /*
@@ -8321,8 +8646,9 @@ short int transform_cat (short int option, double date_incat,
          the struct definition (struct defined in novas.h).
       date_newcat (double)
          TT Julian date, or year, of transformed catalog data.
-      newcat_id[4] (char)
-         Three-character abbreviated name of the transformed catalog.
+      newcat_id[SIZE_OF_CAT_NAME] (char)
+         Catalog identifier ((SIZE_OF_CAT_NAME - 1) characters maximum)
+         e.g. HIP = Hipparcos, TY2 = Tycho-2.
 
    OUTPUT
    ARGUMENTS:
@@ -8335,21 +8661,24 @@ short int transform_cat (short int option, double date_incat,
       = 0 ... Everything OK.
       = 1 ... Invalid value of an input date for option 2 or 3 (see
               Note 1 below).
+      = 2 ... length of 'newcat_id' out of bounds.
 
    GLOBALS
    USED:
-      T0, ASEC2RAD, AU_KM, C
+      SIZE_OF_CAT_NAME   novas.h
+      T0, ASEC2RAD       novascon.c
+      AU_KM, C           novascon.c
 
    FUNCTIONS
    CALLED:
-      precession   novas.c
-      frame_tie    novas.c
-      sin          math.h
-      cos          math.h
-      sqrt         math.h
-      atan2        math.h
-      asin         math.h
-      strcpy       string.h
+      precession         novas.c
+      frame_tie          novas.c
+      sin                math.h
+      cos                math.h
+      sqrt               math.h
+      atan2              math.h
+      asin               math.h
+      strcpy             string.h
 
    VER./DATE/
    PROGRAMMER:
@@ -8358,6 +8687,7 @@ short int transform_cat (short int option, double date_incat,
       V1.2/06-08/WKP (USNO/AA) Changed 'a[3]' to 'd', added Doppler factor,
                                and corrected 'frame_tie' direction.
       V1.3/06-08/JAB (USNO/AA) Error check on dates for options 2 and 3.
+      V1.4/02-11/WKP (USNO/AA) Implement SIZE_OF_CAT_NAME.
 
    NOTES:
       1. 'date_incat' and 'date_newcat' may be specified either as a
@@ -8393,6 +8723,7 @@ short int transform_cat (short int option, double date_incat,
       from the value implicit in function 'precession'.
       5. This function is the C version of NOVAS Fortran routine
       'catran'.
+      6. SIZE_OF_CAT_NAME is defined in novas.h.
 
 ------------------------------------------------------------------------
 */
@@ -8598,7 +8929,10 @@ short int transform_cat (short int option, double date_incat,
    entry.
 */
 
-   strcpy (newcat->catalog,newcat_id);
+   if ((short int) strlen (newcat_id) > SIZE_OF_CAT_NAME - 1)
+      return (2);
+    else
+      strcpy (newcat->catalog, newcat_id);
 
 /*
    Copy unchanged quantities from the input catalog entry to the
@@ -8658,13 +8992,14 @@ void limb_angle (double pos_obj[3], double pos_obs[3],
 
    GLOBALS
    USED:
-      TWOPI, ERAD, AU, RAD2DEG
+      TWOPI, ERAD        novascon.c
+      AU, RAD2DEG        novascon.c
 
    FUNCTIONS
    CALLED:
-      sqrt       math.h
-      asin       math.h
-      acos       math.h
+      sqrt               math.h
+      asin               math.h
+      acos               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -8797,12 +9132,12 @@ double refract (on_surface *location, short int ref_option,
 
    GLOBALS
    USED:
-      DEG2RAD
+      DEG2RAD            novascon.c
 
    FUNCTIONS
    CALLED:
-      exp      math.h
-      tan      math.h
+      exp                math.h
+      tan                math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -8976,7 +9311,7 @@ void cal_date (double tjd,
 
    FUNCTIONS
    CALLED:
-      fmod     math.h
+      fmod               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -9047,11 +9382,11 @@ double norm_ang (double angle)
 
    GLOBALS
    USED:
-      TWOPI
+      TWOPI              novascon.c
 
    FUNCTIONS
    CALLED:
-      fmod           math.h
+      fmod               math.h
 
    VER./DATE/
    PROGRAMMER:
@@ -9074,12 +9409,13 @@ double norm_ang (double angle)
 
 /********make_cat_entry */
 
-void make_cat_entry (char star_name[51], char catalog[4],
-                     long int star_num, double ra, double dec,
-                     double pm_ra, double pm_dec, double parallax,
-                     double rad_vel,
+short int make_cat_entry (char star_name[SIZE_OF_OBJ_NAME],
+                          char catalog[SIZE_OF_CAT_NAME],
+                          long int star_num, double ra, double dec,
+                          double pm_ra, double pm_dec, double parallax,
+                          double rad_vel,
 
-                     cat_entry *star)
+                          cat_entry *star)
 /*
 ------------------------------------------------------------------------
 
@@ -9092,11 +9428,11 @@ void make_cat_entry (char star_name[51], char catalog[4],
 
    INPUT
    ARGUMENTS:
-      star_name[51] (char)
-         Object name (50 characters maximum).
-      catalog[4] (char)
-         Three-character catalog identifier (e.g. HIP = Hipparcos, TY2 =
-         Tycho-2).
+      star_name[SIZE_OF_OBJ_NAME] (char)
+         Object name ((SIZE_OF_OBJ_NAME - 1) characters maximum).
+      catalog[SIZE_OF_CAT_NAME] (char)
+         Catalog identifier ((SIZE_OF_CAT_NAME - 1) characters maximum)
+         e.g. HIP = Hipparcos, TY2 = Tycho-2.
       star_num (long int)
          Object number in the catalog.
       ra (double)
@@ -9120,45 +9456,50 @@ void make_cat_entry (char star_name[51], char catalog[4],
 
    RETURNED
    VALUE:
-      None.
+      (short int)
+         = 0 ... no problems.
+         = 1 ... length of 'star_name' out of bounds.
+         = 2 ... length of 'catalog' out of bounds.
 
    GLOBALS
    USED:
-      None.
+      SIZE_OF_OBJ_NAME   novas.h
+      SIZE_OF_CAT_NAME   novas.h
 
    FUNCTIONS
    CALLED:
-      None.
+      strlen             string.h
+      strcpy             string.h
 
    VER./DATE/
    PROGRAMMER:
       V1.0/03-98/JAB (USNO/AA)
       V1.1/08-04/JAB (USNO/AA)
+      V1.3/05-10/JAB (USNO/AA): Fix bugs in set-up of 'star->starname'
+                                and 'star->catalog'.
 
    NOTES:
       1. This utility function creates a single data structure
       encapsulating the input data.
+      2. SIZE_OF_OBJ_NAME and SIZE_OF_CAT_NAME are defined in novas.h.
 
 ------------------------------------------------------------------------
 */
 {
-   short int i;
 
-   for (i = 0; i < 51; i++)
-   {
-      star->starname[i] = star_name[i];
-      if (star_name[i] == '\0')
-         break;
-   }
-   star->starname[i] = '\0';
+/*
+   Set up the 'star' structure.
+*/
 
-   for (i = 0; i < 4; i++)
-   {
-      star->catalog[i] = catalog[i];
-      if (catalog[i] == '\0')
-         break;
-   }
-   star->catalog[i] = '\0';
+   if ((short int) strlen (star_name) > SIZE_OF_OBJ_NAME - 1)
+      return (1);
+    else
+      strcpy (star->starname, star_name);
+
+   if ((short int) strlen (catalog) > SIZE_OF_CAT_NAME - 1)
+      return (2);
+    else
+      strcpy (star->catalog, catalog);
 
    star->starnumber = star_num;
    star->ra = ra;
@@ -9168,13 +9509,13 @@ void make_cat_entry (char star_name[51], char catalog[4],
    star->parallax = parallax;
    star->radialvelocity = rad_vel;
 
-   return;
+   return (0);
 }
 
 /********make_object */
 
-short int make_object (short int type, short int number, char name[51],
-                       cat_entry *star_data,
+short int make_object (short int type, short int number,
+                       char name[SIZE_OF_OBJ_NAME], cat_entry *star_data,
 
                        object *cel_obj)
 /*
@@ -9191,7 +9532,7 @@ short int make_object (short int type, short int number, char name[51],
    ARGUMENTS:
       type (short int)
          Type of object
-            = 0 ... major planet, Sun, or Moon
+            = 0 ... major planet, Pluto, Sun, or Moon
             = 1 ... minor planet
             = 2 ... object located outside the solar system
                     (e.g. star, galaxy, nebula, etc.)
@@ -9201,8 +9542,8 @@ short int make_object (short int type, short int number, char name[51],
                             Moon = 11
             For 'type' = 1: minor planet number
             For 'type' = 2: set to 0 (zero)
-      name[51] (char)
-         Name of the object (50 characters maximum).
+      name[SIZE_OF_OBJ_NAME] (char)
+         Name of the object ((SIZE_OF_OBJ_NAME - 1) characters maximum).
       *star_data (struct cat_entry)
          Structure containing basic astrometric data for any celestial
          object located outside the solar system; the catalog
@@ -9219,15 +9560,20 @@ short int make_object (short int type, short int number, char name[51],
          = 0 ... everything OK
          = 1 ... invalid value of 'type'
          = 2 ... 'number' out of range
+         = 3 ... Initialization of 'cel_obj' failed (object name).
+         = 4 ... Initialization of 'cel_obj' failed (catalog name).
+         = 5 ... 'name' is out of string bounds.
 
    GLOBALS
    USED:
-      None.
+      SIZE_OF_OBJ_NAME   novas.h
+      SIZE_OF_CAT_NAME   novas.h
 
    FUNCTIONS
    CALLED:
-      strcpy        string.h
-      toupper       ctype.h
+      strlen             string.h
+      strcpy             string.h
+      toupper            ctype.h
 
    VER./DATE/
    PROGRAMMER:
@@ -9237,9 +9583,14 @@ short int make_object (short int type, short int number, char name[51],
                                 the object number" 'if' block.
       V1.3/07-04/JAB (USNO/AA): Change name from 'set_body'; expand to
                                 include objects outside solar system.
+      V1.4/05-10/JAB (USNO/AA): Implement SIZE_OF_OBJ_NAME and
+                                SIZE_OF_CAT_NAME; check length of
+                                'name'.
+      V1.5/09-10/WKP (USNO/AA): Explicitly cast 'toupper' return value
+                                to type 'char' to silence compiler.
 
    NOTES:
-      None.
+      1. SIZE_OF_OBJ_NAME and SIZE_OF_CAT_NAME are defined in novas.h.
 
 ------------------------------------------------------------------------
 */
@@ -9255,8 +9606,19 @@ short int make_object (short int type, short int number, char name[51],
    cel_obj->number = 0;
    strcpy (cel_obj->name, "  ");
 
-   strcpy (cel_obj->star.starname, "  ");
-   strcpy (cel_obj->star.catalog, "  ");
+   if ((short int) strlen ("  ") > SIZE_OF_OBJ_NAME - 1)
+      return (error = 3);
+    else
+   {
+      strcpy (cel_obj->name, "  ");
+      strcpy (cel_obj->star.starname, "  ");
+   }
+
+   if ((short int) strlen ("  ") > SIZE_OF_CAT_NAME - 1)
+      return (error = 4);
+    else
+      strcpy (cel_obj->star.catalog, "  ");
+
    cel_obj->star.starnumber = 0L;
    cel_obj->star.ra = 0.0;
    cel_obj->star.dec = 0.0;
@@ -9296,12 +9658,15 @@ short int make_object (short int type, short int number, char name[51],
    cel_obj->number = number;
 
 /*
-   Set the object name in upper case.
+   Check length of 'name'.  Set the object name in upper case.
 */
 
-   for (i = 0; i < 51; i++)
+   if ((short int) strlen (name) > SIZE_OF_OBJ_NAME - 1)
+      return (error = 5);
+
+   for (i = 0; i < SIZE_OF_OBJ_NAME - 1; i++)
    {
-      cel_obj->name[i] = toupper (name[i]);
+      cel_obj->name[i] = (char) toupper (name[i]);
       if (name[i] == '\0')
          break;
    }
@@ -9476,8 +9841,8 @@ void make_observer_at_geocenter (
 
    FUNCTIONS
    CALLED:
-      make_in_space        novas.c
-      make_on_surface      novas.c
+      make_in_space      novas.c
+      make_on_surface    novas.c
 
    VER./DATE/
    PROGRAMMER:
@@ -9557,8 +9922,8 @@ void make_observer_on_surface (double latitude, double longitude,
 
    FUNCTIONS
    CALLED:
-      make_in_space        novas.c
-      make_on_surface      novas.c
+      make_in_space      novas.c
+      make_on_surface    novas.c
 
    VER./DATE/
    PROGRAMMER:
@@ -9625,8 +9990,8 @@ void make_observer_in_space (double sc_pos[3], double sc_vel[3],
 
    FUNCTIONS
    CALLED:
-      make_in_space        novas.c
-      make_on_surface      novas.c
+      make_in_space      novas.c
+      make_on_surface    novas.c
 
    VER./DATE/
    PROGRAMMER:

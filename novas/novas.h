@@ -1,13 +1,13 @@
 /*
-   Naval Observatory Vector Astrometry Software
-   
-   NOVAS-C Version 3.0
-   Header file for novas.c
+  Naval Observatory Vector Astrometry Software (NOVAS)
+  C Edition, Version 3.1
 
-   U. S. Naval Observatory
-   Astronomical Applications Dept.
-   3450 Massachusetts Ave., NW
-   Washington, DC  20392-5420
+  novas.h: Header file for novas.c
+
+  U. S. Naval Observatory
+  Astronomical Applications Dept.
+  Washington, DC
+  http://www.usno.navy.mil/USNO/astronomical-applications
 */
 
 #ifndef _NOVAS_
@@ -45,32 +45,40 @@
       #include "nutation.h"
    #endif
 
+
 /*
    Structures
 */
 
 /*
-   struct cat_entry:  basic astrometric data for any celestial object 
-                      located outside the solar system; the catalog 
+   struct cat_entry:  basic astrometric data for any celestial object
+                      located outside the solar system; the catalog
                       data for a star
-                     
-   starname[51]       = name of celestial object
-   catalog[4]         = 3-character catalog designator
-   starnumber         = integer identifier assigned to object
-   ra                 = ICRS right ascension (hours)
-   dec                = ICRS declination (degrees)
-   promora            = ICRS proper motion in right ascension 
-                        (milliarcseconds/year)
-   promodec           = ICRS proper motion in declination 
-                        (milliarcseconds/year)
-   parallax           = parallax (milliarcseconds)
-   radialvelocity     = radial velocity (km/s)
+
+   starname[SIZE_OF_OBJ_NAME] = name of celestial object
+   catalog[SIZE_OF_CAT_NAME]  = catalog designator (e.g., HIP)
+   starnumber                 = integer identifier assigned to object
+   ra                         = ICRS right ascension (hours)
+   dec                        = ICRS declination (degrees)
+   promora                    = ICRS proper motion in right ascension
+                                (milliarcseconds/year)
+   promodec                   = ICRS proper motion in declination
+                                (milliarcseconds/year)
+   parallax                   = parallax (milliarcseconds)
+   radialvelocity             = radial velocity (km/s)
+
+   SIZE_OF_OBJ_NAME and SIZE_OF_CAT_NAME are defined below.  Each is the
+   number of characters in the string (the string length) plus the null
+   terminator.
 */
+
+   #define SIZE_OF_OBJ_NAME 51
+   #define SIZE_OF_CAT_NAME 4
 
    typedef struct
    {
-      char starname[51];
-      char catalog[4];
+      char starname[SIZE_OF_OBJ_NAME];
+      char catalog[SIZE_OF_CAT_NAME];
       long int starnumber;
       double ra;
       double dec;
@@ -84,7 +92,7 @@
    struct object:    specifies the celestial object of interest
 
    type              = type of object
-                     = 0 ... major planet, Sun, or Moon
+                     = 0 ... major planet, Pluto, Sun, or Moon
                      = 1 ... minor planet
                      = 2 ... object located outside the solar system
                              (star, nebula, galaxy, etc.)
@@ -94,9 +102,10 @@
                        For 'type' = 1: minor planet number
                        For 'type' = 2: set to 0 (object is
                        fully specified in 'struct cat_entry')
-   name              = name of the object (limited to 50 characters)
-   star              = basic astrometric data for any celestial object 
-                       located outside the solar system; the catalog 
+   name              = name of the object (limited to
+                       (SIZE_OF_OBJ_NAME - 1) characters)
+   star              = basic astrometric data for any celestial object
+                       located outside the solar system; the catalog
                        data for a star
 */
 
@@ -104,18 +113,18 @@
    {
       short int type;
       short int number;
-      char name[51];
+      char name[SIZE_OF_OBJ_NAME];
       cat_entry star;
    } object;
 
 /*
    struct on_surface: data for an observer's location on the surface of
-                      the Earth.  The atmospheric parameters are used 
-                      only by the refraction function called from 
-                      function 'equ2hor'. Additional parameters can be 
-                      added to this structure if a more sophisticated 
+                      the Earth.  The atmospheric parameters are used
+                      only by the refraction function called from
+                      function 'equ2hor'. Additional parameters can be
+                      added to this structure if a more sophisticated
                       refraction model is employed.
-                     
+
    latitude           = geodetic (ITRS) latitude; north positive (degrees)
    longitude          = geodetic (ITRS) longitude; east positive (degrees)
    height             = height of the observer (meters)
@@ -133,15 +142,15 @@
    } on_surface;
 
 /*
-   struct in_space:   data for an observer's location on a near-Earth 
+   struct in_space:   data for an observer's location on a near-Earth
                       spacecraft
-                     
-   sc_pos[3]          = geocentric position vector (x, y, z), components 
+
+   sc_pos[3]          = geocentric position vector (x, y, z), components
                         in km
-   sc_vel[3]          = geocentric velocity vector (x_dot, y_dot, 
+   sc_vel[3]          = geocentric velocity vector (x_dot, y_dot,
                         z_dot), components in km/s
-                        
-                        Both vectors with respect to true equator and 
+
+                        Both vectors with respect to true equator and
                         equinox of date
 */
 
@@ -150,17 +159,17 @@
       double sc_pos[3];
       double sc_vel[3];
    } in_space;
-   
+
 /*
    struct observer:   data specifying the location of the observer
-                     
+
    where              = integer code specifying location of observer
                         = 0: observer at geocenter
                         = 1: observer on surface of earth
                         = 2: observer on near-earth spacecraft
-   on_surface         = structure containing data for an observer's 
+   on_surface         = structure containing data for an observer's
                         location on the surface of the Earth (where = 1)
-   near_earth         = data for an observer's location on a near-Earth 
+   near_earth         = data for an observer's location on a near-Earth
                         spacecraft (where = 2)
 */
 
@@ -170,11 +179,11 @@
       on_surface on_surf;
       in_space near_earth;
    } observer;
-   
+
 /*
-   struct sky_pos:    data specifying a celestial object's place on the 
+   struct sky_pos:    data specifying a celestial object's place on the
                       sky; contains the output from function 'place'
-                     
+
    r_hat[3]           = unit vector toward object (dimensionless)
    ra                 = apparent, topocentric, or astrometric
                         right ascension (hours)
@@ -195,9 +204,9 @@
    } sky_pos;
 
 /*
-   struct ra_of_cio:  right ascension of the Celestial Intermediate 
+   struct ra_of_cio:  right ascension of the Celestial Intermediate
                       Origin (CIO) with respect to the GCRS
-                     
+
    jd_tdb             = TDB Julian date
    ra_cio             = right ascension of the CIO with respect
                         to the GCRS (arcseconds)
@@ -225,27 +234,27 @@
 
                     int *err);
 
-   short int app_star (double jd_tt, cat_entry *star, 
+   short int app_star (double jd_tt, cat_entry *star,
                        short int accuracy,
 
                        double *ra, double *dec);
 
-   short int virtual_star (double jd_tt, cat_entry *star, 
+   short int virtual_star (double jd_tt, cat_entry *star,
                            short int accuracy,
 
                            double *ra, double *dec);
 
-   short int astro_star (double jd_tt, cat_entry *star, 
+   short int astro_star (double jd_tt, cat_entry *star,
                          short int accuracy,
 
                          double *ra, double *dec);
 
-   short int app_planet (double jd_tt, object *ss_body, 
+   short int app_planet (double jd_tt, object *ss_body,
                          short int accuracy,
 
                          double *ra, double *dec, double *dis);
 
-   short int virtual_planet (double jd_tt, object *ss_body, 
+   short int virtual_planet (double jd_tt, object *ss_body,
                              short int accuracy,
 
                              double *ra, double *dec, double *dis);
@@ -265,12 +274,12 @@
 
                          double *ra, double *dec);
 
-   short int topo_planet (double jd_tt, object *ss_body, double delta_t, 
+   short int topo_planet (double jd_tt, object *ss_body, double delta_t,
                           on_surface *position, short int accuracy,
 
                           double *ra, double *dec, double *dis);
 
-   short int local_planet (double jd_tt, object *ss_body, 
+   short int local_planet (double jd_tt, object *ss_body,
                            double delta_t, on_surface *position,
                            short int accuracy,
 
@@ -282,8 +291,8 @@
                         double *ira, double *idec);
 
    short int place (double jd_tt, object *cel_object,
-                    observer *location, double delta_t, 
-                    short int coord_sys, short int accuracy, 
+                    observer *location, double delta_t,
+                    short int coord_sys, short int accuracy,
 
                     sky_pos *output);
 
@@ -291,52 +300,60 @@
 
                  double *glon, double *glat);
 
-   short int equ2ecl (double jd_tt, short int coord_sys, 
+   short int equ2ecl (double jd_tt, short int coord_sys,
                       short int accuracy, double ra, double dec,
 
                       double *elon, double *elat);
 
-   short int equ2ecl_vec (double jd_tt, short int coord_sys, 
-                          short int accuracy, double *pos1, 
-                       
+   short int equ2ecl_vec (double jd_tt, short int coord_sys,
+                          short int accuracy, double *pos1,
+
                           double *pos2);
-                       
-   short int ecl2equ_vec (double jd_tt, short int coord_sys, 
-                          short int accuracy, double *pos1, 
-                          
+
+   short int ecl2equ_vec (double jd_tt, short int coord_sys,
+                          short int accuracy, double *pos1,
+
                           double *pos2);
-                       
+
    void equ2hor (double jd_ut1, double delta_t, short int accuracy,
-                 double x, double y, on_surface *location, double ra, 
+                 double xp, double yp, on_surface *location, double ra,
                  double dec, short int ref_option,
 
                  double *zd, double *az, double *rar, double *decr);
 
-   short int gcrs2equ (double jd_tt, short int coord_sys, 
+   short int gcrs2equ (double jd_tt, short int coord_sys,
                        short int accuracy, double rag, double decg,
 
                        double *ra, double *dec);
 
-   short int sidereal_time (double jd_high, double jd_low, 
-                            double delta_t, short int gst_type, 
+   short int sidereal_time (double jd_high, double jd_low,
+                            double delta_t, short int gst_type,
                             short int method, short int accuracy,
 
                             double *gst);
 
    double era (double jd_high, double jd_low);
 
-   short int ter2cel (double jd_high, double jd_low, double delta_t, 
-                      short int method, short int accuracy, 
-                      short int option, double x, double y, 
-                      double *vect,
-                      
-                      double *vecc);
+   short int ter2cel (double jd_ut_high, double jd_ut_low,
+                      double delta_t, short int method,
+                      short int accuracy, short int option, double xp,
+                      double yp, double *vec1,
+
+                      double *vec2);
+
+   short int cel2ter (double jd_ut_high, double jd_ut_low,
+                      double delta_t, short int method,
+                      short int accuracy, short int option,
+                      double xp, double yp, double *vec1,
+
+                      double *vec2);
 
    void spin (double angle, double *pos1,
 
               double *pos2);
 
-   void wobble (double tjd, double x, double y, double *pos1,
+   void wobble (double tjd, short int direction, double xp, double yp,
+                double *pos1,
 
                 double *pos2);
 
@@ -366,13 +383,13 @@
    void bary2obs (double *pos, double *pos_obs,
 
                   double *pos2, double *lighttime);
-   
+
    short int geo_posvel (double jd_tt, double delta_t,
                          short int accuracy, observer *obs,
 
                          double *pos, double *vel);
-                     
-   short int light_time (double jd_tdb, object *ss_object, 
+
+   short int light_time (double jd_tdb, object *ss_object,
                          double pos_obs[3], double tlight0,
                          short int accuracy,
 
@@ -380,22 +397,22 @@
 
    double d_light (double *pos1, double *pos_obs);
 
-   short int grav_def (double jd_tdb, short int loc_code, 
+   short int grav_def (double jd_tdb, short int loc_code,
                        short int accuracy, double *pos1, double *pos_obs,
 
                        double *pos2);
-      
+
    void grav_vec (double *pos1, double *pos_obs, double *pos_body,
                   double rmass,
-                  
+
                   double *pos2);
 
    void aberration (double *pos, double *ve, double lighttime,
 
                     double *pos2);
- 
-   void rad_vel (object *cel_object, double *pos, double *vel, 
-                 double *vel_obs, double d_obs_geo, double d_obs_sun, 
+
+   void rad_vel (object *cel_object, double *pos, double *vel,
+                 double *vel_obs, double d_obs_geo, double d_obs_sun,
                  double d_obj_sun,
 
                  double *rv);
@@ -404,8 +421,8 @@
 
                          double *pos2);
 
-   void nutation (double jd_tdb, short int direction, short int accuracy, 
-                  double *pos, 
+   void nutation (double jd_tdb, short int direction, short int accuracy,
+                  double *pos,
 
                   double *pos2);
 
@@ -419,7 +436,7 @@
 
    double mean_obliq (double jd_tdb);
 
-   short int vector2radec (double *pos, 
+   short int vector2radec (double *pos,
 
                            double *ra, double *dec);
 
@@ -438,7 +455,7 @@
    short int cio_ra (double jd_tt, short int accuracy,
 
                      double *ra_cio);
-   
+
    short int cio_location (double jd_tdb, short int accuracy,
 
                            double *ra_cio, short int *ref_sys);
@@ -452,29 +469,29 @@
 
                         ra_of_cio *cio);
 
-   double ira_equinox (double jd_tdb, short int equinox, 
+   double ira_equinox (double jd_tdb, short int equinox,
                        short int accuracy);
 
    short int ephemeris (double jd[2], object *cel_obj, short int origin,
                         short int accuracy,
-                     
+
                         double *pos, double *vel);
 
    void transform_hip (cat_entry *hipparcos,
 
                        cat_entry *hip_2000);
 
-   short int transform_cat (short int option, double date_incat, 
+   short int transform_cat (short int option, double date_incat,
                             cat_entry *incat, double date_newcat,
-                            char newcat_id[4],
+                            char newcat_id[SIZE_OF_CAT_NAME],
 
                             cat_entry *newcat);
 
-   void limb_angle (double pos_obj[3], double pos_obs[3], 
+   void limb_angle (double pos_obj[3], double pos_obs[3],
 
                     double *limb_ang, double *nadir_ang);
-   
-   double refract (on_surface *location, short int ref_option, 
+
+   double refract (on_surface *location, short int ref_option,
                    double zd_obs);
 
    double julian_date (short int year, short int month, short int day,
@@ -487,16 +504,18 @@
 
    double norm_ang (double angle);
 
-   void make_cat_entry (char star_name[51], char catalog[4],
+   short int make_cat_entry (char star_name[SIZE_OF_OBJ_NAME],
+                             char catalog[SIZE_OF_CAT_NAME],
                         long int star_num, double ra, double dec,
                         double pm_ra, double pm_dec, double parallax,
                         double rad_vel,
 
                         cat_entry *star);
 
-   short int make_object (short int type, short int number, 
-                          char name[51], cat_entry *star_data,
-                          
+   short int make_object (short int type, short int number,
+                          char name[SIZE_OF_OBJ_NAME],
+                          cat_entry *star_data,
+
                           object *cel_obj);
 
    short int make_observer (short int where, on_surface *obs_surface,
@@ -507,9 +526,9 @@
    void make_observer_at_geocenter (
 
                                  observer *obs_at_geocenter);
-                                 
-   void make_observer_on_surface (double latitude, double longitude, 
-                                  double height, double temperature, 
+
+   void make_observer_on_surface (double latitude, double longitude,
+                                  double height, double temperature,
                                   double pressure,
 
                                   observer *obs_on_surface);
@@ -518,7 +537,7 @@
 
                                 observer *obs_in_space);
 
-   void make_on_surface (double latitude, double longitude, 
+   void make_on_surface (double latitude, double longitude,
                          double height,
                          double temperature, double pressure,
 

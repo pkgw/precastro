@@ -1,4 +1,4 @@
-JPL Ephemeris open. jd_beg = 2378480.50  jd_end = 2470192.50
+JPL Ephemeris DE405 open. jd_beg = 2305424.50  jd_end = 2525008.50
 
 
 Pallas:

@@ -1,3 +1,16 @@
+/*
+  Naval Observatory Vector Astrometry Software (NOVAS)
+  C Edition, Version 3.1
+
+  checkout-stars.c: Checkout program for use with solsys3
+
+  U. S. Naval Observatory
+  Astronomical Applications Dept.
+  Washington, DC
+  http://www.usno.navy.mil/USNO/astronomical-applications
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "novas.h"
@@ -11,7 +24,7 @@ int main (void)
    Main function to check out many parts of NOVAS-C by calling
    function 'topo_star' with version 3 of function 'solarsystem'.
 
-   For use with NOVAS-C Version 3.
+   For use with NOVAS-C Version 3.1.
 */
 
    short int error = 0;
@@ -34,11 +47,11 @@ int main (void)
 */
 
    cat_entry stars[N_STARS] = {
-      {"POLARIS", "HIP",   0,  2.530301028,  89.264109444, 
+      {"POLARIS", "HIP",   0,  2.530301028,  89.264109444,
                44.22, -11.75,  7.56, -17.4},
-      {"Delta ORI", "HIP", 1,  5.533444639,  -0.299091944,  
+      {"Delta ORI", "HIP", 1,  5.533444639,  -0.299091944,
                 1.67,   0.56,  3.56,  16.0},
-      {"Theta CAR", "HIP", 2, 10.715944806, -64.394450000, 
+      {"Theta CAR", "HIP", 2, 10.715944806, -64.394450000,
                -18.87, 12.06,  7.43,  24.0}};
 
 /*

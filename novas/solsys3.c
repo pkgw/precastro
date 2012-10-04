@@ -1,14 +1,13 @@
 /*
-   NOVAS-C Version 3.0
-   Solar System function; version 3.
-
-   Naval Observatory Vector Astrometry Software
-   C Version
-
-   U. S. Naval Observatory
-   Astronomical Applications Dept.
-   3450 Massachusetts Ave., NW
-   Washington, DC  20392-5420
+  Naval Observatory Vector Astrometry Software (NOVAS)
+  C Edition, Version 3.1
+ 
+  solsys3.c: Self-contained Sun-Earth ephemeris 
+ 
+  U. S. Naval Observatory
+  Astronomical Applications Dept.
+  Washington, DC 
+  http://www.usno.navy.mil/USNO/astronomical-applications
 */
 
 
@@ -58,9 +57,9 @@ short int solarsystem (double tjd, short int body, short int origin,
          Set 'body' = 0 or 'body' = 1 or 'body' = 10 for the Sun.
          Set 'body' = 2 or 'body' = 3 for the Earth.
       origin (short int)
-         Origin code; solar system barycenter   = 0,
-                      center of mass of the Sun = 1.
-
+         Origin code
+            = 0 ... solar system barycenter
+            = 1 ... center of mass of the Sun
    OUTPUT
    ARGUMENTS:
       position[3] (double)
@@ -102,6 +101,9 @@ short int solarsystem (double tjd, short int body, short int origin,
       V1.3/11-09/WKP (USNO/AA) Updated output argument names to
                                'position' and 'velocity'.
       V1.4/11-09/JAB (USNO/AA) Update barycenter computation.
+      V1.5/02-11/JLB (USNO/AA) Reformatted description of origin for 
+                               consistency with other documentation.
+
 
    NOTES:
       1. This function is the "C" version of Fortran NOVAS routine
@@ -336,8 +338,9 @@ short int solarsystem_hp (double tjd[2], short int body,
          Set 'body' = 0 or 'body' = 1 or 'body' = 10 for the Sun.
          Set 'body' = 2 or 'body' = 3 for the Earth.
       origin (short int)
-         Origin code; solar system barycenter   = 0,
-                      center of mass of the Sun = 1.
+         Origin code
+            = 0 ... solar system barycenter
+            = 1 ... center of mass of the Sun
 
    OUTPUT
    ARGUMENTS:
@@ -372,6 +375,10 @@ short int solarsystem_hp (double tjd[2], short int body,
       V1.0/01-07/JAB (USNO/AA)
       V1.1/11-09/WKP (USNO/AA) Updated output argument names to
                                'position' and 'velocity'.
+      v1.2/07-10/JLB (USNO/AA) Revised note 3 per Help desk msg
+      V1.3/02-11/JLB (USNO/AA) Reformatted description of origin for 
+                               consistency with other documentation.
+
 
    NOTES:
       1. Function 'solarsystem' in file 'solsys3.c' provides the
@@ -391,6 +398,8 @@ short int solarsystem_hp (double tjd[2], short int body,
       velocity.  An error code of '0' (no error) is also returned.
       This action may be useful for code testing purposes, but is
       not appropriate or recommended for normal use of NOVAS-C.
+      To access this option, the code must be changed manually
+      to set 'action' = 2.
       4. Use alternate versions of 'solarsystem' (located in the
       various 'solsysn.c' files, where n is an integer) when
       highest precision is needed.

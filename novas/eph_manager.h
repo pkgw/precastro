@@ -1,21 +1,24 @@
 /*
-   C version of JPL Ephemeris Manager
-
-   Version 0.2
-   Updated to handle DE405 and DE406 6/98
-   Updated to handle split Julian dates 11/06
-   Added Ephem_Close function 11/07
+  Naval Observatory Vector Astrometry Software (NOVAS)
+  C Edition, Version 3.1
+ 
+  eph_manager.h: Header file for eph_manager.c 
+ 
+  U. S. Naval Observatory
+  Astronomical Applications Dept.
+  Washington, DC 
+  http://www.usno.navy.mil/USNO/astronomical-applications
 */
 
-#ifndef __EPHMAN__
-#define __EPHMAN__
+#ifndef _EPHMAN_
+   #define _EPHMAN_
+
+/*
+   Standard libraries
+*/
 
 #ifndef __MATH__
    #include <math.h>
-#endif
-
-#ifndef __STRING__
-   #include <string.h>
 #endif
 
 #ifndef __STDLIB__
@@ -26,46 +29,46 @@
    #include <stdio.h>
 #endif
 
-
 /*
-   Define constants.
+   External variables
 */
 
-extern char ephem_name[51];
+extern short int KM;
 
-extern short DE_Number;
-extern short km;
+extern int IPT[3][12], LPT[3];
 
-extern long ipt[3][12], lpt[3], nrl, np, nv;
-extern long record_length;
+extern long int  NRL, NP, NV;
+extern long int RECORD_LENGTH;
 
-extern double ss[3], jplau, ve[2], pc[18], vc[18], twot, em_ratio;
-extern double *buffer;
+extern double SS[3], JPLAU, PC[18], VC[18], TWOT, EM_RATIO;
+extern double *BUFFER;
 
 extern FILE *EPHFILE;
 
 /*
-   Function prototypes.
+   Function prototypes
 */
 
-short Ephem_Open (char *Ephem_Name,
+short int ephem_open (char *ephem_name,
 
-                  double *JD_Begin, double *JD_End);
+                      double *jd_begin, double *jd_end, 
+                      short int *de_number);
 
-short Ephem_Close (void);
+short int ephem_close (void);
 
-short Planet_Ephemeris (double tjd[2], short target, short center, 
-  
-                        double *position, double *velocity);
+short int planet_ephemeris (double tjd[2], short int target, 
+                            short int center, 
 
-short State (double *jed, short target,
+                            double *position, double *velocity);
 
-             double *target_pos, double *target_vel);
+short int state (double *jed, short int target,
 
-void Interpolate (double *buf, double *t, long ncm, long na,
+                 double *target_pos, double *target_vel);
+
+void interpolate (double *buf, double *t, long int ncm, long int na,
 
                   double *position, double *velocity);
 
-void Split (double tt, double *fr);
+void split (double tt, double *fr);
 
 #endif

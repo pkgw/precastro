@@ -1,28 +1,44 @@
+/*
+  Naval Observatory Vector Astrometry Software (NOVAS)
+  C Edition, Version 3.1
+ 
+  example.c: Examples of NOVAS calculations 
+ 
+  U. S. Naval Observatory
+  Astronomical Applications Dept.
+  Washington, DC 
+  http://www.usno.navy.mil/USNO/astronomical-applications
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include "eph_manager.h" /* remove this line for use with solsys version 2 */
 #include "novas.h"
 
-/*
-   NOVAS 3.0 Sample Calculations
-
-   See Chapter 3 of User's Guide for explanation.
-   
-   Written for use with solsys version 1.
-   To adapt for use with solsys version 2, See comments throughout file. 
-   Assumes JPL ephemeris file "JPLEPH" located in same directory as
-   application.
-*/
 
 int main (void)
 {
+
+/*
+  NOVAS 3.1 Example Calculations
+ 
+  See Chapter 3 of User's Guide for explanation.
+ 
+  Written for use with solsys version 1.
+ 
+  To adapt for use with solsys version 2, see comments throughout file. 
+  Assumes JPL ephemeris file "JPLEPH" located in same directory as
+  application.
+ */
+
    const short int year = 2008;
    const short int month = 4;
    const short int day = 24;
    const short int leap_secs = 33;
    const short int accuracy = 0;
    short int error = 0;
+   short int de_num = 0;
    
    const double hour = 10.605;
    const double ut1_utc = -0.387845;
@@ -93,7 +109,7 @@ int main (void)
    Remove this block for use with solsys version 2.
 */
 
-   if ((error = Ephem_Open ("JPLEPH", &jd_beg,&jd_end)) != 0)
+   if ((error = ephem_open ("JPLEPH", &jd_beg,&jd_end,&de_num)) != 0)
    {
       if (error == 1)
          printf ("JPL ephemeris file not found.\n");
@@ -103,11 +119,20 @@ int main (void)
    }
     else
    {
-      printf ("JPL ephemeris open. Start JD = %10.2f  End JD = %10.2f\n",
-         jd_beg, jd_end);
+      printf ("JPL ephemeris DE%d open. Start JD = %10.2f  End JD = %10.2f\n",
+         de_num, jd_beg, jd_end);
       printf ("\n");
    }
-   
+
+/*
+  Uncomment block below for use with solsys version 2
+  Prints alternate header
+*/
+/*
+   printf ("Using solsys version 2, no description of JPL ephemeris available\n");
+   printf ("\n");
+*/
+
 /*
    Write banner.
 */
@@ -121,7 +146,7 @@ int main (void)
 */
 
    printf ("Geodetic location:\n");
-   printf ("%17.12f        %17.12f        %17.12f\n\n", geo_loc.longitude,
+   printf ("%15.10f        %15.10f        %15.10f\n\n", geo_loc.longitude,
       geo_loc.latitude, geo_loc.height);
 
 /*
@@ -136,7 +161,7 @@ int main (void)
    jd_tdb = jd_tt;          /* Approximation good to 0.0017 seconds. */
    
    printf ("TT and UT1 Julian Dates and Delta-T:\n");
-   printf ("%15.6f        %15.6f        %17.12f\n", jd_tt, jd_ut1, delta_t);
+   printf ("%15.6f        %15.6f        %16.11f\n", jd_tt, jd_ut1, delta_t);
    printf ("\n");
       
 /*
@@ -157,8 +182,8 @@ int main (void)
    }
     
    printf ("FK6 1307 geocentric and topocentric positions:\n");
-   printf ("%17.12f        %17.12f\n", ra, dec);
-   printf ("%17.12f        %17.12f\n", rat, dect);
+   printf ("%15.10f        %15.10f\n", ra, dec);
+   printf ("%15.10f        %15.10f\n", rat, dect);
    printf ("\n");
      
 /*
@@ -179,8 +204,8 @@ int main (void)
    }
 
    printf ("Moon geocentric and topocentric positions:\n");
-   printf ("%17.12f        %17.12f        %18.12e\n", ra, dec, dis);
-   printf ("%17.12f        %17.12f        %18.12e\n", rat, dect, dist);
+   printf ("%15.10f        %15.10f        %15.12f\n", ra, dec, dis);
+   printf ("%15.10f        %15.10f        %15.12f\n", rat, dect, dist);
 
 /*
    Topocentric place of the Moon using function 'place'-- should be 
@@ -194,7 +219,7 @@ int main (void)
       return (error);
    }
    
-   printf ("%17.12f        %17.12f        %18.12e\n", t_place.ra,t_place.dec,
+   printf ("%15.10f        %15.10f        %15.12f\n", t_place.ra,t_place.dec,
       t_place.dis);
    printf ("\n");
     
@@ -207,7 +232,7 @@ int main (void)
       &zd,&az,&rar,&decr);
 
    printf ("Moon zenith distance and azimuth:\n");
-   printf ("%17.12f        %17.12f\n", zd, az);
+   printf ("%15.10f        %15.10f\n", zd, az);
    printf ("\n");
 
 /*
@@ -229,7 +254,7 @@ int main (void)
    theta = era (jd_ut1,0.0);
 
    printf ("Greenwich and local sidereal time and Earth Rotation Angle:\n");
-   printf ("%17.12f        %17.12f        %17.12f\n", gast, last, theta);   
+   printf ("%16.11f        %16.11f        %15.10f\n", gast, last, theta);   
    printf ("\n");
 
 /*      
@@ -263,7 +288,7 @@ int main (void)
    
    printf ("Mars heliocentric ecliptic longitude and latitude and "
            "radius vector:\n");
-   printf ("%17.12f        %17.12f        %17.12f\n", elon, elat, r);   
+   printf ("%15.10f        %15.10f        %15.12f\n", elon, elat, r);   
    printf ("\n");
 
 /*
@@ -303,11 +328,11 @@ int main (void)
    }
 
    printf ("Direction of zenith vector (RA & Dec) in GCRS:\n");
-   printf ("%17.12f        %17.12f\n", ra, dec);
+   printf ("%15.10f        %15.10f\n", ra, dec);
    printf ("\n");
    
 
-   Ephem_Close();  /* remove this line for use with solsys version 2 */
+   ephem_close();  /* remove this line for use with solsys version 2 */
       
    return (0);
 }
