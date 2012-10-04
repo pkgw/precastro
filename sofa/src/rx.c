@@ -17,48 +17,54 @@ void iauRx(double phi, double r[3][3])
 **     phi    double          angle (radians)
 **
 **  Given and returned:
-**     r      double[3][3]    r-matrix
+**     r      double[3][3]    r-matrix, rotated
 **
-**  Sign convention:  The matrix can be used to rotate the reference
-**  frame of a vector.  Calling this function with positive phi
-**  incorporates in the matrix an additional rotation, about the x-axis,
-**  anticlockwise as seen looking towards the origin from positive x.
+**  Notes:
 **
-**  Called:
-**     iauIr        initialize r-matrix to identity
-**     iauRxr       product of two r-matrices
-**     iauCr        copy r-matrix
+**  1) Calling this function with positive phi incorporates in the
+**     supplied r-matrix r an additional rotation, about the x-axis,
+**     anticlockwise as seen looking towards the origin from positive x.
 **
-**  This revision:  2008 May 22
+**  2) The additional rotation can be represented by this matrix:
 **
-**  SOFA release 2010-12-01
+**         (  1        0            0      )
+**         (                               )
+**         (  0   + cos(phi)   + sin(phi)  )
+**         (                               )
+**         (  0   - sin(phi)   + cos(phi)  )
 **
-**  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+**  This revision:  2012 April 3
+**
+**  SOFA release 2012-03-01
+**
+**  Copyright (C) 2012 IAU SOFA Board.  See notes at end.
 */
 {
-   double s, c, a[3][3], w[3][3];
+   double s, c, a10, a11, a12, a20, a21, a22;
 
 
-/* Matrix representing new rotation. */
    s = sin(phi);
    c = cos(phi);
-   iauIr(a);
-   a[1][1] =  c;
-   a[2][1] = -s;
-   a[1][2] =  s;
-   a[2][2] =  c;
 
-/* Rotate. */
-   iauRxr(a, r, w);
+   a10 =   c*r[1][0] + s*r[2][0];
+   a11 =   c*r[1][1] + s*r[2][1];
+   a12 =   c*r[1][2] + s*r[2][2];
+   a20 = - s*r[1][0] + c*r[2][0];
+   a21 = - s*r[1][1] + c*r[2][1];
+   a22 = - s*r[1][2] + c*r[2][2];
 
-/* Return result. */
-   iauCr(w, r);
+   r[1][0] = a10;
+   r[1][1] = a11;
+   r[1][2] = a12;
+   r[2][0] = a20;
+   r[2][1] = a21;
+   r[2][2] = a22;
 
    return;
 
 /*----------------------------------------------------------------------
 **
-**  Copyright (C) 2010
+**  Copyright (C) 2012
 **  Standards Of Fundamental Astronomy Board
 **  of the International Astronomical Union.
 **
@@ -68,8 +74,8 @@ void iauRx(double phi, double r[3][3])
 **
 **  NOTICE TO USER:
 **
-**  BY USING THIS SOFTWARE YOU ACCEPT THE FOLLOWING TERMS AND CONDITIONS
-**  WHICH APPLY TO ITS USE.
+**  BY USING THIS SOFTWARE YOU ACCEPT THE FOLLOWING SIX TERMS AND
+**  CONDITIONS WHICH APPLY TO ITS USE.
 **
 **  1. The Software is owned by the IAU SOFA Board ("SOFA").
 **
@@ -95,8 +101,9 @@ void iauRx(double phi, double r[3][3])
 **        of how the derived work is based upon, contains and/or differs
 **        from the original SOFA software.
 **
-**     c) The name(s) of all routine(s) in your derived work shall not
-**        include the prefix "iau".
+**     c) The names of all routines in your derived work shall not
+**        include the prefix "iau" or "sofa" or trivial modifications
+**        thereof such as changes of case.
 **
 **     d) The origin of the SOFA components of your derived work must
 **        not be misrepresented;  you must not claim that you wrote the
@@ -114,16 +121,11 @@ void iauRx(double phi, double r[3][3])
 **     variations, no matter how minor, must be explicitly marked as
 **     such, as explained above.
 **
-**  4. In any published work or commercial products which includes
-**     results achieved by using the SOFA software, you shall
-**     acknowledge that the SOFA software was used in obtaining those
-**     results.
-**
-**  5. You shall not cause the SOFA software to be brought into
+**  4. You shall not cause the SOFA software to be brought into
 **     disrepute, either by misuse, or use for inappropriate tasks, or
 **     by inappropriate modification.
 **
-**  6. The SOFA software is provided "as is" and SOFA makes no warranty
+**  5. The SOFA software is provided "as is" and SOFA makes no warranty
 **     as to its use or performance.   SOFA does not and cannot warrant
 **     the performance or results which the user may obtain by using the
 **     SOFA software.  SOFA makes no warranties, express or implied, as
@@ -134,10 +136,14 @@ void iauRx(double phi, double r[3][3])
 **     SOFA representative has been advised of such damages, or for any
 **     claim by any third party.
 **
-**  7. The provision of any version of the SOFA software under the terms
+**  6. The provision of any version of the SOFA software under the terms
 **     and conditions specified herein does not imply that future
 **     versions will also be made available under the same terms and
 **     conditions.
+*
+**  In any published work or commercial product which uses the SOFA
+**  software directly, acknowledgement (see www.iausofa.org) is
+**  appreciated.
 **
 **  Correspondence concerning SOFA software should be addressed as
 **  follows:
