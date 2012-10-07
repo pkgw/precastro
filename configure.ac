@@ -31,6 +31,12 @@ AC_SUBST([AM_CFLAGS])
 AM_PATH_PYTHON(2.4)
 AM_CHECK_PYTHON_HEADERS(,AC_MSG_ERROR([could not find Python headers]))
 
+AC_PATH_PROG(SWIG, swig, :)
+if test x"$SWIG" = x: ; then
+   AC_MSG_ERROR([SWIG not found])
+fi
+AC_SUBST(SWIG)
+
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

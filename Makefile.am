@@ -3,13 +3,13 @@
 
 ACLOCAL_AMFLAGS = -I build-aux
 
-palpdir = $(pyexecdir)
-palp_LTLIBRARIES = precastro.la
+python_PYTHON = precastro.py
+pyexec_LTLIBRARIES = _precastro.la
 
-precastro_la_CPPFLAGS = -I$(srcdir)/novas -I$(srcdir)/sofa/src $(PYTHON_INCLUDES)
-precastro_la_LDFLAGS = -module -avoid-version
-precastro_la_SOURCES = \
- pymod.c \
+_precastro_la_CPPFLAGS = -I$(srcdir)/novas -I$(srcdir)/sofa/src $(PYTHON_INCLUDES)
+_precastro_la_LDFLAGS = -module -avoid-version
+_precastro_la_SOURCES = \
+ capi_wrap.c \
  novas/cio_file.c \
  novas/eph_manager.c \
  novas/eph_manager.h \
@@ -212,5 +212,10 @@ precastro_la_SOURCES = \
  sofa/src/zr.c
 
 EXTRA_DIST = \
+ capi.i \
  novas/solsys2.c \
  novas/solsys3.c
+
+capi_wrap.c: capi.i
+	$(SWIG) -outcurrentdir -python -builtin $<
+	-rm -f precastro.py
