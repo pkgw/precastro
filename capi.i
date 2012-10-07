@@ -1,9 +1,11 @@
 %module precastro
+%include "typemaps.i"
 
 %{
 #include "novas.h"
 #include "sofa.h"
 %}
+
 
 /* NOVAS */
 
@@ -57,3 +59,31 @@ typedef struct {
 
 short int astro_star (double jd_tt, cat_entry *star, short int accuracy,
 		      double *OUTPUT, double *OUTPUT);
+
+/* SOFA */
+
+%apply int *OUTPUT { int *iy, int *im, int *id, int *h, int *m, int *s, int *f };
+
+%inline %{
+    int iauD2dtf_tweak (const char *scale, int ndp, double d1, double d2,
+			int *iy, int *im, int *id, int *h, int *m,
+			int *s, int *f)
+    {
+	int ihmsf[4], retval;
+	retval = iauD2dtf (scale, ndp, d1, d2, iy, im, id, ihmsf);
+	*h = ihmsf[0];
+	*m = ihmsf[1];
+	*s = ihmsf[2];
+	*f = ihmsf[3];
+	return retval;
+    }
+%}
+
+int iauDtf2d (const char *scale, int iy, int im, int id, int ihr, int imn,
+	      double sec, double *OUTPUT, double *OUTPUT);
+
+int iauTaiutc (double tai1, double tai2, double *OUTPUT, double *OUTPUT);
+
+int iauUtctai (double utc1, double utc2, double *OUTPUT, double *OUTPUT);
+
+int iauTaitt (double tai1, double tai2, double *OUTPUT, double *OUTPUT);
