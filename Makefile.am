@@ -6,7 +6,7 @@ ACLOCAL_AMFLAGS = -I build-aux
 palpdir = $(pyexecdir)
 palp_LTLIBRARIES = precastro.la
 
-AM_CPPFLAGS = $(PYTHON_INCLUDES)
+precastro_la_CPPFLAGS = -I$(srcdir)/novas -I$(srcdir)/sofa/src $(PYTHON_INCLUDES)
 precastro_la_LDFLAGS = -module -avoid-version
 precastro_la_SOURCES = \
  pymod.c \
