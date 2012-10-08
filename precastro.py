@@ -12,7 +12,15 @@ _oktimescales = frozenset ('TAI UTC UT1 TT TCG TCB TDB'.split ())
 
 
 class PrecAstroError (Exception):
-    pass
+    def __init__ (self, fmt, *args):
+        if len (args):
+            self.pamessage = fmt % args
+        else:
+            self.pamessage = str (fmt)
+
+    def __str__ (self):
+        return self.pamessage
+
 
 class NovasError (PrecAstroError):
     def __init__ (self, func, code):
@@ -22,6 +30,7 @@ class NovasError (PrecAstroError):
     def __str__ (self):
         return 'NOVAS error code #%d in function %s' % (self.code, self.func)
 
+
 class SofaError (PrecAstroError):
     def __init__ (self, func, code):
         self.func = func
@@ -29,6 +38,7 @@ class SofaError (PrecAstroError):
 
     def __str__ (self):
         return 'SOFA error code #%d in function %s' % (self.code, self.func)
+
 
 class UnsupportedTimescaleError (PrecAstroError):
     def __init__ (self, timescale):
@@ -232,6 +242,37 @@ class Object (object):
 
     vradial = property (_get_vradial, _set_vradial,
                         doc='object\'s radial velocity in km per second')
+
+
+    def fromSesame (self, ident):
+        from urllib2 import urlopen
+        from urllib import quote
+
+        url = 'http://cdsweb.u-strasbg.fr/cgi-bin/nph-sesame?' + quote (ident)
+
+        for line in urlopen (url):
+            if line.startswith ('#!'):
+                raise PrecAstroError ('Simbad/Sesame lookup failed: ' + line[3:].strip ())
+
+            a = line.strip ().split ()
+            if not len (a):
+                continue
+
+            # The units for our fields are coincidentally the same as
+            # those used by Simbad, for the most part ...
+
+            if a[0] == '%J':
+                self.ra = float (a[1]) * D2R
+                self.dec = float (a[2]) * D2R
+            elif a[0] == '%P':
+                self.promora = float (a[1])
+                self.promodec = float (a[2])
+            elif a[0] == '%X':
+                self.parallax = float (a[1])
+            elif a[0] == '%V':
+                self.vradial = float (a[2])
+
+        return self
 
 
     def astropos (self, jd_tt, lowaccuracy=False):
