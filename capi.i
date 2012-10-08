@@ -88,3 +88,5 @@ int iauTaiutc (double tai1, double tai2, double *OUTPUT, double *OUTPUT);
 int iauUtctai (double utc1, double utc2, double *OUTPUT, double *OUTPUT);
 
 int iauTaitt (double tai1, double tai2, double *OUTPUT, double *OUTPUT);
+
+void iauEpj2jd (double epj, double *OUTPUT, double *OUTPUT);
