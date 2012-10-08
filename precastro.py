@@ -260,14 +260,17 @@ in the TT timescale.
   to convert *self* to TT.
 
 If the timescale of *self* is a TT, a copy is returned. Right now the
-only other supported timescale is UTC. Other conversions can be
-implemented as the need arises.
+only other supported timescales are TAI and UTC. Other conversions can
+be implemented as the need arises.
 """
         res = Time ()
         res.timescale = 'TT'
 
         if self.timescale == 'TT':
             res.jd1, res.jd2 = self.jd1, self.jd2
+        elif self.timescale == 'TAI':
+            code, res.jd1, res.jd2 = _precastro.iauTaitt (self.jd1, self.jd2)
+            _checksofacode ('taitt', code, dubiousok)
         elif self.timescale == 'UTC':
             code, res.jd1, res.jd2 = _precastro.iauUtctai (self.jd1, self.jd2)
             _checksofacode ('utctai', code, dubiousok)
