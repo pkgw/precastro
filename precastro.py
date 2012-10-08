@@ -1,3 +1,6 @@
+# Copyright 2012 Peter Williams
+# Licensed under the GNU General Public License, version 3 or higher.
+
 """precastro - precision astronomy time and coordinate routines
 
 """
