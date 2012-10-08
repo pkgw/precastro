@@ -21,6 +21,7 @@ typedef struct {
     double promodec;
     double parallax;
     double radialvelocity;
+    double promoepoch;
 } cat_entry;
 
 %rename (novas_object) object;

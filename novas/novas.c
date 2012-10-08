@@ -1740,7 +1740,7 @@ short int place (double jd_tt, object *cel_object,
 
       starvectors (&cel_object->star, pos1,vel1);
       dt = d_light (pos1,pob);
-      proper_motion (T0,pos1,vel1,(jd_tdb + dt), pos2);
+      proper_motion (cel_object->star.promoepoch,pos1,vel1,(jd_tdb + dt), pos2);
 
 /*
    Get position of star wrt observer (corrected for parallax).
@@ -8591,6 +8591,7 @@ void transform_hip (cat_entry *hipparcos,
    scratch.dec = hipparcos->dec;
    scratch.promora = hipparcos->promora;
    scratch.promodec = hipparcos->promodec;
+   scratch.promoepoch = hipparcos->promoepoch;
    scratch.parallax = hipparcos->parallax;
    scratch.radialvelocity = hipparcos->radialvelocity;
 
@@ -8941,6 +8942,7 @@ short int transform_cat (short int option, double date_incat,
 
    strcpy (newcat->starname, incat->starname);
    newcat->starnumber = incat->starnumber;
+   newcat->promoepoch = incat->promoepoch;
 
    return (error);
 }
@@ -9506,6 +9508,7 @@ short int make_cat_entry (char star_name[SIZE_OF_OBJ_NAME],
    star->dec = dec;
    star->promora = pm_ra;
    star->promodec = pm_dec;
+   star->promoepoch = T0;
    star->parallax = parallax;
    star->radialvelocity = rad_vel;
 
@@ -9624,6 +9627,7 @@ short int make_object (short int type, short int number,
    cel_obj->star.dec = 0.0;
    cel_obj->star.promora = 0.0;
    cel_obj->star.promodec = 0.0;
+   cel_obj->star.promoepoch = T0;
    cel_obj->star.parallax = 0.0;
    cel_obj->star.radialvelocity = 0.0;
 
@@ -9685,6 +9689,7 @@ short int make_object (short int type, short int number,
       cel_obj->star.dec = star_data->dec;
       cel_obj->star.promora = star_data->promora;
       cel_obj->star.promodec = star_data->promodec;
+      cel_obj->star.promoepoch = star_data->promoepoch;
       cel_obj->star.parallax = star_data->parallax;
       cel_obj->star.radialvelocity = star_data->radialvelocity;
    }

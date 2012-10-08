@@ -174,6 +174,8 @@ class Object (object):
             else:
                 self.dec = dec
 
+        self.promoepoch = 2451545.0 # J2000 epoch; unpatched NOVAS's assumption
+
 
     def _get_ra (self):
         return self._handle.ra * H2R
@@ -242,6 +244,16 @@ class Object (object):
 
     vradial = property (_get_vradial, _set_vradial,
                         doc='object\'s radial velocity in km per second')
+
+
+    def _get_promoepoch (self):
+        return self._handle.promoepoch
+
+    def _set_promoepoch (self, promoepoch_jdtdb):
+        self._handle.promoepoch = promoepoch_jdtdb
+
+    promoepoch = property (_get_promoepoch, _set_promoepoch,
+                           doc='TDB JD for which effect of proper motion is zero')
 
 
     def fromSesame (self, ident):
