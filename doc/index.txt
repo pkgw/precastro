@@ -1,0 +1,76 @@
+.. Copyright 2012 Peter Williams
+   Licensed under the GNU General Public License, version 3 or greater.
+
+.. _index:
+.. sectionauthor:: Peter Williams <peter@newton.cx>
+
+Precision Astronomy Libraries in Python
+=======================================
+
+.. toctree::
+   :maxdepth: 1
+
+.. module:: precastro
+   :synopsis: precision astronomical time and coordinate routines
+.. moduleauthor:: Peter Williams <peter@newton.cx>
+
+Times
+-----
+
+.. class:: Time
+
+   .. automethod:: fromJD
+
+   .. automethod:: fromMJD
+
+   .. automethod:: fromCalendar
+
+   .. automethod:: fromNow
+
+   .. automethod:: fromPOSIX
+
+   .. automethod:: asJD
+
+   .. automethod:: asMJD
+
+   .. automethod:: asTT
+
+   .. automethod:: fmtCalendar
+
+.. autofunction:: now
+
+Astrometry
+----------
+
+.. class:: Object(ra=None, dec=None)
+
+   .. autoattribute:: ra
+
+   .. autoattribute:: dec
+
+   .. autoattribute:: promora
+
+   .. autoattribute:: promodec
+
+   .. autoattribute:: parallax
+
+   .. autoattribute:: vradial
+
+   .. autoattribute:: promoepoch
+
+   .. automethod:: fromSesame
+
+   .. automethod:: astropos
+
+   .. automethod:: fmtradec
+
+Exceptions
+----------
+
+.. autoclass:: PrecAstroError
+
+.. autoclass:: NovasError
+
+.. autoclass:: SofaError
+
+.. autoclass:: UnsupportedTimescaleError

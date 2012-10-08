@@ -8,6 +8,9 @@ AC_CONFIG_MACRO_DIR([build-aux])
 AM_INIT_AUTOMAKE([foreign silent-rules -Wall])
 LT_INIT([disable-static])
 
+AC_SUBST([PALP_SHORTVERSION],[0.0]) dnl used in Sphinx docs
+AC_SUBST([PALP_COPYRIGHT],["2012 Peter Williams"])
+
 AC_LANG([C])
 
 AX_CHECK_COMPILE_FLAG([-fno-strict-aliasing],[ dnl for Python
@@ -37,6 +40,26 @@ if test x"$SWIG" = x: ; then
 fi
 AC_SUBST(SWIG)
 
+AC_PATH_PROG(SPHINXBUILD, sphinx-build, :)
+if test x"$SPHINXBUILD" = x: ; then
+   AC_MSG_WARN([The program 'sphinx-build' wasn't found on your system! Documentation won't be built.])
+   build_docs=false
+   docs_desc="no; no 'sphinx-build' found"
+else
+   build_docs=true
+   docs_desc="yes"
+fi
+
+AM_CONDITIONAL([BUILD_DOCS], $build_docs)
+
+if $build_docs ; then
+   AC_CONFIG_FILES([doc/conf.py])
+fi
+
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
+
+echo "Configuration summary:"
+echo "                   Install prefix: " $prefix
+echo "                    Building docs? " $docs_desc

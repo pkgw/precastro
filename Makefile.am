@@ -219,3 +219,54 @@ EXTRA_DIST = \
 capi_wrap.c: capi.i
 	$(SWIG) -outcurrentdir -python -builtin $<
 	-rm -f precastro.py
+
+
+# Docs.
+#
+# We hack EXTRA_DIST to make sure the 'static' directory gets created.
+#
+# Want to see something terrible? In order for the Sphinx autodoc
+# module to work, it needs to be able to import our Python module. But
+# it imports a native extension module, which lives within .libs and
+# won't be found by Python. My solution is to do a mini "make install"
+# into a $DESTDIR in our build tree, because by definition that will
+# give us our modules in the correct directory hierarchy with some
+# relatively easy munging of $PYTHONPATH.
+
+dist_noinst_DATA = \
+ doc/index.txt
+
+EXTRA_DIST += doc/static/.gitignore
+
+sphinx-html.stamp: $(dist_noinst_DATA) precastro.py
+	@eval `$(builddir)/libtool --config |$(GREP) ^shlibpath_var` && \
+	rm -rf doc/module_staging && \
+	$(MKDIR_P) doc/html doc/doctrees doc/module_staging && \
+	dest=`cd doc/module_staging && pwd` && \
+	eval "$$shlibpath_var=$$dest$(libdir):\$$$$shlibpath_var ; export $$shlibpath_var" && \
+	echo ================ Begin scratch doc installation && \
+	(cd $(builddir) && \
+	 $(MAKE) install-pyexecLTLIBRARIES install-pythonPYTHON DESTDIR=$$dest) && \
+	echo ================ End scratch doc installation && \
+	PYTHONPATH=$$dest$(pyexecdir):$$dest$(pythondir):$$PYTHONPATH \
+	  $(SPHINXBUILD) -d doc/doctrees -c doc -b html $(srcdir)/doc doc/html && \
+	rm -rf doc/module_staging && \
+	touch $@
+
+if BUILD_DOCS
+all-local: sphinx-html.stamp
+
+clean-local:
+	-rm -rf doc/doctrees doc/html
+	-rm -f sphinx-html.stamp
+endif
+
+websitehost = cfa0
+websitedir = /data/wdocs/pwilliam/www-docs/palp
+
+pushdocs: sphinx-html.stamp
+	ssh $(websitehost) rm -rf $(websitedir)/*
+	tar cz -C html . |ssh $(websitehost) tar xz -C $(websitedir)
+
+viewdocs: sphinx-html.stamp
+	firefox file://`cd $(builddir) && pwd`/doc/html/index.html &
