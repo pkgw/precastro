@@ -14,6 +14,12 @@ Precision Astronomy Libraries in Python
    :synopsis: precision astronomical time and coordinate routines
 .. moduleauthor:: Peter Williams <peter@newton.cx>
 
+Built on `SOFA <http://www.iausofa.org>`_ and `NOVAS
+<http://aa.usno.navy.mil/software/novas/novas_info.php>`_. Current versions:
+
+* SOFA: C version, issue 2012-03-01, revision a (2012-07-10).
+* NOVAS: C version, version 3.1, with "user updates" as of 2012-10-04.
+
 Times
 -----
 
@@ -74,3 +80,25 @@ Exceptions
 .. autoclass:: SofaError
 
 .. autoclass:: UnsupportedTimescaleError
+
+References
+----------
+
+* `SOFA Time Scale and Calendar Tools
+  <http://www.iausofa.org/2012_0301_C/sofa/sofa_ts_c.pdf>`_ cookbook,
+  from 2012/03/01 C version, revision a.
+* `NOVAS Guide
+  <http://aa.usno.navy.mil/software/novas/novas_c/NOVAS_C3.1_Guide.pdf>`_
+  from C 3.1 version, esp. Chapter 1 and references therein.
+* `US Naval Observatory selected technical reports
+  <http://aa.usno.navy.mil/publications/docs/reports.php>`_
+* "The error in the double precision representation of Julian dates."
+  Kaplan G, Bartlett J, & Harris W, 2011, USNO-AA technical note
+  2011-02. `Abstract only online
+  <http://ad.usno.navy.mil/edboard/110308.txt>`_.
+* `The Astronomical Almanac <http://aa.usno.navy.mil/publications/docs/asa.php>`_, a
+  joint publication of US and UK governments. 2013 edition ISBN: 978-0707741284.
+* `The Explanatory Supplement to the Astronomical Almanac
+  <http://www.amazon.com/Explanatory-Supplement-Astronomical-Almanac-Seidelmann/dp/0935702687>`_,
+  P. Kenneth Seidelmann, ed., 1992 (University Science Books). ISBN
+  978-0935702682.
