@@ -17,7 +17,7 @@ Precision Astronomy Libraries in Python
 Times
 -----
 
-.. class:: Time
+.. autoclass:: Time
 
    .. automethod:: fromJD
 
