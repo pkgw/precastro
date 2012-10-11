@@ -456,7 +456,8 @@ insignificant. If this becomes a problem, we can add a flag to override
 this behavior, or you can set :attr:`Object.promoepoch` manually.
 """
         self.promoepoch = Time ().fromcalendar (year, month, day, hour, minute,
-                                                second, **kwargs).asTT ().asJD ()
+                                                second, timescale,
+                                                **kwargs).asTT ().asJD ()
         return self
 
 
