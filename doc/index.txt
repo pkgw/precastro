@@ -20,6 +20,11 @@ Built on `SOFA <http://www.iausofa.org>`_ and `NOVAS
 * SOFA: C version, issue 2012-03-01, revision a (2012-07-10).
 * NOVAS: C version, version 3.1, with "user updates" as of 2012-10-04.
 
+Main classes:
+
+* :class:`Time`
+* :class:`Object`
+
 Times
 -----
 
