@@ -69,13 +69,20 @@ Astrometry
 
    .. autoattribute:: promoepoch
 
+   .. automethod:: fromSesame
+
+   .. automethod:: setradec
+
+   .. automethod:: setpromo
+
+   .. automethod:: setpecal
+
    .. automethod:: describe
 
-   .. automethod:: fromSesame
+   .. automethod:: fmtradec
 
    .. automethod:: astropos
 
-   .. automethod:: fmtradec
 
 Exceptions
 ----------
