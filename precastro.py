@@ -424,6 +424,35 @@ class Object (object):
                            doc='TDB JD for which effect of proper motion is zero')
 
 
+    def setpecal (self, year, month, day, hour=0, minute=0, second=0,
+                  timescale='UTC', **kwargs):
+        """Set the proper-motion epoch to a calendar date.
+
+:arg year: the year
+:arg month: the month
+:arg day: the day
+:arg hour: the hour (defaults to 0)
+:arg minute: the minute (defaults to 0)
+:arg second: the second (defaults to 0)
+:arg timescale: the timescale to use (defaults to 'UTC')
+:arg kwargs: extra keywords to pass to :meth:`Time.fromCalendar`
+:returns: *self*
+
+Set the "proper-motion epoch" to the given date. Because the date does not
+often need to be precise, *hour*, *minute*, and *second* default to zero
+for convenience, and likewise *timescale* defaults to "UTC".
+
+The epoch thus generated is converted to the TT timescale, while the
+timescale used for proper-motion calculations by NOVAS is TDB. My
+understanding is that the difference between these is almost always
+insignificant. If this becomes a problem, we can add a flag to override
+this behavior, or you can set :attr:`Object.promoepoch` manually.
+"""
+        self.promoepoch = Time ().fromCalendar (year, month, day, hour, minute,
+                                                second, **kwargs).asTT ().asJD ()
+        return self
+
+
     def fromSesame (self, ident):
         from urllib2 import urlopen
         from urllib import quote
