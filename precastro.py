@@ -455,6 +455,21 @@ class Object (object):
         return self
 
 
+    def describe (self):
+        '''Return a human-friendly string describing the object's properties
+
+:returns: a multiline string describing the object's properites
+:rtype: :class:`str`
+'''
+        s = ['ICRS J2000: ' + self.fmtradec ()]
+        s.append ('Proper motion: %+.2f %+.2f mas/yr' % (self.promora, self.promodec))
+        s.append ('Parallax: %.2f mas' % self.parallax)
+        s.append ('Radial velocity: %+.2f km/s' % self.vradial)
+        s.append ('Proper-motion epoch: %s [TDB]' %
+                  Time ().fromJD (self.promoepoch, 'TDB').fmtCalendar ())
+        return '\n'.join (s)
+
+
     def astropos (self, jd_tt, lowaccuracy=False):
         if isinstance (jd_tt, Time):
             jd_tt = jd_tt.asTT ().asJD ()
