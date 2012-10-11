@@ -91,7 +91,7 @@ broken-down calendar format, so that leapseconds can be expressed as
     are somewhat implemented; additional support for TAI, UT1, TCG,
     TCB, and TDB is possible but not yet exposed in the Python."""
 
-    def fromNow (self):
+    def fromnow (self):
         """Set the object to represent the current time according
 to the computer clock. The associated timescale is UTC.
 
@@ -126,9 +126,9 @@ associated timescale is UTC.
 
 It really seems as if we just can't do anything about the leapsecond
 ambiguity: the "TAI minus 10" standard is appealing but apparently not
-honored. We only really need this function to implement fromNow(), so
-if I ever find a way to get the current time in a way that's
-leapsecond-safe, then this becomes a lot less pressing.
+honored. We only really need this function to implement
+:meth:`fromnow`, so if I ever find a way to get the current time in a
+way that's leapsecond-safe, then this becomes a lot less pressing.
 
 Note while both UTC and POSIX time are problematic regarding
 leapseconds, they are problematic in different and non-canceling ways.
@@ -181,7 +181,7 @@ they're probably not too large. Maybe mentioned in Kaplan et al (2011)?
         return self
 
 
-    def fromCalendar (self, year, month, day, hour, minute, second, timescale,
+    def fromcalendar (self, year, month, day, hour, minute, second, timescale,
                       dubiousok=False):
         """Set the object to represent the given Gregorian calendar
 date in the given timescale.
@@ -282,7 +282,7 @@ be implemented as the need arises.
         return res
 
 
-    def fmtCalendar (self, precision=0, dubiousok=False):
+    def fmtcalendar (self, precision=0, dubiousok=False):
         """Format the time as a calendar date/time.
 
 :arg precision: how many decimal places of precision in the second
@@ -318,9 +318,9 @@ def now ():
 :returns: the current time from the system clock
 :rtype: :class:`Time`
 
-Shorthand for ``Time().fromNow()``.
+Shorthand for ``Time().fromnow()``.
 """
-    return Time ().fromNow ()
+    return Time ().fromnow ()
 
 
 class Object (object):
@@ -429,13 +429,20 @@ class Object (object):
         """Set the proper-motion epoch to a calendar date.
 
 :arg year: the year
+:type year: :class:`int`
 :arg month: the month
+:type month: :class:`int`
 :arg day: the day
+:type day: :class:`int`
 :arg hour: the hour (defaults to 0)
+:type hour: :class:`int`
 :arg minute: the minute (defaults to 0)
+:type minute: :class:`int`
 :arg second: the second (defaults to 0)
+:type second: :class:`float`
 :arg timescale: the timescale to use (defaults to 'UTC')
-:arg kwargs: extra keywords to pass to :meth:`Time.fromCalendar`
+:type timescale: :class:`str`
+:arg kwargs: extra keywords to pass to :meth:`Time.fromcalendar`
 :returns: *self*
 
 Set the "proper-motion epoch" to the given date. Because the date does not
@@ -448,12 +455,12 @@ understanding is that the difference between these is almost always
 insignificant. If this becomes a problem, we can add a flag to override
 this behavior, or you can set :attr:`Object.promoepoch` manually.
 """
-        self.promoepoch = Time ().fromCalendar (year, month, day, hour, minute,
+        self.promoepoch = Time ().fromcalendar (year, month, day, hour, minute,
                                                 second, **kwargs).asTT ().asJD ()
         return self
 
 
-    def fromSesame (self, ident):
+    def fromsesame (self, ident):
         from urllib2 import urlopen
         from urllib import quote
 
@@ -495,7 +502,7 @@ this behavior, or you can set :attr:`Object.promoepoch` manually.
         s.append ('Parallax: %.2f mas' % self.parallax)
         s.append ('Radial velocity: %+.2f km/s' % self.vradial)
         s.append ('Proper-motion epoch: %s [TDB]' %
-                  Time ().fromJD (self.promoepoch, 'TDB').fmtCalendar ())
+                  Time ().fromJD (self.promoepoch, 'TDB').fmtcalendar ())
         return '\n'.join (s)
 
 

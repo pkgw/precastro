@@ -34,9 +34,9 @@ Times
 
    .. automethod:: fromMJD
 
-   .. automethod:: fromCalendar
+   .. automethod:: fromcalendar
 
-   .. automethod:: fromNow
+   .. automethod:: fromnow
 
    .. automethod:: fromPOSIX
 
@@ -46,7 +46,7 @@ Times
 
    .. automethod:: asTT
 
-   .. automethod:: fmtCalendar
+   .. automethod:: fmtcalendar
 
 .. autofunction:: now
 
@@ -69,7 +69,7 @@ Astrometry
 
    .. autoattribute:: promoepoch
 
-   .. automethod:: fromSesame
+   .. automethod:: fromsesame
 
    .. automethod:: setradec
 
