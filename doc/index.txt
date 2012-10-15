@@ -28,6 +28,12 @@ Main classes:
 Times
 -----
 
+Some useful Julian Dates:
+
+* J2000.0 epoch: 2451545.0
+* Unix epoch: 2440587.5
+* MJD = 0: 2400000.5
+
 .. autoclass:: Time
 
    .. automethod:: fromJD
