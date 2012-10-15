@@ -324,7 +324,7 @@ Shorthand for ``Time().fromnow()``.
 
 
 class Object (object):
-    """A celestial object
+    """A celestial object.
 """
 
     def __init__ (self, ra=None, dec=None):
@@ -351,7 +351,7 @@ class Object (object):
     def _set_ra (self, rarad):
         self._handle.ra = rarad * R2H
 
-    ra = property (_get_ra, _set_ra, doc='object\'s ICRS right ascension in radians')
+    ra = property (_get_ra, _set_ra, doc='object\'s ICRS J2000 right ascension in radians')
 
     def _get_dec (self):
         return self._handle.dec * D2R
@@ -359,14 +359,31 @@ class Object (object):
     def _set_dec (self, decrad):
         self._handle.dec = decrad * R2D
 
-    dec = property (_get_dec, _set_dec, doc='object\'s ICRS declination in radians')
+    dec = property (_get_dec, _set_dec, doc='object\'s ICRS J2000 declination in radians')
 
     def setradec (self, rarad, decrad):
+        """Set the object's :attr:`ra` and :attr:`dec`
+
+:arg rarad: right ascension in radians
+:type rarad: :class:`float`
+:arg decrad: declination in radians
+:type decrad: :class:`float`
+:returns: *self*
+
+This is a convenience function, completely equivalent to setting :attr:`ra` and
+:attr:`dec` in two statements.
+"""
         self.ra = rarad
         self.dec = decrad
         return self
 
     def fmtradec (self, **kwargs):
+        """Return a textual representation of the object's :attr:`ra` and :attr:`dec`.
+
+:arg kwargs: extra arguments to pass to :meth:`astutil.fmtradec`
+:returns: the textualization
+:rtype: :class:`str`
+"""
         return fmtradec (self.ra, self.dec, **kwargs)
 
 
@@ -377,7 +394,10 @@ class Object (object):
         self._handle.promora = promora_masperyr
 
     promora = property (_get_promora, _set_promora,
-                        doc='object\'s ICRS RA proper motion in mas per year')
+                        doc='''object\'s ICRS RA proper motion in mas per year
+
+This is an offset, so ``ra(t) = ra + promora/cos(dec) * (t - promoepoch)``.
+''')
 
     def _get_promodec (self):
         return self._handle.promodec
@@ -389,6 +409,17 @@ class Object (object):
                         doc='object\'s ICRS declination proper motion in mas per year')
 
     def setpromo (self, promora_masperyr, promodec_masperyr):
+        """Set the object's :attr:`promora` and :attr:`promodec`
+
+:arg promora_masperyr: proper motion in right ascension, in milliarcseconds per year
+:type promora_masperyr: :class:`float`
+:arg promodec_masperyr: proper motion in declination, in milliarcseconds per year
+:type promodec_masperyr: :class:`float`
+:returns: *self*
+
+This is a convenience function, completely equivalent to setting :attr:`promora` and
+:attr:`promodec` in two statements.
+"""
         self.promora = promora_masperyr
         self.promodec = promodec_masperyr
         return self
@@ -421,7 +452,7 @@ class Object (object):
         self._handle.promoepoch = promoepoch_jdtdb
 
     promoepoch = property (_get_promoepoch, _set_promoepoch,
-                           doc='TDB JD for which effect of proper motion is zero')
+                           doc='TDB JD for which effect of proper motion is zero; default is J2000')
 
 
     def setpecal (self, year, month, day, hour=0, minute=0, second=0,
@@ -462,6 +493,25 @@ this behavior, or you can set :attr:`Object.promoepoch` manually.
 
 
     def fromsesame (self, ident):
+        """Fill in object information from the SIMBAD/Sesame database
+
+:arg ident: the object name
+:type ident: :class:`str`
+:returns: *self*
+:raises: :exc:`PrecAstroError` if the lookup seems to have failed
+
+Looks up the object in SIMBAD or NED using the online service provided
+by the CDS. To be explicit, this function performs an HTTP
+request. This function will fill in :attr:`ra`, :attr:`dec`,
+:attr:`promora`, :attr:`promodec`, :attr:`parallax`, and
+:attr:`vradial`, if they're provided.
+
+Note that SIMBAD can be inconsistent about proper motion settings. For
+some sources, :attr:`ra` and :attr:`dec` are tweaked such that the
+:attr:`promoepoch` is J2000. For others, this correction is not performed,
+and you must separately discover and set :attr:`promoepoch` in order to
+track proper motion correctly.
+"""
         from urllib2 import urlopen
         from urllib import quote
 
@@ -508,6 +558,29 @@ this behavior, or you can set :attr:`Object.promoepoch` manually.
 
 
     def astropos (self, jd_tt, lowaccuracy=False):
+        """Compute the source's "astrometric" place (defined below)
+
+:arg jd_tt: the TT JD at which to evaluate the source's place
+:type jd_tt: :class:`float` or :class:`Time`
+:arg lowaccuracy: whether to perform a faster, but lower-accuracy calculation
+:type lowaccuracy: optional :class:`bool`
+:returns: tuple of ``(ra, dec)`` in radians
+:rtype: ``(float, float)``
+:raises: :exc:`NovasError` if the library routine fails
+:raises: other exceptions if *jd_tt* cannot be converted to TT.
+
+The *astrometric* place of a source is its location taking into
+account parallax and proper motion for a geocentric observer with mean
+equator and equinox of J2000.0. (Gravitational light bending,
+aberration, and atmospheric refraction are not accounted for: that
+would be its *virtual* place. If coordinates were additionally
+expressed relative to the true epoch and equinox of date, that would
+be its *apparent* place.)
+
+The argument is treated as a :class:`float` JD, unless it is an
+instance of :class:`Time`, in which case it is converted by calling
+``jt_tt.asTT().asJD()``.
+"""
         if isinstance (jd_tt, Time):
             jd_tt = jd_tt.asTT ().asJD ()
 
