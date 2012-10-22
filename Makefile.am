@@ -212,6 +212,7 @@ _precastro_la_SOURCES = \
  sofa/src/zr.c
 
 EXTRA_DIST = \
+ README.md \
  capi.i \
  novas/solsys2.c \
  novas/solsys3.c
