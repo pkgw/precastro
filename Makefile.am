@@ -217,6 +217,8 @@ EXTRA_DIST = \
  novas/solsys2.c \
  novas/solsys3.c
 
+BUILT_SOURCES = capi_wrap.c
+
 capi_wrap.c: capi.i
 	$(SWIG) -outcurrentdir -python -builtin $<
 	-rm -f precastro.py
