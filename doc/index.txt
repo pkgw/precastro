@@ -90,6 +90,23 @@ Astrometry
    .. automethod:: astropos
 
 
+.. data:: objcols
+
+  This is a list of strings defining the column names that should be used
+  when serializing an :class:`Object` to text using the :mod:`srctable`
+  module. For example::
+
+    import sys, srctable, flatdb, precastro
+    ...
+    # Writing a table of Objects:
+    c = srctable.stmapping ().cols (precastro.objcols)
+    flatdb.writetable (sys.stdout, [], c, list_of_Objects)
+
+    # objcols isn't needed for reading, since srctable knows about all
+    # of the columns natively.
+    h, c, r = srctable.readst (sys.stdin, recfactory=precastro.Object)
+
+
 Exceptions
 ----------
 

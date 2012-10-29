@@ -9,7 +9,7 @@ import _precastro
 from astutil import *
 
 __all__ = ('PrecAstroError NovasError SofaError UnsupportedTimescaleError '
-           'Time now Object').split ()
+           'Time now Object objcols').split ()
 
 _oktimescales = frozenset ('TAI UTC UT1 TT TCG TCB TDB'.split ())
 
@@ -589,3 +589,7 @@ instance of :class:`Time`, in which case it is converted by calling
             raise NovasError ('astro_star', code)
 
         return ra * H2R, dec * D2R
+
+
+# for combination with srctable:
+objcols = 'ra dec promora promodec promoepoch parallax vradial'.split ()
