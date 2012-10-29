@@ -55,6 +55,8 @@ Some useful Julian Dates:
 
    .. automethod:: fromPOSIX
 
+   .. automethod:: fromjepoch
+
    .. automethod:: asJD
 
    .. automethod:: asMJD
