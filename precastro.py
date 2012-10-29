@@ -383,7 +383,7 @@ This is a convenience function, completely equivalent to setting :attr:`ra` and
 
 :arg rastr: sexagesimal representation of the RA in hours
 :type rastr: :class:`str`
-:arg decstr: sexagesimal representation of the declination in hours
+:arg decstr: sexagesimal representation of the declination in degrees
 :type decstr: :class:`str`
 :returns: *self*
 """
