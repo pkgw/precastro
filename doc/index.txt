@@ -90,6 +90,8 @@ Astrometry
 
    .. automethod:: setradec
 
+   .. automethod:: parseradec
+
    .. automethod:: setpromo
 
    .. automethod:: setpecal

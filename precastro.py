@@ -377,6 +377,21 @@ This is a convenience function, completely equivalent to setting :attr:`ra` and
         self.dec = decrad
         return self
 
+
+    def parseradec (self, rastr, decstr):
+        """Set the object's :attr:`ra` and :attr:`dec` from a textual representation
+
+:arg rastr: sexagesimal representation of the RA in hours
+:type rastr: :class:`str`
+:arg decstr: sexagesimal representation of the declination in hours
+:type decstr: :class:`str`
+:returns: *self*
+"""
+        self.ra = parsehours (rastr)
+        self.dec = parsedeglat (decstr)
+        return self
+
+
     def fmtradec (self, **kwargs):
         """Return a textual representation of the object's :attr:`ra` and :attr:`dec`.
 
