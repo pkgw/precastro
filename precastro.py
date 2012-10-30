@@ -223,22 +223,18 @@ time, so that's not actually helpful.
         return self
 
 
-    def fromjepoch (self, julian_epoch, timescale):
-        """Set the object to represent the given Julian epoch and
-timescale.
+    def fromjepoch (self, julian_epoch):
+        """Set the object to represent the given Julian epoch.
 
 :arg julian_epoch: a Julian epoch (eg 2005.37)
 :type julian_epoch: convertable to :class:`float`
-:arg timescale: the timescale being used (see :class:`Time` docs)
-:type timescale: :class:`str`
 :returns: *self*
 
-In the Julian system, a year is exactly 365.25 days long, so the
-conversion to a Julian Date is relatively straightforward.
+A Julian epoch measures years of exactly 365.25 days long in the TT
+timescale.
 """
-        _checktimescale (timescale)
         self.jd1, self.jd2 = _precastro.iauEpj2jd (julian_epoch)
-        self.timescale = timescale
+        self.timescale = 'TT'
         return self
 
 
