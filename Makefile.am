@@ -224,6 +224,17 @@ capi_wrap.c: capi.i
 	-rm -f precastro.py
 
 
+# Generating binary ephemeris file
+
+pyexec_DATA = _precastro-DEc421.dat
+noinst_PYTHON = compile_ephem.py
+
+_precastro-DEc421.dat: compile_ephem.py header.421 ascp1900.421
+	$(PYTHON) $^ >$@
+
+header.421 ascp1900.421:
+	$(WGET) 'ftp://ssd.jpl.nasa.gov/pub/eph/planets/ascii/de421/$@'
+
 # Docs.
 #
 # We hack EXTRA_DIST to make sure the 'static' directory gets created.
