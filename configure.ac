@@ -36,7 +36,7 @@ AM_CHECK_PYTHON_HEADERS(,AC_MSG_ERROR([could not find Python headers]))
 
 AC_PATH_PROG(SWIG, swig, :)
 if test x"$SWIG" = x: ; then
-   AC_MSG_ERROR([SWIG not found])
+   AC_MSG_ERROR([the program 'swig' was not found])
 fi
 AC_SUBST(SWIG)
 
