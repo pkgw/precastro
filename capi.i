@@ -6,6 +6,7 @@
 
 %{
 #include "novas.h"
+#include "eph_manager.h"
 #include "sofa.h"
 %}
 
