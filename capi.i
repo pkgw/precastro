@@ -64,6 +64,9 @@ typedef struct {
 short int astro_star (double jd_tt, cat_entry *star, short int accuracy,
 		      double *OUTPUT, double *OUTPUT);
 
+short int make_object (short int type, short int number, char name[51],
+		       cat_entry *star_data, object *cel_obj);
+
 short int ephem_open (char *ephem_name, double *OUTPUT, double *OUTPUT,
 		      short int *OUTPUT);
 

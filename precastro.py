@@ -609,6 +609,14 @@ this behavior, or you can set :attr:`Object.promoepoch` manually.
         return self
 
 
+    def _asobject (self):
+        novobj = _precastro.novas_object ()
+        ret = _precastro.make_object (2, 0, ' ', self._handle, novobj)
+        if ret:
+            raise NovasError ('make_object', ret)
+        return novobj
+
+
     def fromsesame (self, ident):
         """Fill in object information from the SIMBAD/Sesame database
 
