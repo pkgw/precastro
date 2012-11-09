@@ -64,6 +64,34 @@ typedef struct {
 short int astro_star (double jd_tt, cat_entry *star, short int accuracy,
 		      double *OUTPUT, double *OUTPUT);
 
+short int ephem_open (char *ephem_name, double *OUTPUT, double *OUTPUT,
+		      short int *OUTPUT);
+
+short int ephem_close (void);
+
+%apply double *OUTPUT { double *x, double *y, double *z,
+                        double *vx, double *vy, double *vz };
+
+%inline %{
+    short int ephemeris_tweak (double jd1, double jd2, object *cel_obj, short int origin,
+			       short int accuracy, double *x, double *y, double *z,
+			       double *vx, double *vy, double *vz)
+    {
+	short int retval;
+	double jd[2], pos[3], vel[3];
+	jd[0] = jd1;
+	jd[1] = jd2;
+	retval = ephemeris (jd, cel_obj, origin, accuracy, pos, vel);
+	*x = pos[0];
+	*y = pos[1];
+	*z = pos[2];
+	*vx = vel[0];
+	*vy = vel[1];
+	*vz = vel[2];
+	return retval;
+    }
+%}
+
 /* SOFA */
 
 %apply int *OUTPUT { int *iy, int *im, int *id, int *h, int *m, int *s, int *f };

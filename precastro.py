@@ -12,6 +12,7 @@ __all__ = ('PrecAstroError NovasError SofaError UnsupportedTimescaleError '
            'Time now Object objcols').split ()
 
 _oktimescales = frozenset ('TAI UTC UT1 TT TCG TCB TDB'.split ())
+C_AUDAY = 173.1446326846693 # copied from novascon.c
 
 
 class PrecAstroError (Exception):
@@ -297,6 +298,84 @@ be implemented as the need arises.
         return res
 
 
+    def asTDB (self, ttok=False):
+        """Return a :class:`Time` object equivalent to this one, but
+in the TDB timescale.
+
+:arg ttok: whether to accept TT as close enough (~2 ms differences)
+:type ttok: :class:`bool`
+:returns: an equivalent time in the TDB, or maybe TT, timescale
+:rtype: :class:`Time`
+:raises: :exc:`UnsupportedTimescaleError` if there's no implementation
+  to convert *self* to TDB.
+
+If the timescale of *self* is a TDB, a copy is returned. Right now,
+the only other option is to return a TT time using :meth:`asTT`, if
+*ttok* is :const:`True`. Note that in this case the returned time will
+have its :attr:`timescale` equal to "TT", not to "TDB".
+"""
+        if self.timescale == 'TDB':
+            res = Time ()
+            res.timescale = 'TDB'
+            res.jd1, res.jd2 = self.jd1, self.jd2
+            return res
+
+        if not ttok:
+            raise UnsupportedTimescaleError (self.timescale)
+
+        return self.asTT ()
+
+
+    def asBJD (self, obj, ttok=True):
+        """Return a :class:`Time` object adjusted to the solar system barycenter,
+correcting for travel time to the :class:`Object` *obj*.
+
+:arg obj: the reference object
+:type obj: :class:`Object`
+:arg ttok: whether TT rather than TDB as the ephemeris time is OK (~2 ms errors)
+:type ttok: :class:`bool`
+:returns: a time adjusted to the barycenter
+:rtype: :class:`Time`
+
+The output time will be in either TT or TDB timescale, depending on what we know
+how to obtain from the timescale of *self*.
+
+Our accuracy ought to be about 0.1 s. Here are some of the things we don't do
+right that should affect our results. (Most of this list is from Jason Eastman's
+documentation for the Ohio State University BJD calculator.)
+
+* Roemer delay for solar system sources: <~ 100 s
+  (this is negligible for things outside of the solar system)
+* Observatory site rather than geocenter: 8-22 ms
+* Proper conversion from TT to TDB: ~2 ms (according to Wikipedia)
+* Einstein term: ~1 ms
+* TT(BIPM) instead of TT(TAI): ~30 us
+* Correct observatory elevation: ~10 us
+* Shapiro delay: ~1 us
+* Proper Earth Orientation Parameters: ~1 us
+* Proper ITRF observatory site: ~30 ns
+* Integrated rather than approximate TT-to-TDB conversion: ~20 ns
+"""
+        earth = _precastro.novas_object ()
+        earth.type = 0
+        earth.number = 3
+
+        tdb = self.asTDB (ttok=ttok)
+
+        from math import cos, sin
+        xhat = cos (obj.dec) * cos (obj.ra)
+        yhat = cos (obj.dec) * sin (obj.ra)
+        zhat = sin (obj.dec)
+
+        _open_ephem ()
+        # these are in AU:
+        xobs, yobs, zobs = _precastro.ephemeris_tweak (tdb.jd1, tdb.jd2, earth, 0, 0)[1:4]
+        jdelta = (xobs * xhat + yobs * yhat + zobs * zhat) / C_AUDAY
+
+        tdb.jd2 += jdelta
+        return tdb
+
+
     def fmtcalendar (self, precision=0, dubiousok=False):
         """Format the time as a calendar date/time.
 
@@ -336,6 +415,14 @@ def now ():
 Shorthand for ``Time().fromnow()``.
 """
     return Time ().fromnow ()
+
+
+def _open_ephem ():
+    from os.path import dirname, join
+    p = join (dirname (_precastro.__file__), '_precastro-DEc421.dat')
+    code, jd1, jd2, de_num = _precastro.ephem_open (p)
+    if code:
+        raise NovasError ('ephem_open', code)
 
 
 class Object (object):
