@@ -46,7 +46,7 @@ def compile (header, data, output):
         if curgroup == 1010:
             if titles is None:
                 titles = []
-            titles.append (l)
+            titles.append (l.rstrip ())
         elif curgroup == 1030:
             if spaninfo is not None:
                 die ('expected exactly one data line in group 1030')
@@ -138,7 +138,7 @@ def compile (header, data, output):
 
     output.write (titles[0].ljust (84))
     output.write (titles[1].ljust (84))
-    output.write (titles[1].ljust (84))
+    output.write (titles[2].ljust (84))
     n += 84 * 3
 
     for i in xrange (nconstnames):
@@ -146,6 +146,7 @@ def compile (header, data, output):
     output.write (' ' * (6 * (400 - nconstnames)))
     n += 400 * 6
 
+    spanpos = output.tell ()
     output.write (struct.pack ('=3d', *spaninfo))
     n += 3 * dblsz
 
@@ -182,6 +183,7 @@ def compile (header, data, output):
     # totally ignore the JD bounds.
 
     newrec = True
+    spaninfo = None
 
     for l in data:
         a = l.strip ().split ()
@@ -200,12 +202,24 @@ def compile (header, data, output):
         else:
             block += [float (x.replace ('D', 'e')) for x in a]
 
+            if len (block) == len (a):
+                if spaninfo is None:
+                    spaninfo = [block[0], block[1], block[1] - block[0]]
+                else:
+                    spaninfo[1] = block[1]
+
             if len (block) >= ncoeff:
                 newrec = True
 
                 for i in xrange (ncoeff):
                     output.write (struct.pack ('=d', block[i]))
 
+    # Patch up the boundary info. If we don't do this, everything breaks!
+    # Lame because otherwise we could stream the output.
+
+    output.seek (spanpos)
+    output.write (struct.pack ('=3d', *spaninfo))
+
 
 if __name__ == '__main__':
-    compile (open (sys.argv[1]), open (sys.argv[2]), sys.stdout)
+    compile (open (sys.argv[1]), open (sys.argv[2]), open (sys.argv[3], 'wb'))

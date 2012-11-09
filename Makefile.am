@@ -230,7 +230,7 @@ pyexec_DATA = _precastro-DEc421.dat
 noinst_PYTHON = compile_ephem.py
 
 _precastro-DEc421.dat: compile_ephem.py header.421 ascp1900.421
-	$(PYTHON) $^ >$@
+	$(PYTHON) $^ $@
 
 header.421 ascp1900.421:
 	$(WGET) 'ftp://ssd.jpl.nasa.gov/pub/eph/planets/ascii/de421/$@'
