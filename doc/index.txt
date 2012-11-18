@@ -170,13 +170,19 @@ References
   from C 3.1 version, esp. Chapter 1 and references therein.
 * `US Naval Observatory selected technical reports
   <http://aa.usno.navy.mil/publications/docs/reports.php>`_
-* "The error in the double precision representation of Julian dates."
-  Kaplan G, Bartlett J, & Harris W, 2011, USNO-AA technical note
-  2011-02. `Abstract only online
-  <http://ad.usno.navy.mil/edboard/110308.txt>`_.
+* `IERS Conventions (2010)
+  <http://www.iers.org/nn_11216/IERS/EN/Publications/TechnicalNotes/tn36.html>`_.
+  Petit G & Luzum B, eds. 2010, IERS Technical Note #36. ISBN: 3-89888-989-6.
 * `The Astronomical Almanac <http://aa.usno.navy.mil/publications/docs/asa.php>`_, a
   joint publication of US and UK governments. 2013 edition ISBN: 978-0707741284.
 * `The Explanatory Supplement to the Astronomical Almanac
   <http://www.amazon.com/Explanatory-Supplement-Astronomical-Almanac-Seidelmann/dp/0935702687>`_,
   P. Kenneth Seidelmann, ed., 1992 (University Science Books). ISBN
   978-0935702682.
+* "The error in the double precision representation of Julian dates."
+  Kaplan G, Bartlett J, & Harris W, 2011, USNO-AA technical note
+  2011-02. `Abstract only online
+  <http://ad.usno.navy.mil/edboard/110308.txt>`_.
+* `Achieving Better Than 1 Minute Accuracy in the Heliocentric and
+  Barycentric Julian Dates. <http://adsabs.harvard.edu/abs/2010PASP..122..935E>`_
+  Eastman J, Siverd R, Gaudi BS. 2010 PASP 122 935.
