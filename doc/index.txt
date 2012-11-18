@@ -67,6 +67,8 @@ Some useful Julian Dates:
 
    .. automethod:: asBJD
 
+   .. automethod:: ascalendar
+
    .. automethod:: fmtcalendar
 
 .. autofunction:: now

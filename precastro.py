@@ -376,6 +376,18 @@ documentation for the Ohio State University BJD calculator.)
         return tdb
 
 
+    def ascalendar (self):
+        """Convert the time to Gregorian calendar format.
+
+:returns: ``(year, month, day, fraction-of-day)``
+:rtype: (:class:`int`, :class:`int`, :class:`int`, :class:`float`)
+:raises: :exc:`SofaError` if using an unacceptably extreme date
+"""
+        res, yr, mo, dy, frac = _precastro.iauJd2cal (self.jd1, self.jd2)
+        _checksofacode ('jd2cal', res, False)
+        return yr, mo, dy, frac
+
+
     def fmtcalendar (self, precision=0, dubiousok=False):
         """Format the time as a calendar date/time.
 
