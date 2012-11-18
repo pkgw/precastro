@@ -9,7 +9,7 @@ import _precastro
 from astutil import *
 
 __all__ = ('PrecAstroError NovasError SofaError UnsupportedTimescaleError '
-           'Time now Object objcols').split ()
+           'Time now Object objcols Observer EarthObserver').split ()
 
 _oktimescales = frozenset ('TAI UTC UT1 TT TCG TCB TDB'.split ())
 C_AUDAY = 173.1446326846693 # copied from novascon.c
@@ -730,3 +730,84 @@ instance of :class:`Time`, in which case it is converted by calling
 
 # for combination with srctable:
 objcols = 'ra dec promora promodec promoepoch parallax vradial'.split ()
+
+
+class Observer (object):
+    """An observer located on the Earth or in space. This is an abstract
+base class; see :class:`EarthObserver`.
+"""
+
+    def __init__ (self):
+        self._handle = _precastro.novas_observer ()
+
+
+class EarthObserver (Observer):
+    """An earthbound observer. FIXME: there are some ambiguities in the
+NOVAS documentation about whether we're using WGS84, ITRF, or what,
+although the differences are very, very small.
+"""
+
+    def __init__ (self):
+        super (EarthObserver, self).__init__ ()
+        _precastro.make_observer_at_geocenter (self._handle)
+
+
+    def _get_latitude (self):
+        return self._handle.on_surf.latitude * D2R
+
+    def _set_latitude (self, latrad):
+        self._handle.on_surf.latitude = latrad * R2D
+
+    latitude = property (_get_latitude, _set_latitude,
+                         doc='observer\'s geodetic WGS84 latitude in radians')
+
+
+    def _get_longitude (self):
+        return self._handle.on_surf.longitude * D2R
+
+    def _set_longitude (self, lonrad):
+        self._handle.on_surf.longitude = lonrad * R2D
+
+    longitude = property (_get_longitude, _set_longitude,
+                          doc='observer\'s east-positive geodetic WGS84 longitude in radians')
+
+
+    def _get_height (self):
+        return self._handle.on_surf.height
+
+    def _set_height (self, heightmeters):
+        self._handle.on_surf.height = heightmeters
+
+    height = property (_get_height, _set_height,
+                       doc='observer\'s WGS84 height in meters')
+
+
+    def fmtlatlon (self, intersep=' ', **kwargs):
+        """Return a textual representation of the objects :attr:`latitude`
+and :attr:`longitude`.
+
+:arg intersep: a string to place between the latitude and longitude strings
+:type intersep: :class:`str`
+:arg kwargs: extra arguments to pass to :meth:`astutil.fmtdeglat` and :meth:`astutil.fmtdeglon`
+:returns: the textualization
+:rtype: :class:`str`
+"""
+        return (fmtdeglat (self.latitude, **kwargs) + intersep +
+                fmtdeglon (self.longitude, **kwargs))
+
+
+    def parselatlon (self, latstr, lonstr):
+        """Set the observer's :attr:`latitude` and :attr:`longitude` from
+a textual representation.
+
+:arg latstr: sexagesimal representation of the latitude in degrees
+:type latstr: :class:`str`
+:arg lonstr: sexagesimal representation of the longitude in degrees
+:type lonstr: :class:`str`
+:returns: *self*
+"""
+        self.latitude = parsedeglat (latstr)
+        self.longitude = parsedeglon (lonstr)
+        return self
+
+    # TODO: temperature, pressure

@@ -24,6 +24,9 @@ Main classes:
 
 * :class:`Time`
 * :class:`Object`
+* :class:`Observer`
+
+  * :class:`EarthObserver`
 
 Topics:
 
@@ -126,6 +129,20 @@ Astrometry
     # objcols isn't needed for reading, since srctable knows about all
     # of the columns natively.
     h, c, r = srctable.readst (sys.stdin, recfactory=precastro.Object)
+
+.. autoclass:: Observer
+
+.. autoclass:: EarthObserver
+
+   .. autoattribute:: latitude
+
+   .. autoattribute:: longitude
+
+   .. autoattribute:: height
+
+   .. automethod:: parselatlon
+
+   .. automethod:: fmtlatlon
 
 .. _exceptions:
 

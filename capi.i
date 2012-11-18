@@ -96,6 +96,13 @@ short int ephem_close (void);
     }
 %}
 
+void make_observer_at_geocenter (observer *obs_at_geocenter);
+
+void equ2hor (double jd_ut1, double delta_t, short int accuracy,
+	      double xp, double yp, on_surface *location, double ra,
+	      double dec, short int ref_option,
+	      double *OUTPUT, double *OUTPUT, double *OUTPUT, double *OUTPUT);
+
 /* SOFA */
 
 %apply int *OUTPUT { int *iy, int *im, int *id, int *h, int *m, int *s, int *f };
