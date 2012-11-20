@@ -40,6 +40,12 @@ if test x"$SWIG" = x: ; then
 fi
 AC_SUBST(SWIG)
 
+AC_PATH_PROG(WGET, wget, :)
+if test x"$WGET" = x: ; then
+   AC_MSG_ERROR([the program 'wget' was not found (needed for downloading JPL ephemeris data)])
+fi
+AC_SUBST(WGET)
+
 AC_PATH_PROG(SPHINXBUILD, sphinx-build, :)
 if test x"$SPHINXBUILD" = x: ; then
    AC_MSG_WARN([The program 'sphinx-build' wasn't found on your system! Documentation won't be built.])
