@@ -224,6 +224,45 @@ time, so that's not actually helpful.
         return self
 
 
+    def fromfdcal (self, year, month, day, fday, timescale, dubiousok=False):
+        """Set the object to represent the given Gregorian calendar
+date, with a fractional day, in the given timescale.
+
+:arg year: the year
+:type year: convertable to :class:`int`
+:arg month: the month
+:type month: convertable to :class:`int`, range 1 to 12
+:arg day: the day
+:type day: convertable to :class:`int`, range 1 to 31
+:arg fday: the day fraction
+:type fday: convertable to :class:`float`, range 0.0 to 1.0
+:arg timescale: the timescale being used (see :class:`Time` docs)
+:type timescale: :class:`str`
+:arg dubiousok: whether to accept extreme years
+:type dubiousok: :class:`bool`
+:returns: *self*
+:raises: :exc:`SofaError` for bad inputs
+
+Mirrored by :meth:`ascalendar`. The range of *fday* isn't actually
+checked, and is just added to the JD resulting from a calendar
+computation.
+
+Uses the Gregorian calendar system, which has the 100- and 400-year
+leap day rules. SOFA docs say that the algorithm is valid to -4799
+January 1 and uses the "proleptic Gregorian calendar" without paying
+attention to, say, when the Gregorian calendar was actually adopted.
+
+This has the same bad leapsecond semantics as JD computations, so
+UTC conversions will probably be subject to the usual pitfalls.
+"""
+        _checktimescale (timescale)
+        code, self.jd1, self.jd2 = _precastro.iauDtf2d (timescale, year, month, day, 0, 0, 0)
+        _checksofacode ('dtf2d', code, dubiousok)
+        self.jd2 += fday
+        self.timescale = timescale
+        return self
+
+
     def fromjepoch (self, julian_epoch):
         """Set the object to represent the given Julian epoch.
 

@@ -54,6 +54,8 @@ Some useful Julian Dates:
 
    .. automethod:: fromcalendar
 
+   .. automethod:: fromfdcal
+
    .. automethod:: fromnow
 
    .. automethod:: fromPOSIX
