@@ -34,6 +34,8 @@ AC_SUBST([AM_CFLAGS])
 AM_PATH_PYTHON(2.4)
 AM_CHECK_PYTHON_HEADERS(,AC_MSG_ERROR([could not find Python headers]))
 
+AM_PROG_AR dnl for "linking libtool libraries with a non-POSIX archiver"
+
 AC_PATH_PROG(SWIG, swig, :)
 if test x"$SWIG" = x: ; then
    AC_MSG_ERROR([the program 'swig' was not found])
