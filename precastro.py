@@ -493,7 +493,8 @@ class SiderealObject (CelestialObject):
     def __init__ (self, ra=None, dec=None):
         super (SiderealObject, self).__init__ ()
 
-        ret = _precastro.make_cat_entry ('', '', 0, 0., 0., 0., 0., 0., 0., self._handle.star)
+        ret = _precastro.make_cat_entry ('', '', 0, 0., 0., 0., 0.,
+                                         0., 0., self._handle.star)
         if ret:
             raise NovasError ('make_cat_entry', ret)
 
@@ -779,6 +780,52 @@ instance of :class:`Time`, in which case it is converted by calling
 
 # for combination with srctable:
 objcols = 'ra dec promora promodec promoepoch parallax vradial'.split ()
+
+
+_ephemnums = {
+    'mercury': 1,
+    'venus': 2,
+    'earth': 3,
+    'mars': 4,
+    'jupiter': 5,
+    'saturn': 6,
+    'uranus': 7,
+    'neptune': 8,
+    'pluto': 9,
+    'sun': 10,
+    'moon': 11,
+    }
+
+class EphemObject (CelestialObject):
+    """A celestial object with a position computed from an ephemeris."""
+
+    def __init__ (self, name):
+        super (EphemObject, self).__init__ ()
+
+        if name not in _ephemnums:
+            raise ValueError ('unrecognized ephemeris object name "%s"' % name)
+
+        num = _ephemnums[name]
+
+        # star info will be zero'ed out in this mode.
+        ret = _precastro.make_object (0, num, ' ', None, self._handle)
+        if ret:
+            raise NovasError ('make_object', ret)
+
+
+    def describe (self):
+        '''Return a human-friendly string describing the object's properties
+
+:returns: a multiline string describing the object's properites
+:rtype: :class:`str`
+'''
+        for name, num in _ephemnums.iteritems ():
+            if num == self._handle.number:
+                break
+        else:
+            name = 'unknown?'
+
+        return 'Ephemeris object "%s"' % name
 
 
 class Observer (object):
