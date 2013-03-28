@@ -9,7 +9,8 @@ import _precastro
 from astutil import *
 
 __all__ = ('PrecAstroError NovasError SofaError UnsupportedTimescaleError '
-           'Time now Object objcols Observer EarthObserver').split ()
+           'Time now CelestialObject SiderealObject objcols '
+           'Observer EarthObserver').split ()
 
 _oktimescales = frozenset ('TAI UTC UT1 TT TCG TCB TDB'.split ())
 C_AUDAY = 173.1446326846693 # copied from novascon.c
@@ -367,10 +368,10 @@ have its :attr:`timescale` equal to "TT", not to "TDB".
 
     def asBJD (self, obj, ttok=True):
         """Return a :class:`Time` object adjusted to the solar system barycenter,
-correcting for travel time to the :class:`Object` *obj*.
+correcting for travel time to the :class:`SiderealObject` *obj*.
 
 :arg obj: the reference object
-:type obj: :class:`Object`
+:type obj: :class:`SiderealObject`
 :arg ttok: whether TT rather than TDB as the ephemeris time is OK (~2 ms errors)
 :type ttok: :class:`bool`
 :returns: a time adjusted to the barycenter
@@ -476,12 +477,29 @@ def _open_ephem ():
         raise NovasError ('ephem_open', code)
 
 
-class Object (object):
-    """A celestial object.
+class CelestialObject (object):
+    """An object in space. This is an abstract
+base class; see :class:`SiderealObject`.
+"""
+
+    def __init__ (self):
+        self._handle = _precastro.novas_object ()
+
+
+class SiderealObject (CelestialObject):
+    """A sidereal celestial object.
 """
 
     def __init__ (self, ra=None, dec=None):
-        self._handle = _precastro.novas_cat_entry ()
+        super (SiderealObject, self).__init__ ()
+
+        ret = _precastro.make_cat_entry ('', '', 0, 0., 0., 0., 0., 0., 0., self._handle.star)
+        if ret:
+            raise NovasError ('make_cat_entry', ret)
+
+        ret = _precastro.make_object (2, 0, ' ', self._handle.star, self._handle)
+        if ret:
+            raise NovasError ('make_object', ret)
 
         if ra is not None:
             if isinstance (ra, basestring):
@@ -499,18 +517,18 @@ class Object (object):
 
 
     def _get_ra (self):
-        return self._handle.ra * H2R
+        return self._handle.star.ra * H2R
 
     def _set_ra (self, rarad):
-        self._handle.ra = rarad * R2H
+        self._handle.star.ra = rarad * R2H
 
     ra = property (_get_ra, _set_ra, doc='object\'s ICRS J2000 right ascension in radians')
 
     def _get_dec (self):
-        return self._handle.dec * D2R
+        return self._handle.star.dec * D2R
 
     def _set_dec (self, decrad):
-        self._handle.dec = decrad * R2D
+        self._handle.star.dec = decrad * R2D
 
     dec = property (_get_dec, _set_dec, doc='object\'s ICRS J2000 declination in radians')
 
@@ -556,10 +574,10 @@ This is a convenience function, completely equivalent to setting :attr:`ra` and
 
 
     def _get_promora (self):
-        return self._handle.promora
+        return self._handle.star.promora
 
     def _set_promora (self, promora_masperyr):
-        self._handle.promora = promora_masperyr
+        self._handle.star.promora = promora_masperyr
 
     promora = property (_get_promora, _set_promora,
                         doc='''object\'s ICRS RA proper motion in mas per year
@@ -568,10 +586,10 @@ This is an offset, so ``ra(t) = ra + promora/cos(dec) * (t - promoepoch)``.
 ''')
 
     def _get_promodec (self):
-        return self._handle.promodec
+        return self._handle.star.promodec
 
     def _set_promodec (self, promodec_masperyr):
-        self._handle.promodec = promodec_masperyr
+        self._handle.star.promodec = promodec_masperyr
 
     promodec = property (_get_promodec, _set_promodec,
                         doc='object\'s ICRS declination proper motion in mas per year')
@@ -594,30 +612,30 @@ This is a convenience function, completely equivalent to setting :attr:`promora`
 
 
     def _get_parallax (self):
-        return self._handle.parallax
+        return self._handle.star.parallax
 
     def _set_parallax (self, parallax_mas):
-        self._handle.parallax = parallax_mas
+        self._handle.star.parallax = parallax_mas
 
     parallax = property (_get_parallax, _set_parallax,
                          doc='object\'s parallax in milliarcseconds')
 
 
     def _get_vradial (self):
-        return self._handle.radialvelocity
+        return self._handle.star.radialvelocity
 
     def _set_vradial (self, vradial_kmpers):
-        self._handle.radialvelocity = vradial_kmpers
+        self._handle.star.radialvelocity = vradial_kmpers
 
     vradial = property (_get_vradial, _set_vradial,
                         doc='object\'s radial velocity in km per second')
 
 
     def _get_promoepoch (self):
-        return self._handle.promoepoch
+        return self._handle.star.promoepoch
 
     def _set_promoepoch (self, promoepoch_jdtdb):
-        self._handle.promoepoch = promoepoch_jdtdb
+        self._handle.star.promoepoch = promoepoch_jdtdb
 
     promoepoch = property (_get_promoepoch, _set_promoepoch,
                            doc='TDB JD for which effect of proper motion is zero; default is J2000')
@@ -652,20 +670,12 @@ The epoch thus generated is converted to the TT timescale, while the
 timescale used for proper-motion calculations by NOVAS is TDB. My
 understanding is that the difference between these is almost always
 insignificant. If this becomes a problem, we can add a flag to override
-this behavior, or you can set :attr:`Object.promoepoch` manually.
+this behavior, or you can set :attr:`SiderealObject.promoepoch` manually.
 """
         self.promoepoch = Time ().fromcalendar (year, month, day, hour, minute,
                                                 second, timescale,
                                                 **kwargs).asTT ().asJD ()
         return self
-
-
-    def _asobject (self):
-        novobj = _precastro.novas_object ()
-        ret = _precastro.make_object (2, 0, ' ', self._handle, novobj)
-        if ret:
-            raise NovasError ('make_object', ret)
-        return novobj
 
 
     def fromsesame (self, ident):
@@ -760,7 +770,7 @@ instance of :class:`Time`, in which case it is converted by calling
         if isinstance (jd_tt, Time):
             jd_tt = jd_tt.asTT ().asJD ()
 
-        code, ra, dec = _precastro.astro_star (jd_tt, self._handle, int (lowaccuracy))
+        code, ra, dec = _precastro.astro_star (jd_tt, self._handle.star, int (lowaccuracy))
         if code:
             raise NovasError ('astro_star', code)
 

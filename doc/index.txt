@@ -23,7 +23,10 @@ Built on `SOFA <http://www.iausofa.org>`_ and `NOVAS
 Main classes:
 
 * :class:`Time`
-* :class:`Object`
+* :class:`CelestialObject`
+
+  * :class:`SiderealObject`
+
 * :class:`Observer`
 
   * :class:`EarthObserver`
@@ -83,7 +86,9 @@ Some useful Julian Dates:
 Astrometry
 ----------
 
-.. class:: Object(ra=None, dec=None)
+.. autoclass:: CelestialObject
+
+.. class:: SiderealObject(ra=None, dec=None)
 
    .. autoattribute:: ra
 
@@ -119,18 +124,18 @@ Astrometry
 .. data:: objcols
 
   This is a list of strings defining the column names that should be used
-  when serializing an :class:`Object` to text using the :mod:`srctable`
+  when serializing an :class:`SiderealObject` to text using the :mod:`srctable`
   module. For example::
 
     import sys, srctable, flatdb, precastro
     ...
-    # Writing a table of Objects:
+    # Writing a table of SiderealObjects:
     c = srctable.stmapping ().cols (precastro.objcols)
-    flatdb.writetable (sys.stdout, [], c, list_of_Objects)
+    flatdb.writetable (sys.stdout, [], c, list_of_objects)
 
     # objcols isn't needed for reading, since srctable knows about all
     # of the columns natively.
-    h, c, r = srctable.readst (sys.stdin, recfactory=precastro.Object)
+    h, c, r = srctable.readst (sys.stdin, recfactory=precastro.SiderealObject)
 
 .. autoclass:: Observer
 

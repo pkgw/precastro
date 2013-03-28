@@ -65,6 +65,12 @@ typedef struct {
 short int astro_star (double jd_tt, cat_entry *star, short int accuracy,
 		      double *OUTPUT, double *OUTPUT);
 
+short int make_cat_entry (char star_name[SIZE_OF_OBJ_NAME],
+			  char catalog[SIZE_OF_CAT_NAME],
+			  long int star_num, double ra, double dec,
+			  double pm_ra, double pm_dec, double parallax,
+			  double rad_vel, cat_entry *star);
+
 short int make_object (short int type, short int number, char name[51],
 		       cat_entry *star_data, object *cel_obj);
 
