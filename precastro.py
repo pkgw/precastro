@@ -396,10 +396,7 @@ documentation for the Ohio State University BJD calculator.)
 * Proper ITRF observatory site: ~30 ns
 * Integrated rather than approximate TT-to-TDB conversion: ~20 ns
 """
-        earth = _precastro.novas_object ()
-        earth.type = 0
-        earth.number = 3
-
+        earth = EphemObject ('earth')
         tdb = self.asTDB (ttok=ttok)
 
         from math import cos, sin
@@ -407,9 +404,8 @@ documentation for the Ohio State University BJD calculator.)
         yhat = cos (obj.dec) * sin (obj.ra)
         zhat = sin (obj.dec)
 
-        _open_ephem ()
         # these are in AU:
-        xobs, yobs, zobs = _precastro.ephemeris_tweak (tdb.jd1, tdb.jd2, earth, 0, 0)[1:4]
+        xobs, yobs, zobs = earth.ephem (tdb, ttok=ttok)[0]
         jdelta = (xobs * xhat + yobs * yhat + zobs * zhat) / C_AUDAY
 
         tdb.jd2 += jdelta
@@ -826,6 +822,32 @@ class EphemObject (CelestialObject):
             name = 'unknown?'
 
         return 'Ephemeris object "%s"' % name
+
+
+    def ephem (self, time, ttok=True):
+        """Return the object's position in phase space at the specified time.
+
+:arg time: a time
+:type time: :class:`Time`
+:arg ttok: whether a time in the TT timescale is good enough (default: :const:`True`)
+:type ttok: :class:`bool`
+:returns: ``[[x, y, z], [vx, vy, vz]]``
+:rtype: :class:`numpy.ndarray` of shape ``(2, 3)``
+:raises: :exc:`NovasError` if there's a problem with the instance of the
+  ephemeris.
+
+*time* needs to be converted to TDB. The return values are measured in AU
+and AU/day relative to the barycenter of the solarsystem, referenced to the
+ICRS.
+"""
+        tdb = time.asTDB (ttok=ttok)
+        _open_ephem ()
+        ret, x, y, z, vx, vy, vz = _precastro.ephemeris_tweak (tdb.jd1, tdb.jd2,
+                                                               self._handle, 0, 0)
+        if ret:
+            raise NovasError ('ephemeris')
+
+        return np.asarray ([(x, y, z), (vx, vy, vz)])
 
 
 class Observer (object):
