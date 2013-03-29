@@ -475,11 +475,63 @@ def _open_ephem ():
 
 class CelestialObject (object):
     """An object in space. This is an abstract
-base class; see :class:`SiderealObject`.
+base class; see :class:`SiderealObject` and :class:`EphemObject`.
 """
 
     def __init__ (self):
         self._handle = _precastro.novas_object ()
+
+
+    def horizonpos (self, time, earthobs, lowaccuracy=False, deltat=0.,
+                    xp=0., yp=0., refract=False):
+        """Compute the object's horizon coordinates at the specified time and
+position on Earth.
+
+:arg time: the time
+:type time: :class:`Time`
+:arg earthobs: the location on Earth
+:type earthobs: :class:`EarthObserver`
+:arg lowaccuracy: whether to perform a faster, but lower-accuracy calculation
+:type lowaccuracy: optional :class:`bool`
+:arg deltat: the difference TT - UT1 at *time* in seconds
+:type deltat: optional :class:`float`
+:arg xp: x coordinate of the celestial intermediate pole with respect to
+  the ITRS reference pole in arcseconds.
+:type xp: optional :class:`float`
+:arg yp: y coordinate of the celestial intermediate pole with respect to
+  the ITRS reference pole in arcseconds.
+:type yp: optional :class:`float`
+:arg refract: whether to apply refraction corrections (default :const:`False`)
+:type refract: optional :class:`bool`
+:returns: ``(azimuth, elevation)`` in radians
+:rtype: :class:`tuple` of :class:`float`
+
+*deltat*, *xp*, and *yp* all default to zero, which is fine in many cases.
+
+If *refract* is :const:`True`, "standard" atmospheric conditions are assumed.
+If it is set to the integer 2, the atmospheric conditions defined in the
+*earthobs* object are used.
+"""
+
+        if not isinstance (earthobs, EarthObserver):
+            raise ValueError ('must provide an observer position on Earth; '
+                              'got "%s"' % earthobs)
+
+        # Based on the docs, topocentric position is what we want.
+        ra, dec = self.topopos (time, earthobs, deltat=deltat,
+                                lowaccuracy=lowaccuracy)
+        ra *= R2H # oh well, roundtrip the conversions
+        dec *= R2D
+
+        ut1 = time.asTT ().asJD () - deltat
+
+        zd, az, rar, decr = _precastro.equ2hor (ut1, deltat, int (lowaccuracy),
+                                                xp, yp,
+                                                earthobs._handle.on_surf,
+                                                ra, dec, int(refract))
+        # rar and decr are (potentially) refracted topocentric RA and dec.
+        # We ignore them.
+        return az * D2R, (90. - zd) * D2R
 
 
 class SiderealObject (CelestialObject):
@@ -885,6 +937,56 @@ instance of :class:`Time`, in which case it is converted by calling
                                                        int (lowaccuracy))
         if code:
             raise NovasError ('astro_planet', code)
+
+        return ra * H2R, dec * D2R
+
+
+    def topopos (self, jd_tt, earthobs, deltat=0., lowaccuracy=False):
+        """Compute the source's "topocentric" place (defined below)
+
+:arg jd_tt: the TT JD at which to evaluate the source's place
+:type jd_tt: :class:`float` or :class:`Time`
+:arg earthobs: the (earthbound) location at which to evaluate the place
+:type earthobs: :class:`EarthObserver`
+:arg deltat: the difference TT - UT1 at *time* in seconds (default: 0)
+:type deltat: optional :class:`float`
+:arg lowaccuracy: whether to perform a faster, but lower-accuracy calculation
+:type lowaccuracy: optional :class:`bool`
+:returns: tuple of ``(ra, dec)`` in radians
+:rtype: ``(float, float)``
+:raises: :exc:`NovasError` if the library routine fails
+:raises: other exceptions if *jd_tt* cannot be converted to TT.
+
+The *topocentric* place of a source is its location taking into account
+parallax, proper motion, gravitational light bending, and aberration, for an
+observer on the surface of the Earth, with respect to the true equator and
+equinox of date. (Refraction is not accounted for. If the intended observer
+were geocentric, that would be its *apparent* place. If the coordinates were
+additionally expressed relative to a mean equator and equinox of J2000.0, that
+would be its *virtual* place.)
+
+The argument *time* is treated as a :class:`float` JD, unless it is an
+instance of :class:`Time`, in which case it is converted by calling
+``jt_tt.asTT().asJD()``.
+
+The default of *deltat* is zero, which is fine for many applications.
+"""
+        if not isinstance (earthobs, EarthObserver):
+            raise ValueError ('must provide an observer position on Earth; '
+                              'got "%s"' % earthobs)
+
+        if isinstance (jd_tt, Time):
+            jd_tt = jd_tt.asTT ().asJD ()
+
+        # distance is in AU. We ignore it.
+
+        _open_ephem ()
+        code, ra, dec, dist = _precastro.topo_planet (jd_tt, self._handle,
+                                                      deltat,
+                                                      earthobs._handle.on_surf,
+                                                      int (lowaccuracy))
+        if code:
+            raise NovasError ('topo_planet', code)
 
         return ra * H2R, dec * D2R
 
