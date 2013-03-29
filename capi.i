@@ -65,6 +65,9 @@ typedef struct {
 short int astro_star (double jd_tt, cat_entry *star, short int accuracy,
 		      double *OUTPUT, double *OUTPUT);
 
+short int astro_planet (double jd_tt, object *ss_body, short int accuracy,
+			double *OUTPUT, double *OUTPUT, double *OUTPUT);
+
 short int make_cat_entry (char star_name[SIZE_OF_OBJ_NAME],
 			  char catalog[SIZE_OF_CAT_NAME],
 			  long int star_num, double ra, double dec,

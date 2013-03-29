@@ -850,6 +850,45 @@ ICRS.
         return np.asarray ([(x, y, z), (vx, vy, vz)])
 
 
+    def astropos (self, jd_tt, lowaccuracy=False):
+        """Compute the source's "astrometric" place (defined below)
+
+:arg jd_tt: the TT JD at which to evaluate the source's place
+:type jd_tt: :class:`float` or :class:`Time`
+:arg lowaccuracy: whether to perform a faster, but lower-accuracy calculation
+:type lowaccuracy: optional :class:`bool`
+:returns: tuple of ``(ra, dec)`` in radians
+:rtype: ``(float, float)``
+:raises: :exc:`NovasError` if the library routine fails
+:raises: other exceptions if *jd_tt* cannot be converted to TT.
+
+The *astrometric* place of a source is its location taking into
+account parallax and proper motion for a geocentric observer with mean
+equator and equinox of J2000.0. (Gravitational light bending,
+aberration, and atmospheric refraction are not accounted for: that
+would be its *virtual* place. If coordinates were additionally
+expressed relative to the true epoch and equinox of date, that would
+be its *apparent* place.)
+
+The argument is treated as a :class:`float` JD, unless it is an
+instance of :class:`Time`, in which case it is converted by calling
+``jt_tt.asTT().asJD()``.
+"""
+        if isinstance (jd_tt, Time):
+            jd_tt = jd_tt.asTT ().asJD ()
+
+        # distance is in AU. We ignore it.
+
+        _open_ephem ()
+        code, ra, dec, dist = _precastro.astro_planet (jd_tt,
+                                                       self._handle,
+                                                       int (lowaccuracy))
+        if code:
+            raise NovasError ('astro_planet', code)
+
+        return ra * H2R, dec * D2R
+
+
 class Observer (object):
     """An observer located on the Earth or in space. This is an abstract
 base class; see :class:`EarthObserver`.

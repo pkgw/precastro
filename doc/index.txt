@@ -144,6 +144,8 @@ Astrometry
 
    .. automethod:: ephem
 
+   .. automethod:: astropos
+
 .. autoclass:: Observer
 
 .. autoclass:: EarthObserver
