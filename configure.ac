@@ -6,6 +6,7 @@ AC_CONFIG_SRCDIR([sofa/src/c2ixy.c])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([build-aux])
 AM_INIT_AUTOMAKE([foreign silent-rules -Wall])
+AM_PROG_AR dnl needed to make LT_INIT happy
 LT_INIT([disable-static])
 
 AC_SUBST([PALP_SHORTVERSION],[0.0]) dnl used in Sphinx docs
@@ -33,8 +34,6 @@ AC_SUBST([AM_CFLAGS])
 
 AM_PATH_PYTHON(2.4)
 AM_CHECK_PYTHON_HEADERS(,AC_MSG_ERROR([could not find Python headers]))
-
-AM_PROG_AR dnl for "linking libtool libraries with a non-POSIX archiver"
 
 AC_PATH_PROG(SWIG, swig, :)
 if test x"$SWIG" = x: ; then
