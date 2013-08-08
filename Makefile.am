@@ -3,6 +3,8 @@
 
 ACLOCAL_AMFLAGS = -I build-aux
 
+bin_SCRIPTS = jdtool
+
 python_PYTHON = precastro.py
 pyexec_LTLIBRARIES = _precastro.la
 
