@@ -1,7 +1,7 @@
 dnl Copyright 2012 Peter Williams
 dnl Licensed under the GNU General Public License version 3 or higher. 
 
-AC_INIT([palp], [0.0])
+AC_INIT([precastro], [0.1])
 AC_CONFIG_SRCDIR([sofa/src/c2ixy.c])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([build-aux])
@@ -9,8 +9,8 @@ AM_INIT_AUTOMAKE([foreign silent-rules -Wall])
 AM_PROG_AR dnl needed to make LT_INIT happy
 LT_INIT([disable-static])
 
-AC_SUBST([PALP_SHORTVERSION],[0.0]) dnl used in Sphinx docs
-AC_SUBST([PALP_COPYRIGHT],["2012 Peter Williams"])
+AC_SUBST([PRECASTRO_SHORTVERSION],[0.0]) dnl used in Sphinx docs
+AC_SUBST([PRECASTRO_COPYRIGHT],["2012 Peter Williams"])
 
 AC_LANG([C])
 

@@ -216,6 +216,7 @@ _precastro_la_SOURCES = \
 EXTRA_DIST = \
  README.md \
  capi.i \
+ jdtool \
  novas/solsys2.c \
  novas/solsys3.c
 
@@ -230,6 +231,7 @@ capi_wrap.c: capi.i
 
 pyexec_DATA = _precastro-DEc421.dat
 noinst_PYTHON = compile_ephem.py
+DISTCLEANFILES = $(pyexec_DATA) header.421 ascp1900.421
 
 _precastro-DEc421.dat: compile_ephem.py header.421 ascp1900.421
 	$(PYTHON) $^ $@
@@ -278,7 +280,7 @@ clean-local:
 endif
 
 websitehost = cfa0
-websitedir = /data/wdocs/pwilliam/www-docs/palp
+websitedir = /data/wdocs/pwilliam/www-docs/precastro
 
 pushdocs: sphinx-html.stamp
 	ssh $(websitehost) rm -rf $(websitedir)/*
