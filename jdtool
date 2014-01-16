@@ -82,6 +82,24 @@ def cmd_c2m (args):
     print '%.4f' % t.asMJD ()
 
 
+def cmd_lc2m (args):
+    """lc2m <year> <month> <day> <hour> <minute> <second> - long calendar to MJD"""
+
+    if len (args) != 6:
+        wrongusage (__doc__, 'lc2m expected exactly 6 arguments')
+
+    year = int (args[0])
+    month = int (args[1])
+    day = int (args[2])
+    hour = int (args[3])
+    minute = int (args[4])
+    second = float (args[5])
+
+    fday = (hour + minute / 60. + second / 3600.) / 24
+    t = precastro.Time ().fromfdcal (year, month, day, fday, 'UTC')
+    print '%.4f' % t.asMJD ()
+
+
 def cmd_m2c (args):
     """m2c <MJD> - MJD to calendar"""
 
