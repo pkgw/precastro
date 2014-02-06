@@ -1,9 +1,7 @@
-## Copyright 2012 Peter Williams
+## Copyright 2012-2014 Peter Williams
 ## Licensed under the GNU General Public License version 3 or higher. 
 
 ACLOCAL_AMFLAGS = -I build-aux
-
-bin_SCRIPTS = jdtool
 
 python_PYTHON = precastro.py
 pyexec_LTLIBRARIES = _precastro.la
@@ -216,7 +214,6 @@ _precastro_la_SOURCES = \
 EXTRA_DIST = \
  README.md \
  capi.i \
- jdtool \
  novas/solsys2.c \
  novas/solsys3.c
 
