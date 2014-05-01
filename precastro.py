@@ -1,4 +1,4 @@
-# Copyright 2012 Peter Williams
+# Copyright 2012-2014 Peter Williams
 # Licensed under the GNU General Public License, version 3 or higher.
 
 """precastro - precision astronomy time and coordinate routines
@@ -466,6 +466,11 @@ Shorthand for ``Time().fromnow()``.
 
 
 def _open_ephem ():
+    """Note that this function must be called before computing NOVAS things even
+    for non-ephemeris objects, because the internal computations need the Earth/Sun
+    ephemerides to compute the observer's location. I discovered this by realizing
+    that changing an object's parallax wasn't having any effect on astropos()."""
+
     from os.path import dirname, join
     p = join (dirname (_precastro.__file__), '_precastro-DEc421.dat')
     code, jd1, jd2, de_num = _precastro.ephem_open (p)
@@ -518,6 +523,7 @@ If it is set to the integer 2, the atmospheric conditions defined in the
                               'got "%s"' % earthobs)
 
         # Based on the docs, topocentric position is what we want.
+        _open_ephem ()
         ra, dec = self.topopos (time, earthobs, deltat=deltat,
                                 lowaccuracy=lowaccuracy)
         ra *= R2H # oh well, roundtrip the conversions
@@ -819,6 +825,7 @@ instance of :class:`Time`, in which case it is converted by calling
         if isinstance (jd_tt, Time):
             jd_tt = jd_tt.asTT ().asJD ()
 
+        _open_ephem ()
         code, ra, dec = _precastro.astro_star (jd_tt, self._handle.star, int (lowaccuracy))
         if code:
             raise NovasError ('astro_star', code)
