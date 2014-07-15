@@ -218,7 +218,8 @@ computer time in this broken-down format without going through POSIX
 time, so that's not actually helpful.
 """
         _checktimescale (timescale)
-        code, self.jd1, self.jd2 = _precastro.iauDtf2d (timescale, year, month, day,
+        code, self.jd1, self.jd2 = _precastro.iauDtf2d (timescale.encode ('ascii'),
+                                                        year, month, day,
                                                         hour, minute, second)
         _checksofacode ('dtf2d', code, dubiousok)
         self.timescale = timescale
@@ -257,7 +258,8 @@ This has the same bad leapsecond semantics as JD computations, so
 UTC conversions will probably be subject to the usual pitfalls.
 """
         _checktimescale (timescale)
-        code, self.jd1, self.jd2 = _precastro.iauDtf2d (timescale, year, month, day, 0, 0, 0)
+        code, self.jd1, self.jd2 = _precastro.iauDtf2d (timescale.encode ('ascii'),
+                                                        year, month, day, 0, 0, 0)
         _checksofacode ('dtf2d', code, dubiousok)
         self.jd2 += fday
         self.timescale = timescale
@@ -442,7 +444,8 @@ is less than one, the decimal point and fractional parts are omitted.
 If precision is less than zero, the reported values are rounded as
 appropriate but trailing zeros are still present in the string.
 """
-        info = _precastro.iauD2dtf_tweak (self.timescale, precision, self.jd1, self.jd2)
+        info = _precastro.iauD2dtf_tweak (self.timescale.encode ('ascii'),
+                                          precision, self.jd1, self.jd2)
         _checksofacode ('d2dtf', info[0], dubiousok)
         ymdhmsf = list (info[1:])
 
