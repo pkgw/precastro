@@ -1,4 +1,4 @@
-# Copyright 2012-2014 Peter Williams
+# Copyright 2012-2015 Peter Williams
 # Licensed under the GNU General Public License, version 3 or higher.
 
 """precastro - precision astronomy time and coordinate routines
@@ -6,7 +6,7 @@
 """
 
 import _precastro
-from astutil import *
+from pwkit.astutil import *
 
 __all__ = ('PrecAstroError NovasError SofaError UnsupportedTimescaleError '
            'Time now CelestialObject SiderealObject objcols '
