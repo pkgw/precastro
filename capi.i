@@ -68,6 +68,11 @@ short int astro_star (double jd_tt, cat_entry *star, short int accuracy,
 short int astro_planet (double jd_tt, object *ss_body, short int accuracy,
 			double *OUTPUT, double *OUTPUT, double *OUTPUT);
 
+short int topo_star (double jd_tt, double delta_t, cat_entry *star,
+		       on_surface *position, short int accuracy,
+		       double *OUTPUT, double *OUTPUT);
+
+/* note that call signature differs from topo_star nontrivially! */
 short int topo_planet (double jd_tt, object *ss_body, double delta_t,
 		       on_surface *position, short int accuracy,
 		       double *OUTPUT, double *OUTPUT, double *OUTPUT);

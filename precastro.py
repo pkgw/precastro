@@ -836,6 +836,54 @@ instance of :class:`Time`, in which case it is converted by calling
         return ra * H2R, dec * D2R
 
 
+    def topopos (self, jd_tt, earthobs, deltat=0., lowaccuracy=False):
+        """Compute the source's "topocentric" place (defined below)
+
+:arg jd_tt: the TT JD at which to evaluate the source's place
+:type jd_tt: :class:`float` or :class:`Time`
+:arg earthobs: the (earthbound) location at which to evaluate the place
+:type earthobs: :class:`EarthObserver`
+:arg deltat: the difference TT - UT1 at *time* in seconds (default: 0)
+:type deltat: optional :class:`float`
+:arg lowaccuracy: whether to perform a faster, but lower-accuracy calculation
+:type lowaccuracy: optional :class:`bool`
+:returns: tuple of ``(ra, dec)`` in radians
+:rtype: ``(float, float)``
+:raises: :exc:`NovasError` if the library routine fails
+:raises: other exceptions if *jd_tt* cannot be converted to TT.
+
+The *topocentric* place of a source is its location taking into account
+parallax, proper motion, gravitational light bending, and aberration, for an
+observer on the surface of the Earth, with respect to the true equator and
+equinox of date. (Refraction is not accounted for. If the intended observer
+were geocentric, that would be its *apparent* place. If the coordinates were
+additionally expressed relative to a mean equator and equinox of J2000.0, that
+would be its *virtual* place.)
+
+The argument *time* is treated as a :class:`float` JD, unless it is an
+instance of :class:`Time`, in which case it is converted by calling
+``jt_tt.asTT().asJD()``.
+
+The default of *deltat* is zero, which is fine for many applications.
+"""
+        if not isinstance (earthobs, EarthObserver):
+            raise ValueError ('must provide an observer position on Earth; '
+                              'got "%s"' % earthobs)
+
+        if isinstance (jd_tt, Time):
+            jd_tt = jd_tt.asTT ().asJD ()
+
+        _open_ephem ()
+        code, ra, dec = _precastro.topo_star (jd_tt, deltat,
+                                              self._handle.star,
+                                              earthobs._handle.on_surf,
+                                              int (lowaccuracy))
+        if code:
+            raise NovasError ('topo_star', code)
+
+        return ra * H2R, dec * D2R
+
+
 # for combination with srctable:
 objcols = 'ra dec promora promodec promoepoch parallax vradial'.split ()
 
